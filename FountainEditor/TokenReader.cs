@@ -18,16 +18,16 @@ namespace FountainEditor {
             this.text = text;
         }
 
-        public char PeekChar() {
-            return text[offset + length];
+        public char PeekChar(int ahead = 0) {
+            return text[offset + length + ahead];
         }
 
-        public void SkipChar() {
-            offset++;
+        public void SkipChar(int amount = 1) {
+            offset += amount;
         }
 
-        public void TakeChar() {
-            length++;
+        public void TakeChar(int amount = 1) {
+            length += amount;
         }
 
         public string GetToken() {
