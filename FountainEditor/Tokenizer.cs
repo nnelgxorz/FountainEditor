@@ -1,10 +1,8 @@
-﻿using System;
+﻿using FountainEditor.Elements;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 using System.Text.RegularExpressions;
-using FountainEditor.Elements;
 
 namespace FountainEditor
 {
@@ -17,6 +15,7 @@ namespace FountainEditor
         private static Regex Character;
         private static Regex SceneHeading;
         private static Regex Parenthetical;
+
         static Tokenizer()
         {
             try
@@ -36,102 +35,101 @@ namespace FountainEditor
             }
         }
 
-
-        public Element Parse(string UserText)
+        public Element Parse(string userText)
         {
+            var match = Outline.Match(userText);
+            var hashNumbers = match.Groups[2].Length;
+            var outlineLevel = hashNumbers.ToString();
 
-            var match = Outline.Match(UserText);
-            int HashNumbers = match.Groups[2].Length;
-            string OutlineLevel = HashNumbers.ToString();
             if (match.Groups[2].Success)
             {
-                Console.WriteLine("Outline Level {0}", OutlineLevel);
-                return new OutlineTextElement(UserText);
+                Console.WriteLine("Outline Level {0}", outlineLevel);
+                return new OutlineTextElement(userText);
             }
 
-            var Amount = Equals.Match(UserText);
-            int EqualsNumber = Amount.Groups[1].Length;
+            var amount = Equals.Match(userText);
+            var equalsNumber = amount.Groups[1].Length;
 
-            if (EqualsNumber == 1)
+            if (equalsNumber == 1)
             {
                 Console.WriteLine("Synopsis");
-                return new SynopsisTextElement(UserText);
+                return new SynopsisTextElement(userText);
             }
 
-            if (EqualsNumber == 3)
+            if (equalsNumber == 3)
             {
                 Console.WriteLine("Page Break");
                 return new PageBreakTextElement("");
             }
 
-            if (EqualsNumber == 2 || (EqualsNumber > 3))
+            if (equalsNumber == 2 || (equalsNumber > 3))
             {
                 Console.WriteLine("Text");
-                return new TextTextElement(UserText);
+                return new TextTextElement(userText);
             }
 
-            if (string.IsNullOrEmpty(UserText))
+            if (string.IsNullOrEmpty(userText))
             {
                 Console.WriteLine("Blank");
                 return new BlankTextElement();
             }
 
-            if (UserText.StartsWith("[[") || UserText.EndsWith("]]"))
+            if (userText.StartsWith("[[") || userText.EndsWith("]]"))
             {
                 Console.WriteLine("Note");
                 return new NoteTextElement("");
             }
 
-            if (UserText.StartsWith("~"))
+            if (userText.StartsWith("~"))
             {
                 Console.WriteLine("Lyrics");
-                return new LyricsTextElement(UserText);
+                return new LyricsTextElement(userText);
             }
 
-            var isScene = SceneHeading.Match(UserText);
+            var isScene = SceneHeading.Match(userText);
             if (isScene.Groups[1].Success)
             {
                 Console.WriteLine("Scene Heading");
-                return new SceneHeadingTextElement(UserText);
+                return new SceneHeadingTextElement(userText);
             }
 
-            if (UserText.StartsWith(">") && UserText.EndsWith("<"))
+            if (userText.StartsWith(">") && userText.EndsWith("<"))
             {
                 Console.WriteLine("Centered Text");
-                return new CenteredTextElement(UserText);
+                return new CenteredTextElement(userText);
             }
 
-            if (UserText.StartsWith(">") || UserText.EndsWith("To:", StringComparison.OrdinalIgnoreCase))
+            if (userText.StartsWith(">") || userText.EndsWith("To:", StringComparison.OrdinalIgnoreCase))
             {
                 Console.WriteLine("Transition");
-                return new TransitionTextElement(UserText);
+                return new TransitionTextElement(userText);
             }
 
-            var Char = Character.Match(UserText).Success;
-            if (Char == true)
+            var character = Character.Match(userText).Success;
+            if (character == true)
             {
                 Console.WriteLine("Character Name");
-                return new CharacterTextElement(UserText);
+                return new CharacterTextElement(userText);
             }
 
-            if (UserText.StartsWith("(") & (UserText.EndsWith(")")))
-            //var Parenth = Parenthetical.Match(UserText).Success;
-            //if (Parenth == true)
+            if (userText.StartsWith("(") && userText.EndsWith(")"))
+            //var parenth = Parenthetical.Match(UserText).Success;
+            //if (parenth == true)
             {
                 Console.WriteLine("Parenthetical");
-                return new ParentheticalTextElement(UserText);
+                return new ParentheticalTextElement(userText);
             }
 
             else
             {
                 Console.WriteLine("Text");
-                return new TextTextElement(UserText);
+                return new TextTextElement(userText);
             }
         }
 
-        private static void ParseEmphasis(string UserText)
+        private static void ParseEmphasis(string userText)
         {
-            var match = Emphasis.Match(UserText);
+            var match = Emphasis.Match(userText);
 
             if (match.Groups[1].Value != match.Groups[3].Value)
             {
@@ -158,22 +156,23 @@ namespace FountainEditor
                     Console.WriteLine("Emphasis Failed");
                     break;
             }
-            return;
         }
 
-        internal List<Element> Parse(System.IO.TextReader textReader)
+        internal List<Element> Parse(TextReader textReader)
         {
+            var list = new List<Element>();
+
             string line;
-            var List = new List<Element>();
 
             while ((line = textReader.ReadLine()) != null)
             {
-                List.Add(Parse(line));
                 Console.Write("{0,-50} - ", line);
-                Parse(line);
+                list.Add(Parse(line));
             }
 
-            return List;
+            Console.WriteLine();
+
+            return list;
         }
     }
 }
