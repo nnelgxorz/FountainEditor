@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace FountainEditor.Elements
 {
-    class PageBreakTextElement : IElement
+    class PageBreakTextElement : Element
     {
-        public string Text { get; set; }
-
-        public PageBreakTextElement ()
+        public PageBreakTextElement(string text)
+            : base(text)
         {
         }
     }

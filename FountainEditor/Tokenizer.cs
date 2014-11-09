@@ -37,7 +37,7 @@ namespace FountainEditor
         }
 
 
-        public IElement Parse(string UserText)
+        public Element Parse(string UserText)
         {
 
             var match = Outline.Match(UserText);
@@ -61,7 +61,7 @@ namespace FountainEditor
             if (EqualsNumber == 3)
             {
                 Console.WriteLine("Page Break");
-                return new PageBreakTextElement();
+                return new PageBreakTextElement("");
             }
 
             if (EqualsNumber == 2 || (EqualsNumber > 3))
@@ -79,7 +79,7 @@ namespace FountainEditor
             if (UserText.StartsWith("[[") || UserText.EndsWith("]]"))
             {
                 Console.WriteLine("Note");
-                return new NoteTextElement();
+                return new NoteTextElement("");
             }
 
             if (UserText.StartsWith("~"))
@@ -161,10 +161,10 @@ namespace FountainEditor
             return;
         }
 
-        internal List<IElement> Parse(System.IO.TextReader textReader)
+        internal List<Element> Parse(System.IO.TextReader textReader)
         {
             string line;
-            var List = new List<IElement>();
+            var List = new List<Element>();
 
             while ((line = textReader.ReadLine()) != null)
             {

@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace FountainEditor.Elements
 {
-    class OutlineTextElement : IElement
+    class OutlineTextElement : Element
     {
-        public string Text { get; set; }
-
-        public OutlineTextElement (string text)
+        public OutlineTextElement(string text)
+            : base(text)
         {
-            this.Text = text;
         }
     }
 }
