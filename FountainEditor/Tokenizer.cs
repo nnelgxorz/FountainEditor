@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using ScreenPlayEditor.Elements;
+using FountainEditor.Elements;
 
-namespace ScreenPlayEditor
+namespace FountainEditor
 {
     class Tokenizer
     {

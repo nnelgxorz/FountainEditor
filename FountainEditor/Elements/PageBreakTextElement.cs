@@ -4,15 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScreenPlayEditor.Elements
+namespace FountainEditor.Elements
 {
-    class ActionTextElement : IElement
+    class PageBreakTextElement : IElement
     {
         public string Text { get; set; }
 
-        public ActionTextElement (string text)
+        public PageBreakTextElement ()
         {
-            this.Text = text;
         }
     }
 }

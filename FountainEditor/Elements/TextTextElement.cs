@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScreenPlayEditor.Elements
+namespace FountainEditor.Elements
 {
-    class BlankTextElement : IElement
+    class TextTextElement : IElement
     {
         public string Text { get; set; }
 
-        public BlankTextElement ()
+        public TextTextElement(string text)
         {
-            //this.Text = text;
+            this.Text = text;
         }
     }
 }
