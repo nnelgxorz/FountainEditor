@@ -2,7 +2,7 @@
 using System.IO;
 
 
-namespace ScreenPlayEditor
+namespace FountainEditor
 {
     class Program
     {

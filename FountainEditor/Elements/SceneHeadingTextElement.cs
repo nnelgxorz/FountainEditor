@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScreenPlayEditor.Elements
+namespace FountainEditor.Elements
 {
     class SceneHeadingTextElement : IElement
     {

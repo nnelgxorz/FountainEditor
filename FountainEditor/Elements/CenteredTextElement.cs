@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScreenPlayEditor.Elements
+namespace FountainEditor.Elements
 {
-    class OutlineTextElement : IElement
+    class CenteredTextElement : IElement
     {
         public string Text { get; set; }
 
-        public OutlineTextElement (string text)
+        public CenteredTextElement(string text)
         {
             this.Text = text;
         }

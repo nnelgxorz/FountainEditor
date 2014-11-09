@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ScreenPlayEditor.Elements
+namespace FountainEditor.Elements
 {
-    class EmphasisTextElement : IElement
+    class BoneyardTextElement : IElement
     {
         public string Text { get; set; }
 
-        public EmphasisTextElement (string text)
+        public BoneyardTextElement ()
         {
-            this.Text = text;
+            //this.Text = text;
         }
     }
 }
