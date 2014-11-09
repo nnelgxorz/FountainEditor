@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace FountainEditor
 {
-    interface IElement
+    public abstract class Element
     {
-        string Text { get; set; }
+        public string Text { get; set; }
+
+        public Element(string text) {
+            this.Text = text;
+        }
     }
 }

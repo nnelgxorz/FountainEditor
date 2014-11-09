@@ -57,7 +57,7 @@
     <Compile Include="Elements\CharacterTextElement.cs" />
     <Compile Include="Elements\SceneHeadingTextElement.cs" />
     <Compile Include="Elements\CenteredTextElement.cs" />
-    <Compile Include="IElement.cs" />
+    <Compile Include="Element.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tokenizer.cs" />

@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace FountainEditor.Elements
 {
-    class SynopsisTextElement : IElement
+    class SynopsisTextElement : Element
     {
-        public string Text { get; set; }
-
-        public SynopsisTextElement (string text)
+        public SynopsisTextElement(string text)
+            : base(text)
         {
-            this.Text = text;
         }
     }
 }

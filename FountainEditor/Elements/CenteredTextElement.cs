@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace FountainEditor.Elements
 {
-    class CenteredTextElement : IElement
+    class CenteredTextElement : Element
     {
-        public string Text { get; set; }
-
         public CenteredTextElement(string text)
+            : base(text)
         {
-            this.Text = text;
         }
     }
 }

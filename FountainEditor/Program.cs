@@ -1,17 +1,14 @@
 ﻿using System;
 using System.IO;
 
-
 namespace FountainEditor
 {
     class Program
     {
-        static void Main()
+        static void Main(params string[] args)
         {
             var tokenizer = new Tokenizer();
-
-            //tokenizer.Parse(Console.In);
-            tokenizer.Parse(new StreamReader(@"C:\Users\Glenn\Desktop\Screenplay.txt"));
+            tokenizer.Parse(new StreamReader(args[0]));
         }
     }
 }

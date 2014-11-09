@@ -6,13 +6,11 @@ using System.Threading.Tasks;
 
 namespace FountainEditor.Elements
 {
-    class ParentheticalTextElement : IElement
+    class ParentheticalTextElement : Element
     {
-        public string Text { get; set; }
-
-        public ParentheticalTextElement (string text)
+        public ParentheticalTextElement(string text)
+            : base(text)
         {
-            this.Text = text;
         }
     }
 }
