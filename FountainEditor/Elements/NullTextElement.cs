@@ -9,7 +9,7 @@ namespace FountainEditor.Elements
     class NullElement : Element
     {
         public NullElement(string text)
-            :base(text)
+            : base(text)
         {
         }
     }

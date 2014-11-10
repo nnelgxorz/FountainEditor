@@ -39,7 +39,6 @@ namespace FountainEditor
 
                         default:
                             return new NullElement(word);
-                            
                     }
                 }
 
@@ -112,15 +111,17 @@ namespace FountainEditor
                 {
                     break;
                 }
+
                 if (tokenReader.PeekChar(0) == '<')
                 {
                     tokenReader.TakeChar();
                     return new CenteredTextElement(tokenReader.GetToken());
 
                 }
-                tokenReader.TakeChar();
 
+                tokenReader.TakeChar();
             }
+
             return new TransitionTextElement(tokenReader.GetToken());
         }
 
@@ -137,6 +138,7 @@ namespace FountainEditor
 
                 tokenReader.TakeChar();
             }
+
             return new NullElement(tokenReader.GetToken());
         }
 
@@ -185,8 +187,8 @@ namespace FountainEditor
 
             while (!tokenReader.EndOfString && tokenReader.PeekChar() == '#')
             {
-                count++;
                 tokenReader.TakeChar();
+                count++;
             }
 
             while (!tokenReader.EndOfString)
