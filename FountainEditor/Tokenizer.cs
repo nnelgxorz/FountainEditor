@@ -69,9 +69,9 @@ namespace FountainEditor
                     return ScanBoneyard(tokenReader);
                 }
 
-                if (tokenReader.PeekChar(0) == '>')
+                if (tokenReader.PeekChar() == '>')
                 {
-                    tokenReader.TakeChar(0);
+                    tokenReader.TakeChar();
                     return ScanTransition(tokenReader);
                 }
 
@@ -91,8 +91,8 @@ namespace FountainEditor
         {
             while (!tokenReader.EndOfString)
             {
-                if (tokenReader.PeekChar() == '\r'
-                    && tokenReader.PeekChar() == '\n')
+                if (tokenReader.PeekChar(0) == '\r' &&
+                    tokenReader.PeekChar(1) == '\n')
                 {
                     break;
                 }
@@ -182,9 +182,9 @@ namespace FountainEditor
         private Element ScanOutline(TokenReader tokenReader)
         {
             int count = 1;
-            while (!tokenReader.EndOfString)
+
+            while (!tokenReader.EndOfString && tokenReader.PeekChar() == '#')
             {
-                if (tokenReader.PeekChar() != '#')
                 count++;
                 tokenReader.TakeChar();
             }
