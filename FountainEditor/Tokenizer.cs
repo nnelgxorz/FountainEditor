@@ -46,45 +46,46 @@ namespace FountainEditor
                 if (tokenReader.PeekChar() == '#')
                 {
                     tokenReader.TakeChar();
-                    var token = ScanOutline(tokenReader);
+                    return ScanOutline(tokenReader);
                 }
 
                 if (tokenReader.PeekChar() == '=')
                 {
                     tokenReader.TakeChar();
-                    var token = ScanSynopsis(tokenReader);
+                    return ScanSynopsis(tokenReader);
                 }
 
                 if (tokenReader.PeekChar(0) == '[' &&
                     tokenReader.PeekChar(1) == '[')
                 {
                     tokenReader.TakeChar(2);
-                    var token = ScanNote(tokenReader);
+                    return ScanNote(tokenReader);
                 }
 
                 if (tokenReader.PeekChar(0) == '/' &&
                     tokenReader.PeekChar(1) == '*')
                 {
                     tokenReader.TakeChar(2);
-                    var token = ScanBoneyard(tokenReader);
+                    return ScanBoneyard(tokenReader);
                 }
 
                 if (tokenReader.PeekChar(0) == '>')
                 {
                     tokenReader.TakeChar(0);
-                    var token = ScanTransition(tokenReader);
+                    return ScanTransition(tokenReader);
                 }
 
                 if (tokenReader.PeekChar() == '~')
                 {
                     tokenReader.TakeChar();
-                    var token = ScanLyrics(tokenReader);
+                    return ScanLyrics(tokenReader);
                 }
 
                 tokenReader.TakeChar();
             }
-        }
 
+            return new NullElement(tokenReader.GetToken());
+        }
 
         private Element ScanLyrics(TokenReader tokenReader)
         {
