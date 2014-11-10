@@ -10,7 +10,7 @@ namespace FountainEditor
     {
         public void Parse()
         {
-            var tokenReader = new TokenReader("# Dick Butt ");
+            var tokenReader = new TokenReader("### Test Text ");
 
             ParseElement(tokenReader);
         }
@@ -79,10 +79,33 @@ namespace FountainEditor
                     tokenReader.TakeChar();
                     return ScanLyrics(tokenReader);
                 }
+                if (tokenReader.PeekChar() == '(')
+                {
+                    tokenReader.TakeChar();
+                    return ScanParenthetical(tokenReader);
+                }
 
                 tokenReader.TakeChar();
             }
 
+            return new NullElement(tokenReader.GetToken());
+        }
+
+        private Element ScanParenthetical(TokenReader tokenReader)
+        {
+            while (!tokenReader.EndOfString)
+            {
+                if (tokenReader.PeekChar(0) == '\r' &&
+                    tokenReader.PeekChar(1) == '\n')
+                {
+                    return new NullElement(tokenReader.GetToken());
+                }
+                if (tokenReader.PeekChar() == ')')
+                {
+                    return new ParentheticalTextElement(tokenReader.GetToken());
+                }
+                tokenReader.TakeChar();
+            }
             return new NullElement(tokenReader.GetToken());
         }
 
@@ -116,7 +139,6 @@ namespace FountainEditor
                 {
                     tokenReader.TakeChar();
                     return new CenteredTextElement(tokenReader.GetToken());
-
                 }
 
                 tokenReader.TakeChar();
