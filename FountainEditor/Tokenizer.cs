@@ -39,59 +39,59 @@ namespace FountainEditor
 
                         default:
                             return new NullElement(word);
-                            
                     }
                 }
 
                 if (tokenReader.PeekChar() == '#')
                 {
                     tokenReader.TakeChar();
-                    var token = ScanOutline(tokenReader);
+                    return ScanOutline(tokenReader);
                 }
 
                 if (tokenReader.PeekChar() == '=')
                 {
                     tokenReader.TakeChar();
-                    var token = ScanSynopsis(tokenReader);
+                    return ScanSynopsis(tokenReader);
                 }
 
                 if (tokenReader.PeekChar(0) == '[' &&
                     tokenReader.PeekChar(1) == '[')
                 {
                     tokenReader.TakeChar(2);
-                    var token = ScanNote(tokenReader);
+                    return ScanNote(tokenReader);
                 }
 
                 if (tokenReader.PeekChar(0) == '/' &&
                     tokenReader.PeekChar(1) == '*')
                 {
                     tokenReader.TakeChar(2);
-                    var token = ScanBoneyard(tokenReader);
+                    return ScanBoneyard(tokenReader);
                 }
 
-                if (tokenReader.PeekChar(0) == '>')
+                if (tokenReader.PeekChar() == '>')
                 {
-                    tokenReader.TakeChar(0);
-                    var token = ScanTransition(tokenReader);
+                    tokenReader.TakeChar();
+                    return ScanTransition(tokenReader);
                 }
 
                 if (tokenReader.PeekChar() == '~')
                 {
                     tokenReader.TakeChar();
-                    var token = ScanLyrics(tokenReader);
+                    return ScanLyrics(tokenReader);
                 }
 
                 tokenReader.TakeChar();
             }
-        }
 
+            return new NullElement(tokenReader.GetToken());
+        }
 
         private Element ScanLyrics(TokenReader tokenReader)
         {
             while (!tokenReader.EndOfString)
             {
-                if (tokenReader.PeekChar() == '\r'
-                    && tokenReader.PeekChar() == '\n')
+                if (tokenReader.PeekChar(0) == '\r' &&
+                    tokenReader.PeekChar(1) == '\n')
                 {
                     break;
                 }
@@ -111,15 +111,17 @@ namespace FountainEditor
                 {
                     break;
                 }
+
                 if (tokenReader.PeekChar(0) == '<')
                 {
                     tokenReader.TakeChar();
                     return new CenteredTextElement(tokenReader.GetToken());
 
                 }
-                tokenReader.TakeChar();
 
+                tokenReader.TakeChar();
             }
+
             return new TransitionTextElement(tokenReader.GetToken());
         }
 
@@ -136,6 +138,7 @@ namespace FountainEditor
 
                 tokenReader.TakeChar();
             }
+
             return new NullElement(tokenReader.GetToken());
         }
 
@@ -181,11 +184,11 @@ namespace FountainEditor
         private Element ScanOutline(TokenReader tokenReader)
         {
             int count = 1;
-            while (!tokenReader.EndOfString)
+
+            while (!tokenReader.EndOfString && tokenReader.PeekChar() == '#')
             {
-                if (tokenReader.PeekChar() != '#')
-                count++;
                 tokenReader.TakeChar();
+                count++;
             }
 
             while (!tokenReader.EndOfString)

@@ -10,7 +10,8 @@ namespace FountainEditor
     {
         public string Text { get; set; }
 
-        public Element(string text) {
+        public Element(string text)
+        {
             this.Text = text;
         }
     }
