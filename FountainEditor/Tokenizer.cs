@@ -99,6 +99,7 @@ namespace FountainEditor
                 if (tokenReader.PeekChar(0) == '\r' &&
                     tokenReader.PeekChar(1) == '\n')
                 {
+                    tokenReader.TakeChar(2);
                     break;
                 }
 
@@ -119,6 +120,7 @@ namespace FountainEditor
                 if (tokenReader.PeekChar(0) == '\r' &&
                     tokenReader.PeekChar(1) == '\n')
                 {
+                    tokenReader.TakeChar(2);
                     break;
                 }
 
@@ -135,6 +137,7 @@ namespace FountainEditor
                 if (tokenReader.PeekChar(0) == '\r' &&
                     tokenReader.PeekChar(1) == '\n')
                 {
+                    tokenReader.TakeChar(2);
                     break;
                 }
 
@@ -191,12 +194,14 @@ namespace FountainEditor
                 if (tokenReader.PeekChar(0) == '\r' &&
                     tokenReader.PeekChar(1) == '\n')
                 {
+                    tokenReader.TakeChar(2);
                     break;
                 }
 
                 if (tokenReader.PeekChar(0) == '=' &&
                     tokenReader.PeekChar(1) == '=')
                 {
+                    tokenReader.TakeChar(2);
                     return new PageBreakTextElement(tokenReader.GetToken());
                 }
 
@@ -221,6 +226,7 @@ namespace FountainEditor
                 if (tokenReader.PeekChar(0) == '\r' &&
                     tokenReader.PeekChar(1) == '\n')
                 {
+                    tokenReader.TakeChar(2);
                     break;
                 }
 
