@@ -8,7 +8,7 @@ namespace FountainEditor.Elements
 {
     class OutlineTextElement : Element
     {
-        public OutlineTextElement(string text)
+        public OutlineTextElement(string text, int level)
             : base(text)
         {
         }

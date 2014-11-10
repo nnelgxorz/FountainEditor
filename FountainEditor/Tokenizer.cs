@@ -6,16 +6,21 @@ using System.Text.RegularExpressions;
 
 namespace FountainEditor
 {
-    class Tokenizer   
+    class Tokenizer
     {
         public void Parse()
         {
             var tokenReader = new TokenReader("# Dick Butt ");
 
+            ParseElement(tokenReader);
+        }
+
+        private Element ParseElement(TokenReader tokenReader)
+        {
             while (!tokenReader.EndOfString)
             {
-                if (tokenReader.PeekChar() == ' ' || 
-                    tokenReader.PeekChar() == '\r' || 
+                if (tokenReader.PeekChar() == ' ' ||
+                    tokenReader.PeekChar() == '\r' ||
                     tokenReader.PeekChar() == '\n')
                 {
                     tokenReader.TakeChar();
@@ -23,22 +28,22 @@ namespace FountainEditor
 
                     switch (word)
                     {
-                        case "int." : 
-                            //TODO: Generate new Scene Heading object
-                            break;
-                        case "ext." :
-                            //TODO: Generate new Scene Heading object
-                            break;
-                        case "to:" :
-                            //TODO: Generate new Transition object
-                            break;
-                        default :
-                            //TODO: Generate new Null object
-                            break;
+                        case "int.":
+                            return new SceneHeadingTextElement(word);
+                
+                        case "ext.":
+                            return new SceneHeadingTextElement(word);
+                        
+                        case "to:":
+                            return new TransitionTextElement(word);
+
+                        default:
+                            return new NullElement(word);
+                            
                     }
                 }
 
-                if (tokenReader.PeekChar() ==  '#')
+                if (tokenReader.PeekChar() == '#')
                 {
                     tokenReader.TakeChar();
                     var token = ScanOutline(tokenReader);
@@ -50,7 +55,7 @@ namespace FountainEditor
                     var token = ScanSynopsis(tokenReader);
                 }
 
-                if  (tokenReader.PeekChar(0) == '[' &&
+                if (tokenReader.PeekChar(0) == '[' &&
                     tokenReader.PeekChar(1) == '[')
                 {
                     tokenReader.TakeChar(2);
@@ -81,49 +86,44 @@ namespace FountainEditor
         }
 
 
-        private string ScanLyrics(TokenReader tokenReader)
+        private Element ScanLyrics(TokenReader tokenReader)
         {
             while (!tokenReader.EndOfString)
             {
-                if (tokenReader.PeekChar() == '\r' 
+                if (tokenReader.PeekChar() == '\r'
                     && tokenReader.PeekChar() == '\n')
                 {
-                    tokenReader.GetToken();
-                    //TODO: Generate new Lyrics object
+                    break;
                 }
 
                 tokenReader.TakeChar();
-                //TODO: Generate new Lyrics Object
             }
 
-            return tokenReader.GetToken();
+            return new LyricsTextElement(tokenReader.GetToken());
         }
 
-        private string ScanTransition(TokenReader tokenReader)
+        private Element ScanTransition(TokenReader tokenReader)
         {
             while (!tokenReader.EndOfString)
             {
                 if (tokenReader.PeekChar(0) == '\r' &&
                     tokenReader.PeekChar(1) == '\n')
                 {
-                    return tokenReader.GetToken();
-                    //TODO: Generate new Transition object
+                    break;
                 }
                 if (tokenReader.PeekChar(0) == '<')
                 {
                     tokenReader.TakeChar();
-                    return tokenReader.GetToken();
-                    //TODO: Generate new Centered Text object
+                    return new CenteredTextElement(tokenReader.GetToken());
 
                 }
                 tokenReader.TakeChar();
-                //TODO: Generate new Transition object
 
             }
-            return tokenReader.GetToken();
+            return new TransitionTextElement(tokenReader.GetToken());
         }
 
-        private string ScanBoneyard(TokenReader tokenReader)
+        private Element ScanBoneyard(TokenReader tokenReader)
         {
             while (!tokenReader.EndOfString)
             {
@@ -131,86 +131,75 @@ namespace FountainEditor
                     tokenReader.PeekChar(1) == '/')
                 {
                     tokenReader.TakeChar(2);
-                    return tokenReader.GetToken();
-                    //TODO: Generate new Transition object
+                    return new BoneyardTextElement(tokenReader.GetToken());
                 }
 
                 tokenReader.TakeChar();
             }
-            //TODO: Generate new Action object
-            return tokenReader.GetToken();
+            return new NullElement(tokenReader.GetToken());
         }
 
-        private string ScanNote(TokenReader tokenReader)
+        private Element ScanNote(TokenReader tokenReader)
         {
-           while (!tokenReader.EndOfString)
-           {
-               if(tokenReader.PeekChar(0) == ']' &&
-                   tokenReader.PeekChar(1) == ']')
-               {
-                   tokenReader.TakeChar(2);
-                   return tokenReader.GetToken();
-                   //TODO: Generate new Note object
-               }
+            while (!tokenReader.EndOfString)
+            {
+                if (tokenReader.PeekChar(0) == ']' &&
+                    tokenReader.PeekChar(1) == ']')
+                {
+                    tokenReader.TakeChar(2);
+                    return new NoteTextElement(tokenReader.GetToken());
+                }
 
-               tokenReader.TakeChar();
-           }
+                tokenReader.TakeChar();
+            }
 
-           return tokenReader.GetToken();
-            //TODO: Generate new Action object
+            return new NullElement(tokenReader.GetToken());
         }
 
-        private string ScanSynopsis(TokenReader tokenReader)
+        private Element ScanSynopsis(TokenReader tokenReader)
         {
             while (!tokenReader.EndOfString)
             {
                 if (tokenReader.PeekChar(0) == '\r' &&
                     tokenReader.PeekChar(1) == '\n')
                 {
-                    return tokenReader.GetToken();
-                    //TODO: Generate new Synopsis object
+                    return new SynopsisTextElement(tokenReader.GetToken());
                 }
 
                 if (tokenReader.PeekChar(0) == '=' &&
                     tokenReader.PeekChar(1) == '=')
                 {
-                    tokenReader.TakeChar(2);
-                    return tokenReader.GetToken();
-                    //TODO: Generate new PageBreak object
+                    return new PageBreakTextElement(tokenReader.GetToken());
                 }
 
                 tokenReader.TakeChar();
-                //TODO: Generate new Synopsis object
             }
 
-            return tokenReader.GetToken();
+            return new SynopsisTextElement(tokenReader.GetToken());
         }
 
-        private string ScanOutline(TokenReader tokenReader)
+        private Element ScanOutline(TokenReader tokenReader)
         {
             int count = 1;
             while (!tokenReader.EndOfString)
             {
                 if (tokenReader.PeekChar() != '#')
-                    break;
                 count++;
                 tokenReader.TakeChar();
             }
 
             while (!tokenReader.EndOfString)
             {
-                if (tokenReader.PeekChar(0) == '\r' && 
+                if (tokenReader.PeekChar(0) == '\r' &&
                     tokenReader.PeekChar(1) == '\n')
                 {
-                    return tokenReader.GetToken();
-                    //TODO: Generate new Outline object
+                    return new OutlineTextElement(tokenReader.GetToken(), count);
                 }
 
                 tokenReader.TakeChar();
             }
 
-            return tokenReader.GetToken();
-            //TODO: Generate new Outline object
-        }      
+            return new OutlineTextElement(tokenReader.GetToken(), count);
+        }
     }
 }

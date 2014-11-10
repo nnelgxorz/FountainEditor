@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace FountainEditor.Elements
 {
-    class NullElement
+    class NullElement : Element
     {
+        public NullElement(string text)
+            :base(text)
+        {
+        }
     }
 }
