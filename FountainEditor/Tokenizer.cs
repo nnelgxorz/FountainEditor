@@ -79,6 +79,7 @@ namespace FountainEditor
                     tokenReader.TakeChar();
                     return ScanLyrics(tokenReader);
                 }
+
                 if (tokenReader.PeekChar() == '(')
                 {
                     tokenReader.TakeChar();
@@ -98,12 +99,14 @@ namespace FountainEditor
                 if (tokenReader.PeekChar(0) == '\r' &&
                     tokenReader.PeekChar(1) == '\n')
                 {
-                    return new NullElement(tokenReader.GetToken());
+                    break;
                 }
+
                 if (tokenReader.PeekChar() == ')')
                 {
                     return new ParentheticalTextElement(tokenReader.GetToken());
                 }
+
                 tokenReader.TakeChar();
             }
             return new NullElement(tokenReader.GetToken());
@@ -188,7 +191,7 @@ namespace FountainEditor
                 if (tokenReader.PeekChar(0) == '\r' &&
                     tokenReader.PeekChar(1) == '\n')
                 {
-                    return new SynopsisTextElement(tokenReader.GetToken());
+                    break;
                 }
 
                 if (tokenReader.PeekChar(0) == '=' &&
@@ -218,7 +221,7 @@ namespace FountainEditor
                 if (tokenReader.PeekChar(0) == '\r' &&
                     tokenReader.PeekChar(1) == '\n')
                 {
-                    return new OutlineTextElement(tokenReader.GetToken(), count);
+                    break;
                 }
 
                 tokenReader.TakeChar();
