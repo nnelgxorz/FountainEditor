@@ -6,173 +6,211 @@ using System.Text.RegularExpressions;
 
 namespace FountainEditor
 {
-    class Tokenizer
+    class Tokenizer   
     {
-        private static Regex Emphasis;
-        private static Regex Outline;
-        private static Regex Equals;
-        private static Regex Boneyard;
-        private static Regex Character;
-        private static Regex SceneHeading;
-        private static Regex Parenthetical;
-
-        static Tokenizer()
+        public void Parse()
         {
-            try
+            var tokenReader = new TokenReader("# Dick Butt ");
+
+            while (!tokenReader.EndOfString)
             {
-                Emphasis = new Regex(@"^([\*_]+)([^\*_]*)([\*_]+)", RegexOptions.Compiled);
-                Outline = new Regex(@"((#+)(\s*[^\n]*))\n?", RegexOptions.Compiled);
-                Equals = new Regex(@"(=+)", RegexOptions.Compiled);
-                Boneyard = new Regex(@"(\/\*)([^\*]*)(\*\/)", RegexOptions.Compiled);
-                Character = new Regex(@"^([^a-z*_]+)$|(^[@]+)([a-zA-Z ]*)", RegexOptions.Compiled);
-                SceneHeading = new Regex(@"([iI][nN][tT]|[eE][xX][tT]|^\.(?=[a-zA-Z]))(.*)", RegexOptions.Compiled);
-                Parenthetical = new Regex(@"(\([^<>]*?\)[\\s]?)\n", RegexOptions.Compiled);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
+                if (tokenReader.PeekChar() == ' ' || 
+                    tokenReader.PeekChar() == '\r' || 
+                    tokenReader.PeekChar() == '\n')
+                {
+                    tokenReader.TakeChar();
+                    var word = tokenReader.GetToken();
+
+                    switch (word)
+                    {
+                        case "int." : 
+                            //TODO: Generate new Scene Heading object
+                            break;
+                        case "ext." :
+                            //TODO: Generate new Scene Heading object
+                            break;
+                        case "to:" :
+                            //TODO: Generate new Transition object
+                            break;
+                        default :
+                            //TODO: Generate new Null object
+                            break;
+                    }
+                }
+
+                if (tokenReader.PeekChar() ==  '#')
+                {
+                    tokenReader.TakeChar();
+                    var token = ScanOutline(tokenReader);
+                }
+
+                if (tokenReader.PeekChar() == '=')
+                {
+                    tokenReader.TakeChar();
+                    var token = ScanSynopsis(tokenReader);
+                }
+
+                if  (tokenReader.PeekChar(0) == '[' &&
+                    tokenReader.PeekChar(1) == '[')
+                {
+                    tokenReader.TakeChar(2);
+                    var token = ScanNote(tokenReader);
+                }
+
+                if (tokenReader.PeekChar(0) == '/' &&
+                    tokenReader.PeekChar(1) == '*')
+                {
+                    tokenReader.TakeChar(2);
+                    var token = ScanBoneyard(tokenReader);
+                }
+
+                if (tokenReader.PeekChar(0) == '>')
+                {
+                    tokenReader.TakeChar(0);
+                    var token = ScanTransition(tokenReader);
+                }
+
+                if (tokenReader.PeekChar() == '~')
+                {
+                    tokenReader.TakeChar();
+                    var token = ScanLyrics(tokenReader);
+                }
+
+                tokenReader.TakeChar();
             }
         }
 
-        public Element Parse(string userText)
+
+        private string ScanLyrics(TokenReader tokenReader)
         {
-            var match = Outline.Match(userText);
-            var hashNumbers = match.Groups[2].Length;
-            var outlineLevel = hashNumbers.ToString();
-
-            if (match.Groups[2].Success)
+            while (!tokenReader.EndOfString)
             {
-                Console.WriteLine("Outline Level {0}", outlineLevel);
-                return new OutlineTextElement(userText);
+                if (tokenReader.PeekChar() == '\r' 
+                    && tokenReader.PeekChar() == '\n')
+                {
+                    tokenReader.GetToken();
+                    //TODO: Generate new Lyrics object
+                }
+
+                tokenReader.TakeChar();
+                //TODO: Generate new Lyrics Object
             }
 
-            var amount = Equals.Match(userText);
-            var equalsNumber = amount.Groups[1].Length;
-
-            if (equalsNumber == 1)
-            {
-                Console.WriteLine("Synopsis");
-                return new SynopsisTextElement(userText);
-            }
-
-            if (equalsNumber == 3)
-            {
-                Console.WriteLine("Page Break");
-                return new PageBreakTextElement("");
-            }
-
-            if (equalsNumber == 2 || (equalsNumber > 3))
-            {
-                Console.WriteLine("Text");
-                return new TextTextElement(userText);
-            }
-
-            if (string.IsNullOrEmpty(userText))
-            {
-                Console.WriteLine("Blank");
-                return new BlankTextElement();
-            }
-
-            if (userText.StartsWith("[[") || userText.EndsWith("]]"))
-            {
-                Console.WriteLine("Note");
-                return new NoteTextElement("");
-            }
-
-            if (userText.StartsWith("~"))
-            {
-                Console.WriteLine("Lyrics");
-                return new LyricsTextElement(userText);
-            }
-
-            var isScene = SceneHeading.Match(userText);
-            if (isScene.Groups[1].Success)
-            {
-                Console.WriteLine("Scene Heading");
-                return new SceneHeadingTextElement(userText);
-            }
-
-            if (userText.StartsWith(">") && userText.EndsWith("<"))
-            {
-                Console.WriteLine("Centered Text");
-                return new CenteredTextElement(userText);
-            }
-
-            if (userText.StartsWith(">") || userText.EndsWith("To:", StringComparison.OrdinalIgnoreCase))
-            {
-                Console.WriteLine("Transition");
-                return new TransitionTextElement(userText);
-            }
-
-            var character = Character.Match(userText).Success;
-            if (character == true)
-            {
-                Console.WriteLine("Character Name");
-                return new CharacterTextElement(userText);
-            }
-
-            if (userText.StartsWith("(") && userText.EndsWith(")"))
-            //var parenth = Parenthetical.Match(UserText).Success;
-            //if (parenth == true)
-            {
-                Console.WriteLine("Parenthetical");
-                return new ParentheticalTextElement(userText);
-            }
-
-            else
-            {
-                Console.WriteLine("Text");
-                return new TextTextElement(userText);
-            }
+            return tokenReader.GetToken();
         }
 
-        private static void ParseEmphasis(string userText)
+        private string ScanTransition(TokenReader tokenReader)
         {
-            var match = Emphasis.Match(userText);
-
-            if (match.Groups[1].Value != match.Groups[3].Value)
+            while (!tokenReader.EndOfString)
             {
-                Console.WriteLine("Emphasis Failed");
-                return;
-            }
+                if (tokenReader.PeekChar(0) == '\r' &&
+                    tokenReader.PeekChar(1) == '\n')
+                {
+                    return tokenReader.GetToken();
+                    //TODO: Generate new Transition object
+                }
+                if (tokenReader.PeekChar(0) == '<')
+                {
+                    tokenReader.TakeChar();
+                    return tokenReader.GetToken();
+                    //TODO: Generate new Centered Text object
 
-            switch (match.Groups[1].Value)
-            {
-                case "*":
-                    Console.WriteLine("Italics");
-                    break;
-                case "**":
-                    Console.WriteLine("Bold");
-                    break;
-                case "***":
-                    Console.WriteLine("Bold Italics");
-                    break;
-                case "_":
-                    Console.WriteLine("Underlined");
-                    break;
+                }
+                tokenReader.TakeChar();
+                //TODO: Generate new Transition object
 
-                default:
-                    Console.WriteLine("Emphasis Failed");
-                    break;
             }
+            return tokenReader.GetToken();
         }
 
-        internal List<Element> Parse(TextReader textReader)
+        private string ScanBoneyard(TokenReader tokenReader)
         {
-            var list = new List<Element>();
-
-            string line;
-
-            while ((line = textReader.ReadLine()) != null)
+            while (!tokenReader.EndOfString)
             {
-                Console.Write("{0,-50} - ", line);
-                list.Add(Parse(line));
+                if (tokenReader.PeekChar(0) == '*' &&
+                    tokenReader.PeekChar(1) == '/')
+                {
+                    tokenReader.TakeChar(2);
+                    return tokenReader.GetToken();
+                    //TODO: Generate new Transition object
+                }
+
+                tokenReader.TakeChar();
+            }
+            //TODO: Generate new Action object
+            return tokenReader.GetToken();
+        }
+
+        private string ScanNote(TokenReader tokenReader)
+        {
+           while (!tokenReader.EndOfString)
+           {
+               if(tokenReader.PeekChar(0) == ']' &&
+                   tokenReader.PeekChar(1) == ']')
+               {
+                   tokenReader.TakeChar(2);
+                   return tokenReader.GetToken();
+                   //TODO: Generate new Note object
+               }
+
+               tokenReader.TakeChar();
+           }
+
+           return tokenReader.GetToken();
+            //TODO: Generate new Action object
+        }
+
+        private string ScanSynopsis(TokenReader tokenReader)
+        {
+            while (!tokenReader.EndOfString)
+            {
+                if (tokenReader.PeekChar(0) == '\r' &&
+                    tokenReader.PeekChar(1) == '\n')
+                {
+                    return tokenReader.GetToken();
+                    //TODO: Generate new Synopsis object
+                }
+
+                if (tokenReader.PeekChar(0) == '=' &&
+                    tokenReader.PeekChar(1) == '=')
+                {
+                    tokenReader.TakeChar(2);
+                    return tokenReader.GetToken();
+                    //TODO: Generate new PageBreak object
+                }
+
+                tokenReader.TakeChar();
+                //TODO: Generate new Synopsis object
             }
 
-            Console.WriteLine();
-
-            return list;
+            return tokenReader.GetToken();
         }
+
+        private string ScanOutline(TokenReader tokenReader)
+        {
+            int count = 1;
+            while (!tokenReader.EndOfString)
+            {
+                if (tokenReader.PeekChar() != '#')
+                    break;
+                count++;
+                tokenReader.TakeChar();
+            }
+
+            while (!tokenReader.EndOfString)
+            {
+                if (tokenReader.PeekChar(0) == '\r' && 
+                    tokenReader.PeekChar(1) == '\n')
+                {
+                    return tokenReader.GetToken();
+                    //TODO: Generate new Outline object
+                }
+
+                tokenReader.TakeChar();
+            }
+
+            return tokenReader.GetToken();
+            //TODO: Generate new Outline object
+        }      
     }
 }
