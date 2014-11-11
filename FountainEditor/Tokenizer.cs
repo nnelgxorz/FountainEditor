@@ -45,7 +45,7 @@ namespace FountainEditor
                             return new NullTextElement(word);
                     }
                 }
-
+                
                 if (tokenReader.PeekChar(0) == '\r' && tokenReader.PeekChar(1) == '\n')
                 {
                     tokenReader.TakeChar(2);
@@ -61,33 +61,33 @@ namespace FountainEditor
                     tokenReader.TakeChar();
                     return new LineEnding(tokenReader.GetToken());
                 }
-
+                
                 if (tokenReader.PeekChar() == '#')
                 {
                     tokenReader.TakeChar();
                     return ScanOutline(tokenReader);
                 }
-
+                
                 if (tokenReader.PeekChar() == '=')
                 {
                     tokenReader.TakeChar();
                     return ScanSynopsis(tokenReader);
                 }
-
+                
                 if (tokenReader.PeekChar(0) == '[' &&
                     tokenReader.PeekChar(1) == '[')
                 {
                     tokenReader.TakeChar(2);
                     return ScanNote(tokenReader);
                 }
-
+                
                 if (tokenReader.PeekChar(0) == '/' &&
                     tokenReader.PeekChar(1) == '*')
                 {
                     tokenReader.TakeChar(2);
                     return ScanBoneyard(tokenReader);
                 }
-
+                
                 if (tokenReader.PeekChar() == '>')
                 {
                     tokenReader.TakeChar();
@@ -99,7 +99,7 @@ namespace FountainEditor
                     tokenReader.TakeChar();
                     return ScanLyrics(tokenReader);
                 }
-
+                
                 if (tokenReader.PeekChar() == '(')
                 {
                     tokenReader.TakeChar();
@@ -108,7 +108,7 @@ namespace FountainEditor
 
                 tokenReader.TakeChar();
             }
-
+            
             var lastword = tokenReader.GetToken();
             tokenReader.SkipChar();
 
