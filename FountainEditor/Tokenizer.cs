@@ -25,9 +25,7 @@ namespace FountainEditor
         {
             while (!tokenReader.EndOfString)
             {
-                if (tokenReader.PeekChar() == ' ' ||
-                    tokenReader.PeekChar() == '\r' ||
-                    tokenReader.PeekChar() == '\n')
+                if (tokenReader.PeekChar() == ' ')
                 {
                     var word = tokenReader.GetToken();
                     tokenReader.SkipChar();
@@ -46,6 +44,22 @@ namespace FountainEditor
                         default:
                             return new NullTextElement(word);
                     }
+                }
+
+                if (tokenReader.PeekChar(0) == '\r' && tokenReader.PeekChar(1) == '\n')
+                {
+                    tokenReader.TakeChar(2);
+                    return new LineEnding(tokenReader.GetToken());
+                }
+                else if (tokenReader.PeekChar() == '\r')
+                {
+                    tokenReader.TakeChar();
+                    return new LineEnding(tokenReader.GetToken());
+                }
+                else if (tokenReader.PeekChar() == '\n')
+                {
+                    tokenReader.TakeChar();
+                    return new LineEnding(tokenReader.GetToken());
                 }
 
                 if (tokenReader.PeekChar() == '#')

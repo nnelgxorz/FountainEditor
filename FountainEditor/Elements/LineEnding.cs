@@ -4,13 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FountainEditor
+namespace FountainEditor.Elements
 {
-    class Optimizer
+    public class LineEnding : Element
     {
-        public void Optimize(List<Element> elements)
+        public LineEnding(string text)
+            : base(text)
         {
-        
         }
     }
 }
