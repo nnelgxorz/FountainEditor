@@ -11,8 +11,12 @@ namespace FountainEditor
         public void Parse()
         {
             var tokenReader = new TokenReader("### Test Text ");
+            var list = new List<Element>();
 
-            ParseElement(tokenReader);
+            while (!tokenReader.EndOfString)
+            {
+                list.Add(ParseElement(tokenReader));
+            }
         }
 
         private Element ParseElement(TokenReader tokenReader)
