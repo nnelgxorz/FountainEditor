@@ -8,7 +8,7 @@ namespace FountainEditor
         static void Main(params string[] args)
         {
             var tokenizer = new Tokenizer();
-            tokenizer.Parse();
+            tokenizer.Parse(string.Empty);
         }
     }
 }

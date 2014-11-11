@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FountainEditor.Elements
 {
-    class CenteredTextElement : Element
+    public class CenteredTextElement : Element
     {
         public CenteredTextElement(string text)
             : base(text)

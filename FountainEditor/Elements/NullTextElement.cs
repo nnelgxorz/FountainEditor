@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace FountainEditor.Elements
 {
-    class NullElement : Element
+    public class NullTextElement : Element
     {
-        public NullElement(string text)
+        public NullTextElement(string text)
             : base(text)
         {
         }

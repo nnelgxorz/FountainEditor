@@ -6,20 +6,22 @@ using System.Text.RegularExpressions;
 
 namespace FountainEditor
 {
-    class Tokenizer
+    public class Tokenizer
     {
-        public void Parse()
+        public List<Element> Parse(string text)
         {
-            var tokenReader = new TokenReader("### Test Text ");
+            var tokenReader = new TokenReader(text);
             var list = new List<Element>();
 
             while (!tokenReader.EndOfString)
             {
                 list.Add(ParseElement(tokenReader));
             }
+
+            return list;
         }
 
-        private Element ParseElement(TokenReader tokenReader)
+        public Element ParseElement(TokenReader tokenReader)
         {
             while (!tokenReader.EndOfString)
             {
@@ -27,10 +29,10 @@ namespace FountainEditor
                     tokenReader.PeekChar() == '\r' ||
                     tokenReader.PeekChar() == '\n')
                 {
-                    tokenReader.TakeChar();
                     var word = tokenReader.GetToken();
+                    tokenReader.SkipChar();
 
-                    switch (word)
+                    switch (word.ToLower())
                     {
                         case "int.":
                             return new SceneHeadingTextElement(word);
@@ -42,7 +44,7 @@ namespace FountainEditor
                             return new TransitionTextElement(word);
 
                         default:
-                            return new NullElement(word);
+                            return new NullTextElement(word);
                     }
                 }
 
@@ -93,7 +95,23 @@ namespace FountainEditor
                 tokenReader.TakeChar();
             }
 
-            return new NullElement(tokenReader.GetToken());
+            var lastword = tokenReader.GetToken();
+            tokenReader.SkipChar();
+
+            switch (lastword.ToLower())
+            {
+                case "int.":
+                    return new SceneHeadingTextElement(lastword);
+
+                case "ext.":
+                    return new SceneHeadingTextElement(lastword);
+
+                case "to:":
+                    return new TransitionTextElement(lastword);
+
+                default:
+                    return new NullTextElement(lastword);
+            }
         }
 
         private Element ScanParenthetical(TokenReader tokenReader)
@@ -114,7 +132,7 @@ namespace FountainEditor
 
                 tokenReader.TakeChar();
             }
-            return new NullElement(tokenReader.GetToken());
+            return new NullTextElement(tokenReader.GetToken());
         }
 
         private Element ScanLyrics(TokenReader tokenReader)
@@ -171,7 +189,7 @@ namespace FountainEditor
                 tokenReader.TakeChar();
             }
 
-            return new NullElement(tokenReader.GetToken());
+            return new NullTextElement(tokenReader.GetToken());
         }
 
         private Element ScanNote(TokenReader tokenReader)
@@ -188,7 +206,7 @@ namespace FountainEditor
                 tokenReader.TakeChar();
             }
 
-            return new NullElement(tokenReader.GetToken());
+            return new NullTextElement(tokenReader.GetToken());
         }
 
         private Element ScanSynopsis(TokenReader tokenReader)

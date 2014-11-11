@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FountainEditor.Elements
 {
-    class PageBreakTextElement : Element
+    public class PageBreakTextElement : Element
     {
         public PageBreakTextElement(string text)
             : base(text)

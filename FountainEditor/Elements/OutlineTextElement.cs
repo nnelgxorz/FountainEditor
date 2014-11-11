@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FountainEditor.Elements
 {
-    class OutlineTextElement : Element
+    public class OutlineTextElement : Element
     {
         public int Level { get; set; }
 
