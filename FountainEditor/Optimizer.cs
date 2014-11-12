@@ -26,36 +26,38 @@ namespace FountainEditor
     {
         public void Optimize(List<Element> elements)
         {
-                int consecutiveLB = 0;
-                int lastCN = 0;
-                int currentLine = 0;
-
-            foreach (NullTextElement current in elements)
+            for (int i; i < elements.Count; i++)
             {
-                if (CheckUpper.isUpper(current.Text)) //current text begins with an uppercase letter.
+                if (elements[i] is NullTextElement && isUpper(elements[i].Text)) 
                 {
+                    string characterName = ""; 
 
-                }
-
-                if (current.Text.StartsWith("@"))
-                {
-                    //convert current NullText to Character Name
-                    while (true) //current element is NullTextElement and isn't a LineEnding.
+                    foreach (var item in ScanCharacter(elements, i))
                     {
-                        //convert element to Character Name
-                    }
-                }
-
-                if (current.Text.StartsWith("."))
-                {
-                    //convert current NullText to SceneHeading
-                    while (true) //current element is NullTextElement and isn't a LineEnding.
-                    {
-                        //convert element
+                        characterName += item.Text;
                     }
                 }
             }
-            currentLine++;
+        }
+
+        public IEnumerable<Element> ScanCharacter(List<Element> elements, int start)
+        {
+            for (int i = start; i < elements.Count; i++)
+            {
+                if (elements[i] is LineEnding)
+                    yield break;
+                yield return elements[i];
+            }
+        }
+
+        public bool isUpper(string text)
+        {
+            foreach (var item in text)
+            {
+                if (char.IsLower(item))
+                    return false;
+            }
+            return true;
         }
     }
 }
