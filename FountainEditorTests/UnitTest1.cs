@@ -96,5 +96,13 @@ namespace FountainEditorTests
 
             Assert.AreEqual(typeof(ParentheticalTextElement), tokens[0].GetType());
         }
+
+        //[TestMethod]
+        //public void ReturnBoneyard()
+        //{
+        //    var tokens = new Tokenizer().Parse("/*Omit this please*/");
+
+        //    Assert.AreEqual(typeof(BoneyardTextElement), tokens[0].GetType());
+        //}
     }
 }

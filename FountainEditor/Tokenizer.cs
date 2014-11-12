@@ -1,8 +1,5 @@
 ﻿using FountainEditor.Elements;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Text.RegularExpressions;
 
 namespace FountainEditor
 {
@@ -81,12 +78,12 @@ namespace FountainEditor
                     return ScanNote(tokenReader);
                 }
                 
-                if (tokenReader.PeekChar(0) == '/' &&
-                    tokenReader.PeekChar(1) == '*')
-                {
-                    tokenReader.TakeChar(2);
-                    return ScanBoneyard(tokenReader);
-                }
+                //if (tokenReader.PeekChar(0) == '/' &&
+                //    tokenReader.PeekChar(1) == '*')
+                //{
+                //    tokenReader.TakeChar(2);
+                //    return ScanBoneyard(tokenReader);
+                //}
                 
                 if (tokenReader.PeekChar() == '>')
                 {
@@ -189,22 +186,22 @@ namespace FountainEditor
             return new TransitionTextElement(tokenReader.GetToken());
         }
 
-        private Element ScanBoneyard(TokenReader tokenReader)
-        {
-            while (!tokenReader.EndOfString)
-            {
-                if (tokenReader.PeekChar(0) == '*' &&
-                    tokenReader.PeekChar(1) == '/')
-                {
-                    tokenReader.TakeChar(2);
-                    return new BoneyardTextElement(tokenReader.GetToken());
-                }
+        //private Element ScanBoneyard(TokenReader tokenReader)
+        //{
+        //    while (!tokenReader.EndOfString)
+        //    {
+        //        if (tokenReader.PeekChar(0) == '*' &&
+        //            tokenReader.PeekChar(1) == '/')
+        //        {
+        //            tokenReader.TakeChar(2);
+        //            return new BoneyardTextElement(tokenReader.GetToken());
+        //        }
 
-                tokenReader.TakeChar();
-            }
+        //        tokenReader.TakeChar();
+        //    }
 
-            return new NullTextElement(tokenReader.GetToken());
-        }
+        //    return new NullTextElement(tokenReader.GetToken());
+        //}
 
         private Element ScanNote(TokenReader tokenReader)
         {
