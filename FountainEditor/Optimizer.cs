@@ -7,21 +7,6 @@ using FountainEditor.Elements;
 
 namespace FountainEditor
 {
-    static class CheckUpper
-    {
-        public static bool isUpper(string text)
-        {
-            for (int i = 0; i < text.Length; i++)
-            {
-                if (char.IsLower(text[i]))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-    }
-
     class Optimizer
     {
         public void Optimize(List<Element> elements)
@@ -29,7 +14,7 @@ namespace FountainEditor
             for (int i = 0; i < elements.Count; i++)
             {
                 //Check for Character Name element
-                if (elements[i] is NullTextElement && isUpper(elements[i].Text))
+                if (elements[i] is NullTextElement && CheckUpper(elements[i].Text))
                 {
                     string characterName = "";
 
@@ -68,6 +53,18 @@ namespace FountainEditor
                     }
                 }
             }
+        }
+
+        private bool CheckUpper(string text)
+        {
+            for (int i = 0; i < text.Length; i++)
+            {
+                if (char.IsLower(text[i]))
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public IEnumerable<Element> ScanCharacter(List<Element> elements, int start)
