@@ -14,7 +14,24 @@ namespace FountainEditor
             for (int i = 0; i < elements.Count; i++)
             {
                 //Check for Character Name element
-                if (elements[i] is NullTextElement && CheckUpper(elements[i].Text))
+                if (elements[i] is NullTextElement && 
+                    CheckUpper(elements[i].Text))
+                {
+                    string characterName = "";
+
+                    ScanCharacter(elements, i);
+                    foreach (var item in ScanCharacter(elements, i))
+                    {
+                        characterName += item.Text;
+                    }
+                    //Check for Parenthetical
+                    //Otherwise Dialogue logic
+                    //Every new element is Dialogue until an empty line is reached.
+                }
+
+                if (elements[i] is NullTextElement && 
+                    elements[i].Text.StartsWith("^") &&
+                    CheckUpper(elements[i].Text))
                 {
                     string characterName = "";
 
