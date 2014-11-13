@@ -28,10 +28,12 @@ namespace FountainEditor
         {
             for (int i = 0; i < elements.Count; i++)
             {
+                //Check for Character Name element
                 if (elements[i] is NullTextElement && isUpper(elements[i].Text))
                 {
                     string characterName = "";
 
+                    ScanCharacter(elements, i);
                     foreach (var item in ScanCharacter(elements, i))
                     {
                         characterName += item.Text;
@@ -41,7 +43,12 @@ namespace FountainEditor
                 //Check NullText for ForcedSceneHeading syntax.
                 if (elements[i] is NullTextElement && elements[i].Text.StartsWith("."))
                 {
-                    //every element until next LineBreak is a SceneHeading
+                    string sceneHeading = "";
+
+                    foreach (var item in ScanSceneHeading(elements, i))
+                    {
+                        sceneHeading += item.Text;
+                    }
                 }
 
                 if (elements[i] is LineEnding)
@@ -62,6 +69,15 @@ namespace FountainEditor
         }
 
         public IEnumerable<Element> ScanCharacter(List<Element> elements, int start)
+        {
+            for (int i = start; i < elements.Count; i++)
+            {
+                if (elements[i] is LineEnding)
+                    yield break;
+                yield return elements[i];
+            }
+        }
+        public IEnumerable<Element> ScanSceneHeading(List<Element> elements, int start)
         {
             for (int i = start; i < elements.Count; i++)
             {
