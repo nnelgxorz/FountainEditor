@@ -26,15 +26,36 @@ namespace FountainEditor
     {
         public void Optimize(List<Element> elements)
         {
-            for (int i; i < elements.Count; i++)
+            for (int i = 0; i < elements.Count; i++)
             {
-                if (elements[i] is NullTextElement && isUpper(elements[i].Text)) 
+                if (elements[i] is NullTextElement && isUpper(elements[i].Text))
                 {
-                    string characterName = ""; 
+                    string characterName = "";
 
                     foreach (var item in ScanCharacter(elements, i))
                     {
                         characterName += item.Text;
+                    }
+
+                }
+                //Check NullText for ForcedSceneHeading syntax.
+                if (elements[i] is NullTextElement && elements[i].Text.StartsWith("."))
+                {
+                    //every element until next LineBreak is a SceneHeading
+                }
+
+                if (elements[i] is LineEnding)
+                {
+                    // check for blank line or connecting element
+                    if (elements[i + 1] is LineEnding && 
+                        elements[i + 2] is NullTextElement && 
+                        elements[i + 3] is LineEnding)
+                    {
+                        if (elements[i + 2].Text.Length == 2 && 
+                            elements[i + 2].Text.Contains("  "))
+                        {
+                            //assign NullTextElement to type before last found LineEnding
+                        }
                     }
                 }
             }
