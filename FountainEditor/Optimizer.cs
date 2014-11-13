@@ -38,7 +38,9 @@ namespace FountainEditor
                     {
                         characterName += item.Text;
                     }
-
+                    //Check for Parenthetical
+                    //Otherwise Dialogue logic
+                    //Every new element is Dialogue until an empty line is reached.
                 }
                 //Check NullText for ForcedSceneHeading syntax.
                 if (elements[i] is NullTextElement && elements[i].Text.StartsWith("."))
@@ -85,16 +87,6 @@ namespace FountainEditor
                     yield break;
                 yield return elements[i];
             }
-        }
-
-        public bool isUpper(string text)
-        {
-            foreach (var item in text)
-            {
-                if (char.IsLower(item))
-                    return false;
-            }
-            return true;
         }
     }
 }

@@ -77,14 +77,7 @@ namespace FountainEditor
                     tokenReader.TakeChar(2);
                     return ScanNote(tokenReader);
                 }
-                
-                //if (tokenReader.PeekChar(0) == '/' &&
-                //    tokenReader.PeekChar(1) == '*')
-                //{
-                //    tokenReader.TakeChar(2);
-                //    return ScanBoneyard(tokenReader);
-                //}
-                
+
                 if (tokenReader.PeekChar() == '>')
                 {
                     tokenReader.TakeChar();
@@ -185,23 +178,6 @@ namespace FountainEditor
 
             return new TransitionTextElement(tokenReader.GetToken());
         }
-
-        //private Element ScanBoneyard(TokenReader tokenReader)
-        //{
-        //    while (!tokenReader.EndOfString)
-        //    {
-        //        if (tokenReader.PeekChar(0) == '*' &&
-        //            tokenReader.PeekChar(1) == '/')
-        //        {
-        //            tokenReader.TakeChar(2);
-        //            return new BoneyardTextElement(tokenReader.GetToken());
-        //        }
-
-        //        tokenReader.TakeChar();
-        //    }
-
-        //    return new NullTextElement(tokenReader.GetToken());
-        //}
 
         private Element ScanNote(TokenReader tokenReader)
         {

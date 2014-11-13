@@ -43,10 +43,8 @@
   <ItemGroup>
     <Compile Include="Elements\ActionTextElement.cs" />
     <Compile Include="Elements\BoneyardTextElement.cs" />
-    <Compile Include="Elements\BlankTextElement.cs" />
     <Compile Include="Elements\LineEnding.cs" />
     <Compile Include="Elements\NullTextElement.cs" />
-    <Compile Include="Elements\TextTextElement.cs" />
     <Compile Include="Elements\PageBreakTextElement.cs" />
     <Compile Include="Elements\EmphasisTextElement.cs" />
     <Compile Include="Elements\LyricsTextElement.cs" />
