@@ -24,11 +24,20 @@ namespace FountainEditor
                     {
                         characterName += item.Text;
                     }
-                    //Check for Parenthetical
-                    //Otherwise Dialogue logic
-                    //Every new element is Dialogue until an empty line is reached.
-                }
 
+                    if (elements[i] is ParentheticalTextElement)
+                    {
+                        //Check for Parenthetical
+                    }
+
+                    else
+                        while (elements[i] is LineEnding && elements[i + 1] is LineEnding)
+                        {
+                            //Otherwise Dialogue logic
+                            //Every new element is Dialogue until an empty line is reached.
+                        }
+                }
+                //Check for Dual Dialogue Character Element
                 if (elements[i] is NullTextElement && 
                     elements[i].Text.StartsWith("^") &&
                     CheckUpper(elements[i].Text))
@@ -93,6 +102,7 @@ namespace FountainEditor
                 yield return elements[i];
             }
         }
+
         public IEnumerable<Element> ScanSceneHeading(List<Element> elements, int start)
         {
             for (int i = start; i < elements.Count; i++)
