@@ -24,18 +24,15 @@ namespace FountainEditor
                     {
                         characterName += item.Text;
                     }
-                    //Check for Parenthetical
+                    //Check for Parenthetical then Dialgoue logic
                     if (elements[i] is ParentheticalTextElement)
                     {
                         i =+ 1;
+                        ScanDialogue(elements, i);
                     }
                     //Otherwise Dialogue logic
                     else
-                        while (elements[i] is LineEnding && elements[i + 1] is LineEnding)
-                        {
-                            //Every new element is Dialogue until an empty line is reached.
-                            ScanDialogue(elements, i);
-                        }
+                        ScanDialogue(elements, i);
                 }
                 //Check for Dual Dialogue Character Element
                 if (elements[i] is NullTextElement && 
@@ -49,9 +46,15 @@ namespace FountainEditor
                     {
                         characterName += item.Text;
                     }
-                    //Check for Parenthetical
+                    //Check for Parenthetical then Dialgoue logic
+                    if (elements[i] is ParentheticalTextElement)
+                    {
+                        i = +1;
+                        ScanDialogue(elements, i);
+                    }
                     //Otherwise Dialogue logic
-                    //Every new element is Dialogue until an empty line is reached.
+                    else
+                        ScanDialogue(elements, i);
                 }
                 //Check NullText for ForcedSceneHeading syntax.
                 if (elements[i] is NullTextElement && elements[i].Text.StartsWith("."))
