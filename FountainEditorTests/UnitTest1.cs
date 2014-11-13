@@ -41,7 +41,7 @@ namespace FountainEditorTests
         }
 
         [TestMethod]
-        public void Transition()
+        public void ReturnTransition()
         {
             var tokens = new Tokenizer().Parse("Cut to:");
 

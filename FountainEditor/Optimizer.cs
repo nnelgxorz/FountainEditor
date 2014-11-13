@@ -24,17 +24,17 @@ namespace FountainEditor
                     {
                         characterName += item.Text;
                     }
-
+                    //Check for Parenthetical
                     if (elements[i] is ParentheticalTextElement)
                     {
-                        //Check for Parenthetical
+                        i =+ 1;
                     }
-
+                    //Otherwise Dialogue logic
                     else
                         while (elements[i] is LineEnding && elements[i + 1] is LineEnding)
                         {
-                            //Otherwise Dialogue logic
                             //Every new element is Dialogue until an empty line is reached.
+                            ScanDialogue(elements, i);
                         }
                 }
                 //Check for Dual Dialogue Character Element
@@ -104,6 +104,16 @@ namespace FountainEditor
         }
 
         public IEnumerable<Element> ScanSceneHeading(List<Element> elements, int start)
+        {
+            for (int i = start; i < elements.Count; i++)
+            {
+                if (elements[i] is LineEnding)
+                    yield break;
+                yield return elements[i];
+            }
+        }
+
+        public IEnumerable<Element> ScanDialogue(List<Element> elements, int start)
         {
             for (int i = start; i < elements.Count; i++)
             {
