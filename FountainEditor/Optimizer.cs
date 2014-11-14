@@ -11,7 +11,7 @@ namespace FountainEditor
     {
         public void Optimize(List<Element> elements)
         {
-            for (int i = 0; i <= elements.Count; i++)
+            for (int i = 0; i < elements.Count; i++)
             {
                 if (elements[i] is LineEnding)
                 {
@@ -37,29 +37,34 @@ namespace FountainEditor
                     }
                     if (elements[i] is ParentheticalTextElement)
                     {
-                        i ++;
+                        i++;
+
+                        if (elements[i] is LineEnding)
+                        {
+                            i++;
+                        }
+
                         processDialogue(elements, i);
-                        return;
+                        i++;
                     }
                     else
                     {
-                        ScanDialogue(elements, i);
                         processDialogue(elements, i);
                         return;
                     }
-                }
+                //}
 
-                if (elements[i] is NullTextElement &&
-                    elements[i].Text.StartsWith("^") &&
-                    CheckUpper(elements[i].Text))
-                {
-                    string characterName = "";
+                //if (elements[i] is NullTextElement &&
+                //    elements[i].Text.StartsWith("^") &&
+                //    CheckUpper(elements[i].Text))
+                //{
+                //    string characterName = "";
 
-                    foreach (var item in ScanCharacter(elements, i))
-                    {
-                        characterName += item.Text;
-                        elements.Remove(item);
-                    }
+                //    foreach (var item in ScanCharacter(elements, i))
+                //    {
+                //        characterName += item.Text;
+                //        elements.Remove(item);
+                //    }
 
                 //    elements.Insert(i, new CharacterTextElement(characterName));
                 //    i += 2;
