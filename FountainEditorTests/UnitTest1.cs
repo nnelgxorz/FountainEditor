@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using FountainEditor.Elements;
 using FountainEditor;
+using System.Collections.Generic;
 
 namespace FountainEditorTests
 {
@@ -96,13 +97,39 @@ namespace FountainEditorTests
 
             Assert.AreEqual(typeof(ParentheticalTextElement), tokens[0].GetType());
         }
+    }
+    [TestClass]
+    public class OptimizerTests
+    {
+        [TestMethod]
+        public void OptimizerTest()
+        {
+            var elements = new List<Element>
+            {
+                new NullTextElement("TESTY"),
+                new NullTextElement("TEST"),
+                new LineEnding(""),
+                new ParentheticalTextElement("Hmm"),
+                new LineEnding(""),
+                new NullTextElement("I"),
+                new NullTextElement("love"),
+                new NullTextElement("tests")
+            };
 
-        //[TestMethod]
-        //public void ReturnBoneyard()
-        //{
-        //    var tokens = new Tokenizer().Parse("/*Omit this please*/");
+            new Optimizer().Optimize(elements);
 
-        //    Assert.AreEqual(typeof(BoneyardTextElement), tokens[0].GetType());
-        //}
+            TestElementTypeAndValue(elements[0], typeof(CharacterTextElement), "TESTY TEST");
+            TestElementTypeAndValue(elements[0], typeof(Action), "");
+            TestElementTypeAndValue(elements[0], typeof(ParentheticalTextElement), "Hmm");
+            TestElementTypeAndValue(elements[0], typeof(Action), "");
+            TestElementTypeAndValue(elements[0], typeof(DialogueTextElement), "I love tests");
+
+        }
+
+        private static void TestElementTypeAndValue(Element element, Type type, string value)
+        {
+            Assert.AreEqual(type, element.GetType());
+            Assert.AreEqual(value, element.Text);
+        }
     }
 }

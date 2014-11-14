@@ -7,34 +7,44 @@ using FountainEditor.Elements;
 
 namespace FountainEditor
 {
-    class Optimizer
+    public class Optimizer
     {
         public void Optimize(List<Element> elements)
         {
-            for (int i = 0; i < elements.Count; i++)
+            for (int i = 0; i <= elements.Count; i++)
             {
                 if (elements[i] is NullTextElement &&
                     CheckUpper(elements[i].Text))
                 {
-                    string characterName = "";
+                    var characterElements = ScanCharacter(elements, i).ToArray();
+                    var characterName = string.Join(" ", characterElements.Select(e => e.Text));
 
-                    ScanCharacter(elements, i);
-                    foreach (var item in ScanCharacter(elements, i))
+                    foreach (var characterElement in characterElements)
                     {
-                        characterName += item.Text;
+                        elements.Remove(characterElement);
                     }
 
+                    elements.Insert(i, new CharacterTextElement(characterName));
+                    i++;
+
+                    if (elements[i] is LineEnding)
+                    {
+                        i++;
+                    }
                     if (elements[i] is ParentheticalTextElement)
                     {
-                        i += 1;
-                        ScanDialogue(elements, i);
+                        i ++;
+                        processDialogue(elements, i);
+                        break;
                     }
-
                     else
+                    {
                         ScanDialogue(elements, i);
+                        processDialogue(elements, i);
+                    }
                 }
 
-                if (elements[i] is NullTextElement && 
+                if (elements[i] is NullTextElement &&
                     elements[i].Text.StartsWith("^") &&
                     CheckUpper(elements[i].Text))
                 {
@@ -102,7 +112,7 @@ namespace FountainEditor
             {
                 if (elements[i] is LineEnding)
                     yield break;
-                yield return elements[i];
+                //yield return elements[i];
             }
         }
 
@@ -128,14 +138,16 @@ namespace FountainEditor
 
         private void processDialogue(List<Element> elements, int start)
         {
-            string dialogue = "";
+            var dialogueElements = ScanCharacter(elements, start).ToArray();
+            var dialogue = string.Join(" ", dialogueElements.Select(e => e.Text));
 
-            foreach (var item in ScanDialogue(elements, start))
+            foreach (var dialogueElement in dialogueElements)
             {
-                dialogue += item.Text;
-                elements.Remove(item);
+                elements.Remove(dialogueElement);
             }
-            elements.Insert(start, new CharacterTextElement(dialogue));
+
+            elements.Insert(start, new DialogueTextElement(dialogue));
+            start++;
         }
 
     }
