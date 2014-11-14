@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Elements\ActionTextElement.cs" />
     <Compile Include="Elements\BoneyardTextElement.cs" />
+    <Compile Include="Elements\DualDialogueTextElement.cs" />
     <Compile Include="Elements\LineEnding.cs" />
     <Compile Include="Elements\NullTextElement.cs" />
     <Compile Include="Elements\PageBreakTextElement.cs" />

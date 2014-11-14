@@ -42,8 +42,16 @@ namespace FountainEditor
                             return new NullTextElement(word);
                     }
                 }
-                
-                if (tokenReader.PeekChar(0) == '\r' && tokenReader.PeekChar(1) == '\n')
+                if (tokenReader.PeekChar(0) == ' ' &&
+                    tokenReader.PeekChar(1) == ' ')
+                {
+                    tokenReader.TakeChar(2);
+                    return new NullTextElement(tokenReader.GetToken());
+                }
+                    
+
+                if (tokenReader.PeekChar(0) == '\r' && 
+                    tokenReader.PeekChar(1) == '\n')
                 {
                     tokenReader.TakeChar(2);
                     return new LineEnding(tokenReader.GetToken());

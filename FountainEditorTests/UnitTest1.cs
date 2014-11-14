@@ -97,6 +97,14 @@ namespace FountainEditorTests
 
             Assert.AreEqual(typeof(ParentheticalTextElement), tokens[0].GetType());
         }
+
+        [TestMethod]
+        public void ReturnNullTextElement()
+        {
+            var tokens = new Tokenizer().Parse("  ");
+
+            Assert.AreEqual(typeof(NullTextElement), tokens[1].GetType());
+        }
     }
     [TestClass]
     public class OptimizerTests
@@ -115,6 +123,18 @@ namespace FountainEditorTests
                 new NullTextElement("love"),
                 new NullTextElement("tests"),
                 new LineEnding(""),
+                new NullTextElement("^OTHER"),
+                new NullTextElement("TEST"),
+                new LineEnding(""),
+                new NullTextElement("I"),
+                new NullTextElement("love"),
+                new NullTextElement("tests"),
+                new NullTextElement("too."),
+                new LineEnding(""),
+                new NullTextElement ("SMASH"),
+                new NullTextElement ("CUT"),
+                new TransitionTextElement ("TO:"),
+                new LineEnding(""),
                 new NullTextElement (".Somewhere"),
                 new NullTextElement ("With"),
                 new NullTextElement ("Tests")
@@ -128,7 +148,13 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[3], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[4], typeof(DialogueTextElement), "I love tests");
             TestElementTypeAndValue(elements[5], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[6], typeof(SceneHeadingTextElement), ".Somewhere With Tests");
+            TestElementTypeAndValue(elements[6], typeof(DualDialogueTextElement), "^OTHER TEST");
+            TestElementTypeAndValue(elements[7], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[8], typeof(DialogueTextElement), "I love tests too.");
+            TestElementTypeAndValue(elements[9], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[10], typeof(TransitionTextElement), "SMASH CUT TO:");
+            TestElementTypeAndValue(elements[11], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[12], typeof(SceneHeadingTextElement), ".Somewhere With Tests");
         }
 
         private static void TestElementTypeAndValue(Element element, Type type, string value)
