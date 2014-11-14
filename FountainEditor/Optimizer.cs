@@ -13,8 +13,7 @@ namespace FountainEditor
         {
             for (int i = 0; i < elements.Count; i++)
             {
-                //Check for Character Name element
-                if (elements[i] is NullTextElement && 
+                if (elements[i] is NullTextElement &&
                     CheckUpper(elements[i].Text))
                 {
                     string characterName = "";
@@ -24,17 +23,17 @@ namespace FountainEditor
                     {
                         characterName += item.Text;
                     }
-                    //Check for Parenthetical then Dialgoue logic
+
                     if (elements[i] is ParentheticalTextElement)
                     {
-                        i =+ 1;
+                        i += 1;
                         ScanDialogue(elements, i);
                     }
-                    //Otherwise Dialogue logic
+
                     else
                         ScanDialogue(elements, i);
                 }
-                //Check for Dual Dialogue Character Element
+
                 if (elements[i] is NullTextElement && 
                     elements[i].Text.StartsWith("^") &&
                     CheckUpper(elements[i].Text))
@@ -45,18 +44,19 @@ namespace FountainEditor
                     foreach (var item in ScanCharacter(elements, i))
                     {
                         characterName += item.Text;
+                        i =+ 1;
                     }
-                    //Check for Parenthetical then Dialgoue logic
+
                     if (elements[i] is ParentheticalTextElement)
                     {
                         i = +1;
                         ScanDialogue(elements, i);
                     }
-                    //Otherwise Dialogue logic
+
                     else
                         ScanDialogue(elements, i);
                 }
-                //Check NullText for ForcedSceneHeading syntax.
+
                 if (elements[i] is NullTextElement && elements[i].Text.StartsWith("."))
                 {
                     string sceneHeading = "";
@@ -69,17 +69,21 @@ namespace FountainEditor
 
                 if (elements[i] is LineEnding)
                 {
-                    // check for blank line or connecting element
-                    if (elements[i + 1] is LineEnding && 
-                        elements[i + 2] is NullTextElement && 
-                        elements[i + 3] is LineEnding)
+                    if (elements[i + 1] is NullTextElement && 
+                        elements[i + 2] is LineEnding)
                     {
-                        if (elements[i + 2].Text.Length == 2 && 
-                            elements[i + 2].Text.Contains("  "))
-                        {
-                            //assign NullTextElement to type before last found LineEnding
+                        if (elements[i + 1].Text.Length == 2 && 
+                            elements[i + 1].Text.Contains("  "))
+                        {// Find previous Element Type
+                            Element elementType = elements[i - 1];
+                            // Assign NullTextElement to previous Element Type
                         }
                     }
+                }
+
+                else
+                {
+                    // Convert NullText to Action.
                 }
             }
         }
