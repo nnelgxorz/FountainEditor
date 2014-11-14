@@ -40,21 +40,27 @@ namespace FountainEditor
                 {
                     string characterName = "";
 
-                    ScanCharacter(elements, i);
                     foreach (var item in ScanCharacter(elements, i))
                     {
                         characterName += item.Text;
-                        i =+ 1;
+                        elements.Remove(item);
                     }
+
+                    elements.Insert(i, new CharacterTextElement(characterName));
+                    i += 2;
 
                     if (elements[i] is ParentheticalTextElement)
                     {
-                        i = +1;
+                        i += 2;
                         ScanDialogue(elements, i);
+                        processDialogue(elements, i);
                     }
 
                     else
+                    {
                         ScanDialogue(elements, i);
+                        processDialogue(elements, i);
+                    }
                 }
 
                 if (elements[i] is NullTextElement && elements[i].Text.StartsWith("."))
@@ -64,26 +70,16 @@ namespace FountainEditor
                     foreach (var item in ScanSceneHeading(elements, i))
                     {
                         sceneHeading += item.Text;
+                        elements.Remove(item);
                     }
+                    elements.Insert(i, new SceneHeadingTextElement(sceneHeading));
                 }
-
-                if (elements[i] is LineEnding)
-                {
-                    if (elements[i + 1] is NullTextElement && 
-                        elements[i + 2] is LineEnding)
-                    {
-                        if (elements[i + 1].Text.Length == 2 && 
-                            elements[i + 1].Text.Contains("  "))
-                        {// Find previous Element Type
-                            Element elementType = elements[i - 1];
-                            // Assign NullTextElement to previous Element Type
-                        }
-                    }
-                }
-
                 else
                 {
-                    // Convert NullText to Action.
+                    Element currentElement = elements[i];
+                    ActionTextElement action;
+
+                    action = new ActionTextElement(currentElement.Text);
                 }
             }
         }
@@ -123,12 +119,25 @@ namespace FountainEditor
         public IEnumerable<Element> ScanDialogue(List<Element> elements, int start)
         {
             for (int i = start; i < elements.Count; i++)
-            {
+            {//TODO: two consecutive lineendings breaks line?
                 if (elements[i] is LineEnding)
                     yield break;
                 yield return elements[i];
             }
         }
+
+        private void processDialogue(List<Element> elements, int start)
+        {
+            string dialogue = "";
+
+            foreach (var item in ScanDialogue(elements, start))
+            {
+                dialogue += item.Text;
+                elements.Remove(item);
+            }
+            elements.Insert(start, new CharacterTextElement(dialogue));
+        }
+
     }
 }
 
