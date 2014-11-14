@@ -113,7 +113,11 @@ namespace FountainEditorTests
                 new LineEnding(""),
                 new NullTextElement("I"),
                 new NullTextElement("love"),
-                new NullTextElement("tests")
+                new NullTextElement("tests"),
+                new LineEnding(""),
+                new NullTextElement (".Somewhere"),
+                new NullTextElement ("With"),
+                new NullTextElement ("Tests")
             };
 
             new Optimizer().Optimize(elements);
@@ -123,7 +127,8 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[2], typeof(ParentheticalTextElement), "Hmm");
             TestElementTypeAndValue(elements[3], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[4], typeof(DialogueTextElement), "I love tests");
-
+            TestElementTypeAndValue(elements[5], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[6], typeof(SceneHeadingTextElement), ".Somewhere With Tests");
         }
 
         private static void TestElementTypeAndValue(Element element, Type type, string value)

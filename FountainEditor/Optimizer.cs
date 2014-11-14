@@ -83,17 +83,17 @@ namespace FountainEditor
                 //    }
                 //}
 
-                //if (elements[i] is NullTextElement && elements[i].Text.StartsWith("."))
-                //{
-                //    string sceneHeading = "";
+                    if (elements[i] is NullTextElement && elements[i].Text.StartsWith("."))
+                    {
+                        string sceneHeading = "";
 
-                //    foreach (var item in ScanSceneHeading(elements, i))
-                //    {
-                //        sceneHeading += item.Text;
-                //        elements.Remove(item);
-                //    }
-                //    elements.Insert(i, new SceneHeadingTextElement(sceneHeading));
-                //}
+                        foreach (var item in ScanSceneHeading(elements, i))
+                        {
+                            sceneHeading += item.Text;
+                            elements.Remove(item);
+                        }
+                        elements.Insert(i, new SceneHeadingTextElement(sceneHeading));
+                    }
                 //else
                 //{
                 //    Element currentElement = elements[i];
