@@ -13,6 +13,10 @@ namespace FountainEditor
         {
             for (int i = 0; i <= elements.Count; i++)
             {
+                if (elements[i] is LineEnding)
+                {
+                    i++;
+                }
                 if (elements[i] is NullTextElement &&
                     CheckUpper(elements[i].Text))
                 {
@@ -35,12 +39,13 @@ namespace FountainEditor
                     {
                         i ++;
                         processDialogue(elements, i);
-                        break;
+                        return;
                     }
                     else
                     {
                         ScanDialogue(elements, i);
                         processDialogue(elements, i);
+                        return;
                     }
                 }
 
@@ -56,40 +61,40 @@ namespace FountainEditor
                         elements.Remove(item);
                     }
 
-                    elements.Insert(i, new CharacterTextElement(characterName));
-                    i += 2;
+                //    elements.Insert(i, new CharacterTextElement(characterName));
+                //    i += 2;
 
-                    if (elements[i] is ParentheticalTextElement)
-                    {
-                        i += 2;
-                        ScanDialogue(elements, i);
-                        processDialogue(elements, i);
-                    }
+                //    if (elements[i] is ParentheticalTextElement)
+                //    {
+                //        i += 2;
+                //        ScanDialogue(elements, i);
+                //        processDialogue(elements, i);
+                //    }
 
-                    else
-                    {
-                        ScanDialogue(elements, i);
-                        processDialogue(elements, i);
-                    }
-                }
+                //    else
+                //    {
+                //        ScanDialogue(elements, i);
+                //        processDialogue(elements, i);
+                //    }
+                //}
 
-                if (elements[i] is NullTextElement && elements[i].Text.StartsWith("."))
-                {
-                    string sceneHeading = "";
+                //if (elements[i] is NullTextElement && elements[i].Text.StartsWith("."))
+                //{
+                //    string sceneHeading = "";
 
-                    foreach (var item in ScanSceneHeading(elements, i))
-                    {
-                        sceneHeading += item.Text;
-                        elements.Remove(item);
-                    }
-                    elements.Insert(i, new SceneHeadingTextElement(sceneHeading));
-                }
-                else
-                {
-                    Element currentElement = elements[i];
-                    ActionTextElement action;
+                //    foreach (var item in ScanSceneHeading(elements, i))
+                //    {
+                //        sceneHeading += item.Text;
+                //        elements.Remove(item);
+                //    }
+                //    elements.Insert(i, new SceneHeadingTextElement(sceneHeading));
+                //}
+                //else
+                //{
+                //    Element currentElement = elements[i];
+                //    ActionTextElement action;
 
-                    action = new ActionTextElement(currentElement.Text);
+                //    action = new ActionTextElement(currentElement.Text);
                 }
             }
         }
@@ -112,7 +117,9 @@ namespace FountainEditor
             {
                 if (elements[i] is LineEnding)
                     yield break;
-                //yield return elements[i];
+                if (CheckUpper(elements[i].Text) == false)
+                    yield break;
+                yield return elements[i];
             }
         }
 
@@ -138,7 +145,7 @@ namespace FountainEditor
 
         private void processDialogue(List<Element> elements, int start)
         {
-            var dialogueElements = ScanCharacter(elements, start).ToArray();
+            var dialogueElements = ScanDialogue(elements, start).ToArray();
             var dialogue = string.Join(" ", dialogueElements.Select(e => e.Text));
 
             foreach (var dialogueElement in dialogueElements)

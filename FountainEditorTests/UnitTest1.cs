@@ -119,7 +119,7 @@ namespace FountainEditorTests
             new Optimizer().Optimize(elements);
 
             TestElementTypeAndValue(elements[0], typeof(CharacterTextElement), "TESTY TEST");
-            TestElementTypeAndValue(elements[0], typeof(Action), "");
+            TestElementTypeAndValue(elements[0], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[0], typeof(ParentheticalTextElement), "Hmm");
             TestElementTypeAndValue(elements[0], typeof(Action), "");
             TestElementTypeAndValue(elements[0], typeof(DialogueTextElement), "I love tests");
