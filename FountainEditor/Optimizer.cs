@@ -66,7 +66,19 @@ namespace FountainEditor
                     }
                     elements.Insert(i, new SceneHeadingTextElement (sceneHeading));
                     i++;
-                    break;
+                }
+
+                if (elements[i] is SceneHeadingTextElement)
+                {
+                    var sceneHeadingElements = ScanSceneHeading(elements, i).ToArray();
+                    var sceneHeading = string.Join(" ", sceneHeadingElements.Select(e => e.Text));
+
+                    foreach (var sceneHeadingElement in sceneHeadingElements)
+                    {
+                        elements.Remove(sceneHeadingElement);
+                    }
+                    elements.Insert(i, new SceneHeadingTextElement(sceneHeading));
+                    i++;
                 }
 
 

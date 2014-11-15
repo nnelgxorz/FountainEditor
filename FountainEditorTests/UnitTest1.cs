@@ -110,7 +110,7 @@ namespace FountainEditorTests
     public class OptimizerTests
     {
         [TestMethod]
-        public void CharacterAndDialogue()
+        public void OptimizeCharacterAndDialogue()
         {
             var elements = new List<Element>
             {
@@ -144,6 +144,52 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[7], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[8], typeof(DialogueTextElement), "I love tests too.");
             TestElementTypeAndValue(elements[9], typeof(LineEnding), "");
+        }
+
+        [TestMethod]
+        public void OptimizeSceneHeadings()
+        {
+            var elements = new List<Element>
+            {
+                new SceneHeadingTextElement("int."),
+                new NullTextElement("test"),
+                new NullTextElement("- test"),
+                new LineEnding(""),
+                new NullTextElement("Test"),
+                new NullTextElement("test"),
+                new NullTextElement("test."),
+                new LineEnding(""),
+                new NullTextElement(".Close"),
+                new NullTextElement("on"),
+                new NullTextElement("test"),
+                new LineEnding("")
+            };
+
+            new Optimizer().Optimize(elements);
+            TestElementTypeAndValue(elements[0], typeof(SceneHeadingTextElement), "int. test - test");
+            TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[2], typeof(NullTextElement), "Test");
+            TestElementTypeAndValue(elements[3], typeof(NullTextElement), "test");
+            TestElementTypeAndValue(elements[4], typeof(NullTextElement), "test.");
+            TestElementTypeAndValue(elements[5], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[6], typeof(SceneHeadingTextElement), ".Close on test");
+            TestElementTypeAndValue(elements[7], typeof(LineEnding), "");
+        }
+
+        [TestMethod]
+        public void OptimizeTransitions()
+        {
+            var elements = new List<Element>
+            {
+                new NullTextElement("Smash"),
+                new NullTextElement("Cut"),
+                new TransitionTextElement("To:"),
+                new LineEnding("")
+            };
+
+            new Optimizer().Optimize(elements);
+            TestElementTypeAndValue(elements[0], typeof(TransitionTextElement), "Smash Cut To:");
+            TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
         }
 
         private static void TestElementTypeAndValue(Element element, Type type, string value)
