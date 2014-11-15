@@ -134,7 +134,30 @@ namespace FountainEditor
                     i++;
                 }
 
-                
+                if (elements[i] is NullTextElement)
+                {
+                    var actionElements = ScanAction(elements, i).ToArray();
+                    var actionText = string.Join(" ", actionElements.Select(e => e.Text));
+
+                    foreach (var actionElement in actionElements)
+                    {
+                        elements.Remove(actionElement);
+                    }
+                    elements.Insert(i, new ActionTextElement(actionText));
+                    i++;
+                }
+            }
+        }
+
+        private IEnumerable<Element> ScanAction(List<Element> elements, int start)
+        {
+            for (int i = start; i < elements.Count; i++)
+            {
+                if (elements[i] is LineEnding)
+                {
+                    yield break;
+                }
+                yield return elements[i];
             }
         }
 

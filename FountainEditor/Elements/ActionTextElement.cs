@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FountainEditor.Elements
 {
-    class ActionTextElement : Element
+    public class ActionTextElement : Element
     {
         public ActionTextElement(string text)
             : base(text)

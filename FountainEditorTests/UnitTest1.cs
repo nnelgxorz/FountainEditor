@@ -168,12 +168,10 @@ namespace FountainEditorTests
             new Optimizer().Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(SceneHeadingTextElement), "int. test - test");
             TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[2], typeof(NullTextElement), "Test");
-            TestElementTypeAndValue(elements[3], typeof(NullTextElement), "test");
-            TestElementTypeAndValue(elements[4], typeof(NullTextElement), "test.");
+            TestElementTypeAndValue(elements[2], typeof(ActionTextElement), "Test test test.");
+            TestElementTypeAndValue(elements[3], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[4], typeof(SceneHeadingTextElement), ".Close on test");
             TestElementTypeAndValue(elements[5], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[6], typeof(SceneHeadingTextElement), ".Close on test");
-            TestElementTypeAndValue(elements[7], typeof(LineEnding), "");
         }
 
         [TestMethod]
@@ -181,14 +179,38 @@ namespace FountainEditorTests
         {
             var elements = new List<Element>
             {
-                new NullTextElement("Smash"),
-                new NullTextElement("Cut"),
-                new TransitionTextElement("To:"),
+                new NullTextElement("SMASH"),
+                new NullTextElement("CUT"),
+                new TransitionTextElement("TO:"),
                 new LineEnding("")
             };
 
             new Optimizer().Optimize(elements);
-            TestElementTypeAndValue(elements[0], typeof(TransitionTextElement), "Smash Cut To:");
+            TestElementTypeAndValue(elements[0], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[1], typeof(TransitionTextElement), "SMASH CUT TO:");
+            TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
+        }
+
+        [TestMethod]
+        public void OptimizeAction()
+        {
+            var elements = new List<Element>
+            {
+                new NullTextElement("Test"),
+                new NullTextElement("Test"),
+                new NullTextElement("Test."),
+                new LineEnding(""),
+                new NullTextElement("Test"),
+                new NullTextElement("Test"),
+                new NullTextElement("Test."),
+                new LineEnding(""),
+
+            };
+
+            new Optimizer().Optimize(elements);
+            TestElementTypeAndValue(elements[0], typeof(ActionTextElement), "Test Test Test.");
+            TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[0], typeof(ActionTextElement), "Test Test Test.");
             TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
         }
 
