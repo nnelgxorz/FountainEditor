@@ -110,7 +110,7 @@ namespace FountainEditorTests
     public class OptimizerTests
     {
         [TestMethod]
-        public void OptimizerTest()
+        public void CharacterAndDialogue()
         {
             var elements = new List<Element>
             {
@@ -130,18 +130,10 @@ namespace FountainEditorTests
                 new NullTextElement("love"),
                 new NullTextElement("tests"),
                 new NullTextElement("too."),
-                new LineEnding(""),
-                new NullTextElement ("SMASH"),
-                new NullTextElement ("CUT"),
-                new TransitionTextElement ("TO:"),
-                new LineEnding(""),
-                new NullTextElement (".Somewhere"),
-                new NullTextElement ("With"),
-                new NullTextElement ("Tests")
+                new LineEnding("")
             };
 
             new Optimizer().Optimize(elements);
-
             TestElementTypeAndValue(elements[0], typeof(CharacterTextElement), "TESTY TEST");
             TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[2], typeof(ParentheticalTextElement), "Hmm");
@@ -152,9 +144,6 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[7], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[8], typeof(DialogueTextElement), "I love tests too.");
             TestElementTypeAndValue(elements[9], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[10], typeof(TransitionTextElement), "SMASH CUT TO:");
-            TestElementTypeAndValue(elements[11], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[12], typeof(SceneHeadingTextElement), ".Somewhere With Tests");
         }
 
         private static void TestElementTypeAndValue(Element element, Type type, string value)
