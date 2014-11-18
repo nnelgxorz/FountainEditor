@@ -16,7 +16,7 @@ namespace FountainEditor
                 if (elements[i] is TransitionTextElement &&
                     elements[i].Text.Contains("TO:"))
                 {
-                    var transitionElements = ScanTransition(elements, i).ToArray();
+                    var transitionElements = ScanBackward(elements, i).ToArray();
                     var transitionText = string.Join(" ", transitionElements.Select(e => e.Text));
 
                     foreach (var transitionElement in transitionElements)
@@ -32,8 +32,8 @@ namespace FountainEditor
             for (int i = 0; i < elements.Count; i++)
             {
                 if (elements[i] is NullTextElement &&
-                    CheckUpper(elements[i].Text) &&
-                    !elements[i].Text.StartsWith("^"))
+                    CheckUpper(elements[i].Text) ||
+                    elements[i].Text.StartsWith("^"))
                 {
                     var characterElements = ScanCharacter(elements, i).ToArray();
                     var characterName = string.Join(" ", characterElements.Select(e => e.Text));
@@ -43,7 +43,14 @@ namespace FountainEditor
                         elements.Remove(characterElement);
                     }
 
-                    elements.Insert(i, new CharacterTextElement(characterName));
+                    if (characterName.StartsWith("^"))
+                    {
+                        elements.Insert(i, new DualDialogueTextElement(characterName));
+                    }
+                    else
+                    {
+                        elements.Insert(i, new CharacterTextElement(characterName));
+                    }
                     i++;
 
                     if (elements[i] is LineEnding)
@@ -72,7 +79,7 @@ namespace FountainEditor
 
                 if (elements[i] is NullTextElement && elements[i].Text.StartsWith("."))
                 {
-                    var sceneHeadingElements = ScanSceneHeading(elements, i).ToArray();
+                    var sceneHeadingElements = ScanForward(elements, i).ToArray();
                     var sceneHeading = string.Join(" ", sceneHeadingElements.Select(e => e.Text));
 
                     foreach (var sceneHeadingElement in sceneHeadingElements)
@@ -86,7 +93,7 @@ namespace FountainEditor
 
                 if (elements[i] is SceneHeadingTextElement)
                 {
-                    var sceneHeadingElements = ScanSceneHeading(elements, i).ToArray();
+                    var sceneHeadingElements = ScanForward(elements, i).ToArray();
                     var sceneHeading = string.Join(" ", sceneHeadingElements.Select(e => e.Text));
 
                     foreach (var sceneHeadingElement in sceneHeadingElements)
@@ -98,49 +105,9 @@ namespace FountainEditor
                     i++;
                 }
 
-
-                if (elements[i] is NullTextElement &&
-                    elements[i].Text.StartsWith("^") &&
-                    CheckUpper(elements[i].Text))
-                {
-                    var characterElements = ScanCharacter(elements, i).ToArray();
-                    var characterName = string.Join(" ", characterElements.Select(e => e.Text));
-
-                    foreach (var characterElement in characterElements)
-                    {
-                        elements.Remove(characterElement);
-                    }
-
-                    elements.Insert(i, new DualDialogueTextElement(characterName));
-                    i++;
-
-                    if (elements[i] is LineEnding)
-                    {
-                        i++;
-                    }
-
-                    if (elements[i] is ParentheticalTextElement)
-                    {
-                        i++;
-
-                        if (elements[i] is LineEnding)
-                        {
-                            i++;
-                        }
-
-                        processDialogue(elements, i);
-                        i++;
-                    }
-                    else
-                    {
-                        processDialogue(elements, i);
-                        i++;
-                    }
-                }
-
                 if (elements[i] is NullTextElement)
                 {
-                    var actionElements = ScanAction(elements, i).ToArray();
+                    var actionElements = ScanForward(elements, i).ToArray();
                     var actionText = string.Join(" ", actionElements.Select(e => e.Text));
 
                     foreach (var actionElement in actionElements)
@@ -151,19 +118,6 @@ namespace FountainEditor
                     elements.Insert(i, new ActionTextElement(actionText));
                     i++;
                 }
-            }
-        }
-
-        private IEnumerable<Element> ScanAction(List<Element> elements, int start)
-        {
-            for (int i = start; i < elements.Count; i++)
-            {
-                if (elements[i] is LineEnding)
-                {
-                    yield break;
-                }
-
-                yield return elements[i];
             }
         }
 
@@ -190,14 +144,11 @@ namespace FountainEditor
                 if (CheckUpper(elements[i].Text) == false)
                     break;
 
-                if (elements[i] is TransitionTextElement)
-                    break;
-
                 yield return elements[i];
             }
         }
 
-        public IEnumerable<Element> ScanSceneHeading(List<Element> elements, int start)
+        public IEnumerable<Element> ScanForward(List<Element> elements, int start)
         {
             for (int i = start; i < elements.Count; i++)
             {
@@ -208,19 +159,7 @@ namespace FountainEditor
             }
         }
 
-        public IEnumerable<Element> ScanDialogue(List<Element> elements, int start)
-        {
-            for (int i = start; i < elements.Count; i++)
-            {
-                //TODO: two consecutive lineendings breaks line?
-                if (elements[i] is LineEnding)
-                    yield break;
-
-                yield return elements[i];
-            }
-        }
-
-        public IEnumerable<Element> ScanTransition(List<Element> elements, int start)
+        public IEnumerable<Element> ScanBackward(List<Element> elements, int start)
         {
             for (int i = start; i < elements.Count; i--)
             {
@@ -233,7 +172,7 @@ namespace FountainEditor
 
         private void processDialogue(List<Element> elements, int start)
         {
-            var dialogueElements = ScanDialogue(elements, start).ToArray();
+            var dialogueElements = ScanForward(elements, start).ToArray();
             var dialogue = string.Join(" ", dialogueElements.Select(e => e.Text));
 
             foreach (var dialogueElement in dialogueElements)
