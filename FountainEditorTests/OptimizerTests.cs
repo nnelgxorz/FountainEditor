@@ -139,6 +139,53 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[4], typeof(ActionTextElement), "Test Test (Test).");
         }
 
+        [TestMethod]
+        public void CharacterErrorHandling()
+        {
+            var elements = new List<Element>
+            {
+                new NullTextElement("What"),
+                new NullTextElement("a"),
+                new NullTextElement("CRAZY"),
+                new NullTextElement("TEST"),
+                new NullTextElement("man!"),
+                new LineEnding("")
+            };
+
+            new Optimizer().Optimize(elements);
+            TestElementTypeAndValue(elements[0], typeof(ActionTextElement), "What a CRAZY TEST man!");
+            TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
+            
+        }
+
+        [TestMethod]
+        public void DialogueErrorHandling()
+        {
+            var elements = new List<Element>
+            {
+                new CharacterTextElement("TESTO"),
+                new LineEnding("\r\n"),
+                new NullTextElement("This"),
+                new NullTextElement("is"),
+                new LineEnding("\r\n"),
+                new NullTextElement("  "),
+                new NullTextElement("Dialogue."),
+                new LineEnding("\r\n"),
+                new LineEnding("\r\n"),
+                new NullTextElement("This"),
+                new NullTextElement("is"),
+                new NullTextElement("not.")
+            };
+
+            new Optimizer().Optimize(elements);
+            TestElementTypeAndValue(elements[0], typeof(CharacterTextElement), "TESTO");
+            TestElementTypeAndValue(elements[1], typeof(LineEnding), "\r\n");
+            TestElementTypeAndValue(elements[2], typeof(DialogueTextElement), "This is \r\n  \r\nDialogue.");
+            TestElementTypeAndValue(elements[3], typeof(LineEnding), "\r\n");
+            TestElementTypeAndValue(elements[4], typeof(LineEnding), "\r\n");
+            TestElementTypeAndValue(elements[5], typeof(ActionTextElement), "This is not.");
+        }
+
         private static void TestElementTypeAndValue(Element element, Type type, string value)
         {
             Assert.AreEqual(type, element.GetType());
