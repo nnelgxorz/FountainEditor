@@ -105,7 +105,29 @@ namespace FountainEditor
                     elements.Insert(i, new SceneHeadingTextElement(sceneHeading));
                     i++;
                 }
+            }
 
+            for (int i = 0; i < elements.Count; i++)
+            {
+                if (elements[i] is ParentheticalTextElement)
+                {
+                    if(elements[i - 1] is LineEnding && elements[i - 2] is CharacterTextElement)
+                    {
+                        break;
+                    }
+
+                    else
+                    {
+                        string text = elements[i].Text;
+
+                        elements.Remove(elements[i]);
+                        elements.Insert(i, new NullTextElement(text));
+                    }
+                }
+            }
+
+            for (int i = 0; i < elements.Count; i++)
+            {
                 if (elements[i] is NullTextElement)
                 {
                     var actionElements = ScanForward(elements, i).ToArray();
