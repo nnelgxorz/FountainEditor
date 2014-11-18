@@ -25,7 +25,7 @@ namespace FountainEditor
                         elements.Remove(transitionElement);
                     }
 
-                    elements.Insert(i -= 2, new TransitionTextElement(transitionText));
+                    elements.Insert(i -= transitionElements.Count() - 1, new TransitionTextElement(transitionText));
                     i++;
                 }
             }
@@ -67,13 +67,19 @@ namespace FountainEditor
                         {
                             i++;
                         }
-
-                        processDialogue(elements, i);
-                        i++;
                     }
-                    else
+
+                    if (elements[i] is NullTextElement)
                     {
-                        processDialogue(elements, i);
+                        var dialogueElements = ScanForward(elements, i).ToArray();
+                        var dialogue = string.Join(" ", dialogueElements.Select(e => e.Text));
+
+                        foreach (var dialogueElement in dialogueElements)
+                        {
+                            elements.Remove(dialogueElement);
+                        }
+
+                        elements.Insert(i, new DialogueTextElement(dialogue));
                         i++;
                     }
                 }
@@ -162,10 +168,14 @@ namespace FountainEditor
             for (int i = start; i < elements.Count; i++)
             {
                 if (elements[i] is LineEnding)
+                {
                     yield break;
+                }
 
                 if (CheckUpper(elements[i].Text) == false)
+                {
                     break;
+                }
 
                 yield return elements[i];
             }
@@ -176,8 +186,9 @@ namespace FountainEditor
             for (int i = start; i < elements.Count; i++)
             {
                 if (elements[i] is LineEnding)
+                {
                     yield break;
-
+                }
                 yield return elements[i];
             }
         }
@@ -187,24 +198,12 @@ namespace FountainEditor
             for (int i = start; i < elements.Count; i--)
             {
                 if (elements[i] is LineEnding)
+                {
                     yield break;
-
+                }
                 yield return elements[i];
             }
         }
 
-        private void processDialogue(List<Element> elements, int start)
-        {
-            var dialogueElements = ScanForward(elements, start).ToArray();
-            var dialogue = string.Join(" ", dialogueElements.Select(e => e.Text));
-
-            foreach (var dialogueElement in dialogueElements)
-            {
-                elements.Remove(dialogueElement);
-            }
-
-            elements.Insert(start, new DialogueTextElement(dialogue));
-            start++;
-        }
     }
 }
