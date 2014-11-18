@@ -17,6 +17,7 @@ namespace FountainEditor
                 {
                     i++;
                 }
+
                 if (elements[i] is NullTextElement &&
                     CheckUpper(elements[i].Text) &&
                     !elements[i].Text.StartsWith("^"))
@@ -36,6 +37,7 @@ namespace FountainEditor
                     {
                         i++;
                     }
+
                     if (elements[i] is ParentheticalTextElement)
                     {
                         i++;
@@ -64,6 +66,7 @@ namespace FountainEditor
                     {
                         elements.Remove(sceneHeadingElement);
                     }
+
                     elements.Insert(i, new SceneHeadingTextElement (sceneHeading));
                     i++;
                 }
@@ -77,6 +80,7 @@ namespace FountainEditor
                     {
                         elements.Remove(sceneHeadingElement);
                     }
+
                     elements.Insert(i, new SceneHeadingTextElement(sceneHeading));
                     i++;
                 }
@@ -101,6 +105,7 @@ namespace FountainEditor
                     {
                         i++;
                     }
+
                     if (elements[i] is ParentheticalTextElement)
                     {
                         i++;
@@ -130,6 +135,7 @@ namespace FountainEditor
                     {
                         elements.Remove(transitionElement);
                     }
+
                     elements.Insert(i, new TransitionTextElement(transitionText));
                     i++;
                 }
@@ -143,6 +149,7 @@ namespace FountainEditor
                     {
                         elements.Remove(actionElement);
                     }
+
                     elements.Insert(i, new ActionTextElement(actionText));
                     i++;
                 }
@@ -157,6 +164,7 @@ namespace FountainEditor
                 {
                     yield break;
                 }
+
                 yield return elements[i];
             }
         }
@@ -170,6 +178,7 @@ namespace FountainEditor
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -179,10 +188,13 @@ namespace FountainEditor
             {
                 if (elements[i] is LineEnding)
                     yield break;
+
                 if (CheckUpper(elements[i].Text) == false)
                     break;
+
                 if (elements[i] is TransitionTextElement)
                     break;
+
                 yield return elements[i];
             }
         }
@@ -193,6 +205,7 @@ namespace FountainEditor
             {
                 if (elements[i] is LineEnding)
                     yield break;
+
                 yield return elements[i];
             }
         }
@@ -200,9 +213,11 @@ namespace FountainEditor
         public IEnumerable<Element> ScanDialogue(List<Element> elements, int start)
         {
             for (int i = start; i < elements.Count; i++)
-            {//TODO: two consecutive lineendings breaks line?
+            {
+                //TODO: two consecutive lineendings breaks line?
                 if (elements[i] is LineEnding)
                     yield break;
+
                 yield return elements[i];
             }
         }
@@ -213,6 +228,7 @@ namespace FountainEditor
             {
                 if (elements[i] is LineEnding)
                     yield break;
+
                 yield return elements[i];
             }
         }
@@ -230,7 +246,5 @@ namespace FountainEditor
             elements.Insert(start, new DialogueTextElement(dialogue));
             start++;
         }
-
     }
 }
-
