@@ -17,6 +17,7 @@ namespace FountainEditor
                     elements[i].Text.Contains("TO:"))
                 {
                     var transitionElements = ScanBackward(elements, i).ToArray();
+                    Array.Reverse(transitionElements);
                     var transitionText = string.Join(" ", transitionElements.Select(e => e.Text));
 
                     foreach (var transitionElement in transitionElements)
