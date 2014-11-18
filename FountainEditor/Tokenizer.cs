@@ -187,7 +187,6 @@ namespace FountainEditor
 
         private Element ScanNote(TokenReader tokenReader)
         {
-            int lineEndings = 0;
             while (!tokenReader.EndOfString)
             {
                 if (tokenReader.PeekChar(0) == '\r' &&
@@ -197,16 +196,6 @@ namespace FountainEditor
                 {
                     return new NullTextElement(tokenReader.GetToken());
                 }
-                //else if (tokenReader.PeekChar(0) == '\r' &&
-                //    tokenReader.PeekChar(1) == '\n')
-                //{
-                //    tokenReader.TakeChar();
-                //    lineEndings++;
-                //}
-                //else
-                //{
-                //    lineEndings = 0;
-                //}
 
                 if (tokenReader.PeekChar(0) == ']' &&
                     tokenReader.PeekChar(1) == ']')
@@ -215,10 +204,6 @@ namespace FountainEditor
                     return new NoteTextElement(tokenReader.GetToken());
                 }
 
-                //if (lineEndings == 2)
-                //{
-                //    return new NullTextElement(tokenReader.GetToken());
-                //}
                 tokenReader.TakeChar();
             }
 
