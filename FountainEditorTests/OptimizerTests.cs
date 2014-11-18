@@ -14,6 +14,7 @@ namespace FountainEditorTests
         {
             var elements = new List<Element>
             {
+                new LineEnding(""),
                 new NullTextElement("TESTY"),
                 new NullTextElement("TEST"),
                 new ParentheticalTextElement("(O.S.)"),
@@ -24,6 +25,7 @@ namespace FountainEditorTests
                 new NullTextElement("love"),
                 new NullTextElement("tests"),
                 new LineEnding(""),
+                new LineEnding(""),
                 new NullTextElement("^OTHER"),
                 new NullTextElement("TEST"),
                 new LineEnding(""),
@@ -31,20 +33,23 @@ namespace FountainEditorTests
                 new NullTextElement("love"),
                 new NullTextElement("tests"),
                 new NullTextElement("too."),
+                new LineEnding(""),
                 new LineEnding("")
             };
 
             new Optimizer().Optimize(elements);
-            TestElementTypeAndValue(elements[0], typeof(CharacterTextElement), "TESTY TEST (O.S.)");
-            TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[2], typeof(ParentheticalTextElement), "Hmm");
-            TestElementTypeAndValue(elements[3], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[4], typeof(DialogueTextElement), "I love tests");
-            TestElementTypeAndValue(elements[5], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[6], typeof(DualDialogueTextElement), "^OTHER TEST");
+            TestElementTypeAndValue(elements[0], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[1], typeof(CharacterTextElement), "TESTY TEST (O.S.)");
+            TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[3], typeof(ParentheticalTextElement), "Hmm");
+            TestElementTypeAndValue(elements[4], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[5], typeof(DialogueTextElement), "I love tests");
+            TestElementTypeAndValue(elements[6], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[7], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[8], typeof(DialogueTextElement), "I love tests too.");
+            TestElementTypeAndValue(elements[8], typeof(DualDialogueTextElement), "^OTHER TEST");
             TestElementTypeAndValue(elements[9], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[10], typeof(DialogueTextElement), "I love tests too.");
+            TestElementTypeAndValue(elements[11], typeof(LineEnding), "");
         }
 
         [TestMethod]
@@ -163,7 +168,7 @@ namespace FountainEditorTests
         {
             var elements = new List<Element>
             {
-                new CharacterTextElement("TESTO"),
+                new NullTextElement("TESTO"),
                 new LineEnding("\r\n"),
                 new NullTextElement("This"),
                 new NullTextElement("is"),
@@ -180,7 +185,7 @@ namespace FountainEditorTests
             new Optimizer().Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(CharacterTextElement), "TESTO");
             TestElementTypeAndValue(elements[1], typeof(LineEnding), "\r\n");
-            TestElementTypeAndValue(elements[2], typeof(DialogueTextElement), "This is \r\n  \r\nDialogue.");
+            TestElementTypeAndValue(elements[2], typeof(DialogueTextElement), "This is \r\nDialogue.");
             TestElementTypeAndValue(elements[3], typeof(LineEnding), "\r\n");
             TestElementTypeAndValue(elements[4], typeof(LineEnding), "\r\n");
             TestElementTypeAndValue(elements[5], typeof(ActionTextElement), "This is not.");

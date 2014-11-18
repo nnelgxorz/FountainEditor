@@ -33,8 +33,8 @@ namespace FountainEditor
             for (int i = 0; i < elements.Count; i++)
             {
                 if (elements[i] is NullTextElement &&
-                    CheckUpper(elements[i].Text) ||
-                    elements[i].Text.StartsWith("^"))
+                    CheckUpper(elements[i].Text) && 
+                    elements[i -1] is LineEnding)
                 {
                     var characterElements = ScanCharacter(elements, i).ToArray();
                     var characterName = string.Join(" ", characterElements.Select(e => e.Text));
@@ -71,7 +71,7 @@ namespace FountainEditor
 
                     if (elements[i] is NullTextElement)
                     {
-                        var dialogueElements = ScanForward(elements, i).ToArray();
+                        var dialogueElements = ScanDialogue(elements, i).ToArray();
                         var dialogue = string.Join(" ", dialogueElements.Select(e => e.Text));
 
                         foreach (var dialogueElement in dialogueElements)
@@ -177,6 +177,18 @@ namespace FountainEditor
                     break;
                 }
 
+                yield return elements[i];
+            }
+        }
+
+        public IEnumerable<Element> ScanDialogue(List<Element> elements, int start)
+        {
+            for (int i = start; i < elements.Count; i++)
+            {
+                if (elements[i] is LineEnding && elements[i + 1] is LineEnding)
+                {
+                    yield break;
+                }
                 yield return elements[i];
             }
         }
