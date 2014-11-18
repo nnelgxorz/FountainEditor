@@ -133,8 +133,7 @@ namespace FountainEditor
                 if (tokenReader.PeekChar(0) == '\r' &&
                     tokenReader.PeekChar(1) == '\n')
                 {
-                    tokenReader.TakeChar(2);
-                    break;
+                    return new NullTextElement(tokenReader.GetToken());
                 }
 
                 if (tokenReader.PeekChar() == ')')
@@ -155,7 +154,6 @@ namespace FountainEditor
                 if (tokenReader.PeekChar(0) == '\r' &&
                     tokenReader.PeekChar(1) == '\n')
                 {
-                    tokenReader.TakeChar(2);
                     break;
                 }
 
@@ -172,7 +170,6 @@ namespace FountainEditor
                 if (tokenReader.PeekChar(0) == '\r' &&
                     tokenReader.PeekChar(1) == '\n')
                 {
-                    tokenReader.TakeChar(2);
                     break;
                 }
 
@@ -190,8 +187,27 @@ namespace FountainEditor
 
         private Element ScanNote(TokenReader tokenReader)
         {
+            int lineEndings = 0;
             while (!tokenReader.EndOfString)
             {
+                if (tokenReader.PeekChar(0) == '\r' &&
+                    tokenReader.PeekChar(1) == '\n' &&
+                    tokenReader.PeekChar(2) == '\r' &&
+                    tokenReader.PeekChar(3) == '\n')
+                {
+                    return new NullTextElement(tokenReader.GetToken());
+                }
+                //else if (tokenReader.PeekChar(0) == '\r' &&
+                //    tokenReader.PeekChar(1) == '\n')
+                //{
+                //    tokenReader.TakeChar();
+                //    lineEndings++;
+                //}
+                //else
+                //{
+                //    lineEndings = 0;
+                //}
+
                 if (tokenReader.PeekChar(0) == ']' &&
                     tokenReader.PeekChar(1) == ']')
                 {
@@ -199,6 +215,10 @@ namespace FountainEditor
                     return new NoteTextElement(tokenReader.GetToken());
                 }
 
+                //if (lineEndings == 2)
+                //{
+                //    return new NullTextElement(tokenReader.GetToken());
+                //}
                 tokenReader.TakeChar();
             }
 
@@ -212,7 +232,6 @@ namespace FountainEditor
                 if (tokenReader.PeekChar(0) == '\r' &&
                     tokenReader.PeekChar(1) == '\n')
                 {
-                    tokenReader.TakeChar(2);
                     break;
                 }
 
@@ -233,7 +252,7 @@ namespace FountainEditor
         {
             int count = 1;
 
-            while (!tokenReader.EndOfString && tokenReader.PeekChar() == '#')
+            while (tokenReader.PeekChar() == '#')
             {
                 tokenReader.TakeChar();
                 count++;
@@ -244,7 +263,6 @@ namespace FountainEditor
                 if (tokenReader.PeekChar(0) == '\r' &&
                     tokenReader.PeekChar(1) == '\n')
                 {
-                    tokenReader.TakeChar(2);
                     break;
                 }
 
