@@ -81,6 +81,7 @@ namespace FountainEditorTests
             var elements = new List<Element>
             {
                 new LineEnding(""),
+                new NullTextElement("SUPER"),
                 new NullTextElement("SMASH"),
                 new NullTextElement("CUT"),
                 new TransitionTextElement("TO:"),
@@ -89,7 +90,7 @@ namespace FountainEditorTests
 
             new Optimizer().Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[1], typeof(TransitionTextElement), "SMASH CUT TO:");
+            TestElementTypeAndValue(elements[1], typeof(TransitionTextElement), "SUPER SMASH CUT TO:");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
         }
 
@@ -121,13 +122,21 @@ namespace FountainEditorTests
         {
             var elements = new List<Element>
             {
+                new CharacterTextElement("Mr. Test"),
+                new LineEnding(""),
+                new ParentheticalTextElement("Wryly"),
+                new LineEnding(""),
                 new NullTextElement("Test"),
                 new NullTextElement("Test"),
                 new ParentheticalTextElement("(Test)."),
             };
 
             new Optimizer().Optimize(elements);
-            TestElementTypeAndValue(elements[0], typeof(ActionTextElement), "Test Test (Test).");
+            TestElementTypeAndValue(elements[0], typeof(CharacterTextElement), "Mr. Test");
+            TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[2], typeof(ParentheticalTextElement), "Wryly");
+            TestElementTypeAndValue(elements[3], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[4], typeof(ActionTextElement), "Test Test (Test).");
         }
 
         private static void TestElementTypeAndValue(Element element, Type type, string value)
