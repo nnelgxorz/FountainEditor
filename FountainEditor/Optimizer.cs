@@ -13,11 +13,24 @@ namespace FountainEditor
         {
             for (int i = 0; i < elements.Count; i++)
             {
-                if (elements[i] is LineEnding)
+                if (elements[i] is TransitionTextElement &&
+                    elements[i].Text.Contains("TO:"))
                 {
+                    var transitionElements = ScanTransition(elements, i).ToArray();
+                    var transitionText = string.Join(" ", transitionElements.Select(e => e.Text));
+
+                    foreach (var transitionElement in transitionElements)
+                    {
+                        elements.Remove(transitionElement);
+                    }
+
+                    elements.Insert(i -= 2, new TransitionTextElement(transitionText));
                     i++;
                 }
+            }
 
+            for (int i = 0; i < elements.Count; i++)
+            {
                 if (elements[i] is NullTextElement &&
                     CheckUpper(elements[i].Text) &&
                     !elements[i].Text.StartsWith("^"))
@@ -123,21 +136,6 @@ namespace FountainEditor
                         processDialogue(elements, i);
                         i++;
                     }
-                }
-
-                if (elements[i] is TransitionTextElement &&
-                    elements[i].Text.Contains("TO:"))
-                {
-                    var transitionElements = ScanTransition(elements, i).ToArray();
-                    var transitionText = string.Join(" ", transitionElements.Select(e => e.Text));
-
-                    foreach (var transitionElement in transitionElements)
-                    {
-                        elements.Remove(transitionElement);
-                    }
-
-                    elements.Insert(i, new TransitionTextElement(transitionText));
-                    i++;
                 }
 
                 if (elements[i] is NullTextElement)

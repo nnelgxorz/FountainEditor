@@ -180,6 +180,7 @@ namespace FountainEditorTests
         {
             var elements = new List<Element>
             {
+                new LineEnding(""),
                 new NullTextElement("SMASH"),
                 new NullTextElement("CUT"),
                 new TransitionTextElement("TO:"),
