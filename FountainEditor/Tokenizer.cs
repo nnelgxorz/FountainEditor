@@ -42,6 +42,7 @@ namespace FountainEditor
                             return new NullTextElement(word);
                     }
                 }
+
                 if (tokenReader.PeekChar(0) == ' ' &&
                     tokenReader.PeekChar(1) == ' ')
                 {
@@ -49,7 +50,6 @@ namespace FountainEditor
                     return new NullTextElement(tokenReader.GetToken());
                 }
                     
-
                 if (tokenReader.PeekChar(0) == '\r' && 
                     tokenReader.PeekChar(1) == '\n')
                 {
@@ -144,6 +144,7 @@ namespace FountainEditor
 
                 tokenReader.TakeChar();
             }
+
             return new NullTextElement(tokenReader.GetToken());
         }
 

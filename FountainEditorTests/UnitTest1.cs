@@ -106,6 +106,7 @@ namespace FountainEditorTests
             Assert.AreEqual(typeof(NullTextElement), tokens[1].GetType());
         }
     }
+
     [TestClass]
     public class OptimizerTests
     {
