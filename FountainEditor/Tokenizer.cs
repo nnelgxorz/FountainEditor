@@ -153,6 +153,7 @@ namespace FountainEditor
 
                 if (tokenReader.PeekChar() == ')')
                 {
+                    tokenReader.TakeChar();
                     return new ParentheticalTextElement(tokenReader.GetToken());
                 }
 
