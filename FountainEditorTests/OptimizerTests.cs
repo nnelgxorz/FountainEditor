@@ -228,6 +228,26 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[7], typeof(DialogueTextElement), "Test Test Test. ");
         }
 
+        [TestMethod]
+        public void ForcedCharacterName()
+        {
+            var elements = new List<Element>
+            {
+                new LineEnding(""),
+                new NullTextElement("@McTEST"),
+                new LineEnding(""),
+                new NullTextElement("Test"),
+                new NullTextElement("Test"),
+                new NullTextElement("Test."),
+            };
+
+            new Optimizer().Optimize(elements);
+            TestElementTypeAndValue(elements[0], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[1], typeof(CharacterTextElement), "@McTEST");
+            TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[3], typeof(DialogueTextElement), "Test Test Test.");
+            
+        }
         private static void TestElementTypeAndValue(Element element, Type type, string value)
         {
             Assert.AreEqual(type, element.GetType());

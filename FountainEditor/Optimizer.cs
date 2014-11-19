@@ -57,6 +57,20 @@ namespace FountainEditor
                     continue;
                 }
 
+                if (elements[i].Text.StartsWith("@") && elements[i - 1] is LineEnding)
+                {
+                    var characterElements = ScanForward(elements, i).ToArray();
+                    var characterName = string.Join(" ", characterElements.Select(e => e.Text));
+
+                    foreach (var characterElement in characterElements)
+                    {
+                        elements.Remove(characterElement);
+                    }
+
+                    elements.Insert(i, new CharacterTextElement(characterName));
+
+                }
+
                 if (i >= 2 &&
                     elements[i - 0] is NullTextElement && 
                     elements[i - 1] is LineEnding)
