@@ -33,8 +33,9 @@ namespace FountainEditor
             for (int i = 0; i < elements.Count; i++)
             {
                 if (elements[i] is NullTextElement &&
-                    CheckUpper(elements[i].Text) && 
-                    elements[i -1] is LineEnding)
+                    CheckUpper(elements[i].Text) &&
+                    elements[i - 1] is LineEnding &&
+                    elements[i].Text.Length > 1)
                 {
                     var characterElements = ScanCharacter(elements, i).ToArray();
                     var characterName = string.Join(" ", characterElements.Select(e => e.Text));
@@ -53,35 +54,54 @@ namespace FountainEditor
                         elements.Insert(i, new CharacterTextElement(characterName));
                     }
                     i++;
+                }
 
-                    if (elements[i] is LineEnding)
+                if (elements[i] is NullTextElement && 
+                    elements[i - 1] is LineEnding && 
+                    elements[i - 2] is CharacterTextElement)
+                {
+                    var dialogueElements = ScanDialogue(elements, i).ToArray();
+                    var dialogue = string.Join(" ", dialogueElements.Select(e => e.Text));
+
+                    foreach (var dialogueElement in dialogueElements)
                     {
-                        i++;
+                        elements.Remove(dialogueElement);
                     }
 
-                    if (elements[i] is ParentheticalTextElement)
-                    {
-                        i++;
+                    elements.Insert(i, new DialogueTextElement(dialogue));
+                    i++;
+                }
 
-                        if (elements[i] is LineEnding)
-                        {
-                            i++;
-                        }
+                if (elements[i] is NullTextElement &&
+                    elements[i - 1] is LineEnding &&
+                    elements[i - 2] is DualDialogueTextElement)
+                {
+                    var dialogueElements = ScanDialogue(elements, i).ToArray();
+                    var dialogue = string.Join(" ", dialogueElements.Select(e => e.Text));
+
+                    foreach (var dialogueElement in dialogueElements)
+                    {
+                        elements.Remove(dialogueElement);
                     }
 
-                    if (elements[i] is NullTextElement)
+                    elements.Insert(i, new DialogueTextElement(dialogue));
+                    i++;
+                }
+
+                if (elements[i] is NullTextElement && 
+                    elements[i - 1] is LineEnding && 
+                    elements[i - 2] is ParentheticalTextElement)
+                {
+                    var dialogueElements = ScanDialogue(elements, i).ToArray();
+                    var dialogue = string.Join(" ", dialogueElements.Select(e => e.Text));
+
+                    foreach (var dialogueElement in dialogueElements)
                     {
-                        var dialogueElements = ScanDialogue(elements, i).ToArray();
-                        var dialogue = string.Join(" ", dialogueElements.Select(e => e.Text));
-
-                        foreach (var dialogueElement in dialogueElements)
-                        {
-                            elements.Remove(dialogueElement);
-                        }
-
-                        elements.Insert(i, new DialogueTextElement(dialogue));
-                        i++;
+                        elements.Remove(dialogueElement);
                     }
+
+                    elements.Insert(i, new DialogueTextElement(dialogue));
+                    i++;
                 }
 
                 if (elements[i] is NullTextElement && elements[i].Text.StartsWith("."))
@@ -117,7 +137,7 @@ namespace FountainEditor
             {
                 if (elements[i] is ParentheticalTextElement)
                 {
-                    if(elements[i - 1] is LineEnding && elements[i - 2] is CharacterTextElement)
+                    if(elements[i - 1] is LineEnding && elements[i + 1] is LineEnding)
                     {
                         break;
                     }
@@ -185,10 +205,12 @@ namespace FountainEditor
         {
             for (int i = start; i < elements.Count; i++)
             {
-                if (elements[i] is LineEnding && elements[i + 1] is LineEnding)
+                if (elements[i] is LineEnding && elements[i + 1] is LineEnding ||
+                    elements[i] is LineEnding && elements[i + 1] is ParentheticalTextElement)
                 {
                     yield break;
                 }
+
                 yield return elements[i];
             }
         }

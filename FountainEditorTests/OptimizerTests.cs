@@ -19,7 +19,7 @@ namespace FountainEditorTests
                 new NullTextElement("TEST"),
                 new ParentheticalTextElement("(O.S.)"),
                 new LineEnding(""),
-                new ParentheticalTextElement("Hmm"),
+                new ParentheticalTextElement("(Hmm)"),
                 new LineEnding(""),
                 new NullTextElement("I"),
                 new NullTextElement("love"),
@@ -41,7 +41,7 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[0], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[1], typeof(CharacterTextElement), "TESTY TEST (O.S.)");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[3], typeof(ParentheticalTextElement), "Hmm");
+            TestElementTypeAndValue(elements[3], typeof(ParentheticalTextElement), "(Hmm)");
             TestElementTypeAndValue(elements[4], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[5], typeof(DialogueTextElement), "I love tests");
             TestElementTypeAndValue(elements[6], typeof(LineEnding), "");
@@ -199,7 +199,7 @@ namespace FountainEditorTests
             var elements = new List<Element>
             {
                 new LineEnding(""),
-                new NullTextElement("@McTEST"),
+                new NullTextElement("TEST"),
                 new LineEnding(""),
                 new NullTextElement("Test"),
                 new NullTextElement("Test"),
@@ -215,7 +215,7 @@ namespace FountainEditorTests
 
             new Optimizer().Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[1], typeof(CharacterTextElement), "@McTEST");
+            TestElementTypeAndValue(elements[1], typeof(CharacterTextElement), "TEST");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[3], typeof(DialogueTextElement), "Test Test Test.");
             TestElementTypeAndValue(elements[4], typeof(LineEnding), "");
