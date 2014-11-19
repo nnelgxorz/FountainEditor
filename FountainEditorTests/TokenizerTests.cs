@@ -110,7 +110,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnLineEnding()
         {
-            var tokens = new Tokenizer().Parse("T\r\n");
+            var tokens = new Tokenizer().Parse("T \r\n");
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
             Assert.AreEqual(typeof(LineEnding), tokens[1].GetType());
