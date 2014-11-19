@@ -15,7 +15,6 @@ namespace FountainEditorTests
             var tokens = new Tokenizer().Parse("# Outline Element");
 
             Assert.AreEqual(typeof(OutlineTextElement), tokens[0].GetType());
-            Assert.AreEqual(typeof(LineEnding), tokens[1].GetType());
         }
 
         [TestMethod]
@@ -29,7 +28,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnSceneHeadingINT()
         {
-            var tokens = new Tokenizer().Parse("Int. Scene Heading - Day");
+            var tokens = new Tokenizer().Parse("Int. SceneHeading - Day");
 
             Assert.AreEqual(typeof(SceneHeadingTextElement), tokens[0].GetType());
         }
@@ -102,7 +101,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnNullTextElement()
         {
-            var tokens = new Tokenizer().Parse("Blah\r\n");
+            var tokens = new Tokenizer().Parse("Blah");
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
 
@@ -111,7 +110,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnLineEnding()
         {
-            var tokens = new Tokenizer().Parse("Blah\r\n");
+            var tokens = new Tokenizer().Parse("Blah \r\n");
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
             Assert.AreEqual(typeof(LineEnding), tokens[1].GetType());
