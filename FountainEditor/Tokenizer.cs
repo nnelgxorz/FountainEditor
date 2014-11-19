@@ -22,7 +22,8 @@ namespace FountainEditor
         {
             while (!tokenReader.EndOfString)
             {
-                if (tokenReader.PeekChar() == ' ')
+                if (tokenReader.PeekChar() == ' ' ||
+                    tokenReader.PeekChar() == '\r')
                 {
                     var word = tokenReader.GetToken();
                     tokenReader.SkipChar();
