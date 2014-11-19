@@ -14,7 +14,7 @@ namespace FountainEditor
             for (int i = 0; i < elements.Count; i++)
             {
                 if (elements[i] is TransitionTextElement &&
-                    elements[i].Text.Contains("to:"))
+                    !elements[i].Text.StartsWith("."))
                 {
                     var transitionElements = ScanBackward(elements, i).ToArray();
                     Array.Reverse(transitionElements);
