@@ -7,8 +7,7 @@ namespace FountainEditor
     {
         static void Main(params string[] args)
         { 
-            var text = new StreamReader(@"C:\Users\Glenn\Desktop\test\screenplayIN.txt");
-            //var text = new StreamReader(@"C:\Users\Glenn\Desktop\test\BigFishScript.txt");
+            var text = new StreamReader(@"C:\Users\Glenn\Desktop\test\screenplayIN1.txt");
 
             var tokenizer = new Tokenizer();
             var tokens = tokenizer.Parse(text.ReadToEnd());
