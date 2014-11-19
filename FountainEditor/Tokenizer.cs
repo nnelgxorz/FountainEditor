@@ -28,7 +28,7 @@ namespace FountainEditor
                     var word = tokenReader.GetToken();
                     tokenReader.SkipChar();
 
-                    switch (word.ToUpper())
+                    switch (word.ToLower())
                     {
                         case "int.":
                             return new SceneHeadingTextElement(word);
