@@ -22,8 +22,7 @@ namespace FountainEditor
         {
             while (!tokenReader.EndOfString)
             {
-                if (tokenReader.PeekChar() == ' ' ||
-                    tokenReader.PeekChar() == '\r')
+                if (tokenReader.PeekChar() == ' ')
                 {
                     var word = tokenReader.GetToken();
                     tokenReader.SkipChar();
@@ -36,6 +35,21 @@ namespace FountainEditor
                         case "ext.":
                             return new SceneHeadingTextElement(word);
                         
+                        case "to:":
+                            return new TransitionTextElement(word);
+
+                        default:
+                            return new NullTextElement(word);
+                    }
+                }
+
+                if (tokenReader.PeekChar(1) == '\r')
+                {
+                    var word = tokenReader.GetToken();
+                    tokenReader.TakeChar();
+
+                    switch (word.ToLower())
+                    {
                         case "to:":
                             return new TransitionTextElement(word);
 
