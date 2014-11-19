@@ -131,9 +131,11 @@ namespace FountainEditorTests
                 new LineEnding(""),
                 new ParentheticalTextElement("Wryly"),
                 new LineEnding(""),
+                new LineEnding(""),
                 new NullTextElement("Test"),
                 new NullTextElement("Test"),
                 new ParentheticalTextElement("(Test)."),
+                new LineEnding(""),
             };
 
             new Optimizer().Optimize(elements);
@@ -141,7 +143,9 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[2], typeof(ParentheticalTextElement), "Wryly");
             TestElementTypeAndValue(elements[3], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[4], typeof(ActionTextElement), "Test Test (Test).");
+            TestElementTypeAndValue(elements[4], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[5], typeof(ActionTextElement), "Test Test (Test).");
+            TestElementTypeAndValue(elements[6], typeof(LineEnding), "");
         }
 
         [TestMethod]
@@ -221,9 +225,7 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[4], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[5], typeof(ParentheticalTextElement), "(Test)");
             TestElementTypeAndValue(elements[6], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[7], typeof(DialogueTextElement), "Test Test Test.");
-            TestElementTypeAndValue(elements[8], typeof(LineEnding), "");
-
+            TestElementTypeAndValue(elements[7], typeof(DialogueTextElement), "Test Test Test. ");
         }
 
         private static void TestElementTypeAndValue(Element element, Type type, string value)
