@@ -28,7 +28,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnSceneHeadingINT()
         {
-            var tokens = new Tokenizer().Parse("Int. SceneHeading - Day");
+            var tokens = new Tokenizer().Parse("Int. SceneHeading - Day\r\n");
 
             Assert.AreEqual(typeof(SceneHeadingTextElement), tokens[0].GetType());
         }
@@ -36,7 +36,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnSceneHeadingEXT()
         {
-            var tokens = new Tokenizer().Parse("Ext. Scene Heading - Day");
+            var tokens = new Tokenizer().Parse("Ext. Scene Heading - Day\r\n");
 
             Assert.AreEqual(typeof(SceneHeadingTextElement), tokens[0].GetType());
         }
@@ -44,7 +44,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnTransition()
         {
-            var tokens = new Tokenizer().Parse("Cut to:");
+            var tokens = new Tokenizer().Parse("Cut to: ");
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
             Assert.AreEqual(typeof(TransitionTextElement), tokens[1].GetType());
@@ -93,7 +93,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnParenthetical()
         {
-            var tokens = new Tokenizer().Parse("(Wryly)");
+            var tokens = new Tokenizer().Parse("(Wryly)\r\n");
 
             Assert.AreEqual(typeof(ParentheticalTextElement), tokens[0].GetType());
         }
@@ -101,7 +101,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnNullTextElement()
         {
-            var tokens = new Tokenizer().Parse("Blah");
+            var tokens = new Tokenizer().Parse("Blah ");
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
 

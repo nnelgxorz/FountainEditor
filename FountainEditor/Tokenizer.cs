@@ -45,8 +45,8 @@ namespace FountainEditor
 
                 if (tokenReader.PeekChar(1) == '\r')
                 {
-                    var word = tokenReader.GetToken();
                     tokenReader.TakeChar();
+                    var word = tokenReader.GetToken();
 
                     switch (word.ToLower())
                     {
