@@ -14,7 +14,7 @@ namespace FountainEditor
             for (int i = 0; i < elements.Count; i++)
             {
                 if (elements[i] is TransitionTextElement &&
-                    elements[i].Text.Contains("TO:"))
+                    elements[i].Text.Contains("to:"))
                 {
                     var transitionElements = ScanBackward(elements, i).ToArray();
                     Array.Reverse(transitionElements);
@@ -32,6 +32,11 @@ namespace FountainEditor
 
             for (int i = 0; i < elements.Count; i++)
             {
+                if (elements[i] is LineEnding)
+                {
+                    continue;
+                }
+
                 if (elements[i] is NullTextElement &&
                     CheckUpper(elements[i].Text) &&
                     elements[i - 1] is LineEnding &&
