@@ -12,7 +12,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnOutlineCheck()
         {
-            var tokens = new Tokenizer().Parse("# Outline Element \r\n");
+            var tokens = new Tokenizer().Parse("# Outline Element");
 
             Assert.AreEqual(typeof(OutlineTextElement), tokens[0].GetType());
             Assert.AreEqual(typeof(LineEnding), tokens[1].GetType());
@@ -102,7 +102,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnNullTextElement()
         {
-            var tokens = new Tokenizer().Parse("  ");
+            var tokens = new Tokenizer().Parse("Blah\r\n");
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
 
@@ -111,9 +111,11 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnLineEnding()
         {
-            var tokens = new Tokenizer().Parse("\r\n");
+            var tokens = new Tokenizer().Parse("Blah\r\n");
 
-            Assert.AreEqual(typeof(LineEnding), tokens[0].GetType());
+            Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
+            Assert.AreEqual(typeof(LineEnding), tokens[1].GetType());
+
         }
     }
 }
