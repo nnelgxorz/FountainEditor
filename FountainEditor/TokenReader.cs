@@ -20,6 +20,14 @@ namespace FountainEditor
             }
         }
 
+        public bool LastChar
+        {
+            get
+            {
+                return (offset + length) == text.Length - 1;
+            }
+        }
+
         public TokenReader(string text) 
         {
             this.text = text;
