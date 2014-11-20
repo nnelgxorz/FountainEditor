@@ -149,7 +149,7 @@ namespace FountainEditor
             {
                 if (elements[i] is NullTextElement)
                 {
-                    var actionElements = ScanForward(elements, i).ToArray();
+                    var actionElements = ScanAction(elements, i).ToArray();
                     var actionText = string.Join(" ", actionElements.Select(e => e.Text));
 
                     foreach (var actionElement in actionElements)
@@ -228,6 +228,19 @@ namespace FountainEditor
             for (int i = start; i < elements.Count; i--)
             {
                 if (elements[i] is LineEnding)
+                {
+                    yield break;
+                }
+                yield return elements[i];
+            }
+        }
+
+        public IEnumerable<Element> ScanAction(List<Element> elements, int start)
+        {
+            for (int i = start; i < elements.Count; i++)
+            {
+                if (elements[i] is LineEnding ||
+                    elements[i] is NoteTextElement)
                 {
                     yield break;
                 }
