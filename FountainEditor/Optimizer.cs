@@ -32,7 +32,8 @@ namespace FountainEditor
 
             for (int i = 0; i < elements.Count; i++)
             {
-                if (elements[i] is LineEnding)
+                if (elements[i] is LineEnding ||
+                    elements[i] is TabElement)
                 {
                     continue;
                 }
