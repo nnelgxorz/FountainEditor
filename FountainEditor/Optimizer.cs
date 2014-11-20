@@ -89,7 +89,8 @@ namespace FountainEditor
                 {
                     if (elements[i - 2] is CharacterTextElement ||
                         elements[i - 2] is DualDialogueTextElement ||
-                        elements[i - 2] is ParentheticalTextElement)
+                        elements[i - 2] is ParentheticalTextElement ||
+                        elements[i - 2] is DialogueTextElement)
                     {
                         var dialogueElements = ScanDialogue(elements, i).ToArray();
                         var dialogue = string.Join(" ", dialogueElements.Select(e => e.Text));
@@ -130,6 +131,18 @@ namespace FountainEditor
 
                     elements.Insert(i, new SceneHeadingTextElement(sceneHeading));
                     continue;
+                }
+
+                if (elements[i] is DoubleSpaceElement &&
+                    elements[i - 1] is LineEnding)
+                {
+                    var doubleSpaceText = elements[i].Text;
+
+                    if (elements[i -2] is DialogueTextElement)
+                    {
+                        elements.Remove(elements[i]);
+                        elements.Insert(i, new DialogueTextElement(doubleSpaceText));
+                    } 
                 }
             }
 
@@ -207,8 +220,9 @@ namespace FountainEditor
             {
                 if (i < (elements.Count - 1))
                 {
-                    if (elements[i] is LineEnding && elements[i + 1] is LineEnding ||
-                        elements[i] is LineEnding && elements[i + 1] is ParentheticalTextElement)
+                    //if (elements[i] is LineEnding && elements[i + 1] is LineEnding ||
+                        //elements[i] is LineEnding && elements[i + 1] is ParentheticalTextElement)
+                    if (elements[i] is LineEnding)
                     {
                         yield break;
                     }
