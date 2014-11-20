@@ -56,9 +56,9 @@ namespace FountainEditorTests
                 new NullTextElement("I"),
                 new SingleSpaceElement(" "),
                 new NullTextElement("love"),
-                 new SingleSpaceElement(" "),
+                new SingleSpaceElement(" "),
                 new NullTextElement("tests"),
-                 new SingleSpaceElement(" "),
+                new SingleSpaceElement(" "),
                 new NullTextElement("too."),
                 new LineEnding(""),
                 new LineEnding("")
@@ -82,7 +82,7 @@ namespace FountainEditorTests
                 new NullTextElement("test"),
                 new SingleSpaceElement(" "),
                 new NullTextElement("- Day"),
-                new LineEnding(""),
+                new SingleSpaceElement(""),
                 new NullTextElement("Test."),
 
             };
@@ -103,7 +103,7 @@ namespace FountainEditorTests
                 new NullTextElement("on"),
                 new SingleSpaceElement(" "),
                 new NullTextElement("test"),
-                new LineEnding(""),
+                new SingleSpaceElement(""),
                 new NullTextElement("Test."),
             };
 
@@ -169,9 +169,9 @@ namespace FountainEditorTests
                 new LineEnding(""),
                 new LineEnding(""),
                 new NullTextElement("Test"),
-                 new SingleSpaceElement(" "),
+                new SingleSpaceElement(" "),
                 new NullTextElement("Test"),
-                 new SingleSpaceElement(" "),
+                new SingleSpaceElement(" "),
                 new ParentheticalTextElement("(Test)."),
                 new LineEnding(""),
             };
@@ -192,13 +192,13 @@ namespace FountainEditorTests
             var elements = new List<Element>
             {
                 new NullTextElement("What"),
-                 new SingleSpaceElement(" "),
+                new SingleSpaceElement(" "),
                 new NullTextElement("a"),
-                 new SingleSpaceElement(" "),
+                new SingleSpaceElement(" "),
                 new NullTextElement("CRAZY"),
-                 new SingleSpaceElement(" "),
+                new SingleSpaceElement(" "),
                 new NullTextElement("TEST,"),
-                 new SingleSpaceElement(" "),
+                new SingleSpaceElement(" "),
                 new NullTextElement("man!"),
                 new LineEnding("")
             };
@@ -216,16 +216,16 @@ namespace FountainEditorTests
                 new CharacterTextElement("TESTO"),
                 new LineEnding("\r\n"),
                 new NullTextElement("This"),
-                 new SingleSpaceElement(" "),
+                new SingleSpaceElement(" "),
                 new NullTextElement("is"),
-                new LineEnding("\r\n"),
+                new SingleSpaceElement("\r\n"),
                 new NullTextElement("Dialogue."),
                 new LineEnding("\r\n"),
                 new LineEnding("\r\n"),
                 new NullTextElement("This"),
-                 new SingleSpaceElement(" "),
+                new SingleSpaceElement(" "),
                 new NullTextElement("is"),
-                 new SingleSpaceElement(" "),
+                new SingleSpaceElement(" "),
                 new NullTextElement("not.")
             };
 
@@ -248,7 +248,7 @@ namespace FountainEditorTests
                 new CharacterTextElement("TESTO"),
                 new LineEnding("\r\n"),
                 new NullTextElement("This"),
-                 new SingleSpaceElement(" "),
+                new SingleSpaceElement(" "),
                 new NullTextElement("is"),
                 new LineEnding("\r\n"),
                 new DoubleSpaceElement("  "),
@@ -278,13 +278,13 @@ namespace FountainEditorTests
                 new CharacterTextElement("TEST"),
                 new LineEnding(""),
                 new NullTextElement("Test"),
-                 new SingleSpaceElement(" "),
+                new SingleSpaceElement(" "),
                 new NullTextElement("Test."),
                 new LineEnding(""),
                 new ParentheticalTextElement("(Test)"),
                 new LineEnding(""),
                 new NullTextElement("Test"),
-                 new SingleSpaceElement(" "),
+                new SingleSpaceElement(" "),
                 new NullTextElement("Test."),
                 new LineEnding(""),
             };
@@ -326,11 +326,11 @@ namespace FountainEditorTests
             var elements = new List<Element>
             {
                 new NullTextElement("!TEST"),
-                 new SingleSpaceElement(" "),
+                new SingleSpaceElement(" "),
                 new NullTextElement("TEST"),
                 new LineEnding(""),
                 new NullTextElement("Test"),
-                 new SingleSpaceElement(" "),
+                new SingleSpaceElement(" "),
                 new NullTextElement("Test."),
             };
 
