@@ -43,7 +43,9 @@ namespace FountainEditor
                     }
                 }
 
-                if (tokenReader.PeekChar(1) == '\r')
+                if (tokenReader.PeekChar(1) == '\r' ||
+                    tokenReader.PeekChar(1) == '[' &&
+                    tokenReader.PeekChar(2) == '[')
                 {
                     tokenReader.TakeChar();
                     var word = tokenReader.GetToken();
