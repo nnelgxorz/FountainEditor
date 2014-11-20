@@ -161,5 +161,17 @@ namespace FountainEditorTests
             Assert.AreEqual(typeof(SingleSpaceElement), tokens[1].GetType());
             Assert.AreEqual(typeof(NullTextElement), tokens[2].GetType());
         }
+
+        [TestMethod]
+        public void ConsolidateTabs()
+        {
+            var tokens = new Tokenizer().Parse("\t\t\tBlah\r\n\t\tBlah.");
+
+            Assert.AreEqual(typeof(TabElement), tokens[0].GetType());
+            Assert.AreEqual(typeof(NullTextElement), tokens[1].GetType());
+            Assert.AreEqual(typeof(LineEnding), tokens[2].GetType());
+            Assert.AreEqual(typeof(TabElement), tokens[3].GetType());
+            Assert.AreEqual(typeof(NullTextElement), tokens[4].GetType());
+        }
     }
 }
