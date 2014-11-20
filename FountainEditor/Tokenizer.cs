@@ -37,30 +37,6 @@ namespace FountainEditor
                     }
                 }
 
-                if (tokenReader.PeekChar(1) == '\r' ||
-                tokenReader.PeekChar(1) == '[' &&
-                tokenReader.PeekChar(2) == '[' ||
-                tokenReader.PeekChar(1) == ' ')
-                {
-                    tokenReader.TakeChar();
-                    var word = tokenReader.GetToken();
-
-                    switch (word.ToLower())
-                    {
-                        case "int.":
-                            return new SceneHeadingTextElement(word);
-
-                        case "ext.":
-                            return new SceneHeadingTextElement(word);
-
-                        case "to:":
-                            return new TransitionTextElement(word);
-
-                        default:
-                            return new NullTextElement(word);
-                    }
-                }
-                
                 if (tokenReader.PeekChar(0) == '\r' && 
                     tokenReader.PeekChar(1) == '\n')
                 {
@@ -89,13 +65,6 @@ namespace FountainEditor
                     tokenReader.TakeChar();
                     return ScanSynopsis(tokenReader);
                 }
-                
-                if (tokenReader.PeekChar(0) == '[' &&
-                    tokenReader.PeekChar(1) == '[')
-                {
-                    tokenReader.TakeChar(2);
-                    return ScanNote(tokenReader);
-                }
 
                 if (tokenReader.PeekChar() == '>')
                 {
@@ -108,11 +77,43 @@ namespace FountainEditor
                     tokenReader.TakeChar();
                     return ScanLyrics(tokenReader);
                 }
-                
+
                 if (tokenReader.PeekChar() == '(')
                 {
                     tokenReader.TakeChar();
                     return ScanParenthetical(tokenReader);
+                }
+
+                if (tokenReader.PeekChar(1) == '\r' ||
+                tokenReader.PeekChar(1) == '[' &&
+                tokenReader.PeekChar(2) == '[' ||
+                tokenReader.PeekChar(1) == ' ')
+                {
+                    tokenReader.TakeChar();
+                    var word = tokenReader.GetToken();
+
+                    switch (word.ToLower())
+                    {
+                        case "int.":
+                            return new SceneHeadingTextElement(word);
+
+                        case "ext.":
+                            return new SceneHeadingTextElement(word);
+
+                        case "to:":
+                            return new TransitionTextElement(word);
+
+                        default:
+                            return new NullTextElement(word);
+                    }
+                }
+                
+                
+                if (tokenReader.PeekChar(0) == '[' &&
+                    tokenReader.PeekChar(1) == '[')
+                {
+                    tokenReader.TakeChar(2);
+                    return ScanNote(tokenReader);
                 }
 
                 tokenReader.TakeChar();
