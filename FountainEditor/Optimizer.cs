@@ -47,41 +47,47 @@ namespace FountainEditor
 
                 if (elements[i] is NullTextElement &&
                     CheckUpper(elements[i].Text) &&
-                    elements[i - 1] is LineEnding &&
                     elements[i].Text.Length > 1)
                 {
-                    var characterElements = ScanCharacter(elements, i).ToArray();
-                    var characterName = string.Join("", characterElements.Select(e => e.Text));
-
-                    foreach (var characterElement in characterElements)
+                    if (elements[i - 1] is LineEnding ||
+                        elements[i - 1] is TabElement)
                     {
-                        elements.Remove(characterElement);
-                    }
+                        var characterElements = ScanCharacter(elements, i).ToArray();
+                        var characterName = string.Join("", characterElements.Select(e => e.Text));
 
-                    if (characterName.StartsWith("^"))
-                    {
-                        elements.Insert(i, new DualDialogueTextElement(characterName));
-                    }
-                    else
-                    {
-                        elements.Insert(i, new CharacterTextElement(characterName));
-                    }
+                        foreach (var characterElement in characterElements)
+                        {
+                            elements.Remove(characterElement);
+                        }
 
+                        if (characterName.StartsWith("^"))
+                        {
+                            elements.Insert(i, new DualDialogueTextElement(characterName));
+                        }
+                        else
+                        {
+                            elements.Insert(i, new CharacterTextElement(characterName));
+                        }
+                    }
                     continue;
                 }
 
-                if (elements[i].Text.StartsWith("@") && elements[i - 1] is LineEnding)
+                if (elements[i].Text.StartsWith("@"))
                 {
-                    var characterElements = ScanForward(elements, i).ToArray();
-                    var characterName = string.Join("", characterElements.Select(e => e.Text));
-
-                    foreach (var characterElement in characterElements)
+                    if (elements[i - 1] is LineEnding ||
+                        elements[i - 1] is TabElement)
                     {
-                        elements.Remove(characterElement);
+                        var characterElements = ScanForward(elements, i).ToArray();
+                        var characterName = string.Join("", characterElements.Select(e => e.Text));
+
+                        foreach (var characterElement in characterElements)
+                        {
+                            elements.Remove(characterElement);
+                        }
+
+                        elements.Insert(i, new CharacterTextElement(characterName));
                     }
-
-                    elements.Insert(i, new CharacterTextElement(characterName));
-
+                    continue;
                 }
 
                 if (i >= 2 &&
@@ -221,8 +227,6 @@ namespace FountainEditor
             {
                 if (i < (elements.Count - 1))
                 {
-                    //if (elements[i] is LineEnding && elements[i + 1] is LineEnding ||
-                        //elements[i] is LineEnding && elements[i + 1] is ParentheticalTextElement)
                     if (elements[i] is LineEnding)
                     {
                         yield break;
@@ -249,7 +253,8 @@ namespace FountainEditor
         {
             for (int i = start; i < elements.Count; i--)
             {
-                if (elements[i] is LineEnding)
+                if (elements[i] is LineEnding ||
+                    elements[i] is TabElement)
                 {
                     yield break;
                 }
