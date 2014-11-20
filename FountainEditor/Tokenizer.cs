@@ -37,6 +37,12 @@ namespace FountainEditor
                     }
                 }
 
+                if (tokenReader.PeekChar() == '\t')
+                {
+                    tokenReader.TakeChar();
+                    return new TabElement(tokenReader.GetToken());
+                }
+
                 if (tokenReader.PeekChar(0) == '\r' && 
                     tokenReader.PeekChar(1) == '\n')
                 {
