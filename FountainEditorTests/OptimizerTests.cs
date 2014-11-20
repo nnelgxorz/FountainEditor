@@ -295,6 +295,23 @@ namespace FountainEditorTests
 
         }
 
+        [TestMethod]
+        public void PreserveCenteredText()
+        {
+            var elements = new List<Element>
+            {
+                new LineEnding(""),
+                new CenteredTextElement(">The End<"),
+                new LineEnding(""),
+            };
+
+            new Optimizer().Optimize(elements);
+            TestElementTypeAndValue(elements[0], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[1], typeof(CenteredTextElement), ">The End<");
+            TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
+
+        }
+
         private static void TestElementTypeAndValue(Element element, Type type, string value)
         {
             Assert.AreEqual(type, element.GetType());
