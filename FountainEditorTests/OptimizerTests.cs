@@ -424,7 +424,7 @@ namespace FountainEditorTests
             var elements = new List<Element>
             {
                 new TabElement(""),
-                new NullTextElement("TEST"),
+                new NullTextElement("@McTEST"),
                 new LineEnding(""),
                 new TabElement(""),
                 new NullTextElement("Test."),
@@ -433,7 +433,7 @@ namespace FountainEditorTests
 
             new Optimizer().Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(TabElement), "");
-            TestElementTypeAndValue(elements[1], typeof(CharacterTextElement), "TEST");
+            TestElementTypeAndValue(elements[1], typeof(CharacterTextElement), "@McTEST");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[3], typeof(TabElement), "");
             TestElementTypeAndValue(elements[4], typeof(DialogueTextElement), "Test.");
