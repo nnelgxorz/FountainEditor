@@ -83,25 +83,34 @@ namespace FountainEditorTests
                 new SingleSpaceElement(" "),
                 new NullTextElement("- Day"),
                 new LineEnding(""),
-                new NullTextElement("Test"),
-                new SingleSpaceElement(" "),
-                new NullTextElement("test."),
-                new LineEnding(""),
-                new NullTextElement(".Close"),
-                new SingleSpaceElement(" "),
-                new NullTextElement("on"),
-                new SingleSpaceElement(" "),
-                new NullTextElement("test"),
-                new LineEnding("")
+                new NullTextElement("Test."),
+
             };
 
             new Optimizer().Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(SceneHeadingTextElement), "int. test - Day");
             TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[2], typeof(ActionTextElement), "Test test.");
-            TestElementTypeAndValue(elements[3], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[4], typeof(SceneHeadingTextElement), ".Close on test");
-            TestElementTypeAndValue(elements[5], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[2], typeof(ActionTextElement), "Test.");
+        }
+
+        [TestMethod]
+        public void OptimizeForcedSceneHeadings()
+        {
+            var elements = new List<Element>
+            {
+                new NullTextElement(".Close"),
+                new SingleSpaceElement(" "),
+                new NullTextElement("on"),
+                new SingleSpaceElement(" "),
+                new NullTextElement("test"),
+                new LineEnding(""),
+                new NullTextElement("Test."),
+            };
+
+            new Optimizer().Optimize(elements);
+            TestElementTypeAndValue(elements[0], typeof(SceneHeadingTextElement), ".Close on test");
+            TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[2], typeof(ActionTextElement), "Test.");
         }
 
         [TestMethod]
