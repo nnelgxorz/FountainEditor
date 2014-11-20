@@ -47,13 +47,15 @@ namespace FountainEditorTests
             var tokens = new Tokenizer().Parse("Cut to:");
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
-            Assert.AreEqual(typeof(TransitionTextElement), tokens[1].GetType());
+            Assert.AreEqual(typeof(SingleSpaceElement), tokens[1].GetType());
+            Assert.AreEqual(typeof(TransitionTextElement), tokens[2].GetType());
+
         }
 
         [TestMethod]
         public void ReturnTransitionForced()
         {
-            var tokens = new Tokenizer().Parse(">Fade to Black");
+            var tokens = new Tokenizer().Parse("> Fade to Black");
 
             Assert.AreEqual(typeof(TransitionTextElement), tokens[0].GetType());
         }
@@ -113,7 +115,8 @@ namespace FountainEditorTests
             var tokens = new Tokenizer().Parse("T \r\n");
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
-            Assert.AreEqual(typeof(LineEnding), tokens[1].GetType());
+            Assert.AreEqual(typeof(SingleSpaceElement), tokens[1].GetType());
+            Assert.AreEqual(typeof(LineEnding), tokens[2].GetType());
 
         }
 
