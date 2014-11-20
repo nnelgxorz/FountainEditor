@@ -39,6 +39,13 @@ namespace FountainEditor
 
                 if (elements[i] is NullTextElement &&
                     CheckUpper(elements[i].Text) &&
+                    elements[i].Text.StartsWith("!"))
+                {
+                    continue;
+                }
+
+                if (elements[i] is NullTextElement &&
+                    CheckUpper(elements[i].Text) &&
                     elements[i - 1] is LineEnding &&
                     elements[i].Text.Length > 1)
                 {
