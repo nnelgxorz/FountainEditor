@@ -40,7 +40,7 @@ namespace FountainEditor
                 if (tokenReader.PeekChar() == '\t')
                 {
                     tokenReader.TakeChar();
-                    return new TabElement(tokenReader.GetToken());
+                    return ScanTabs(tokenReader);
                 }
 
                 if (tokenReader.PeekChar(0) == '\r' && 
@@ -143,6 +143,22 @@ namespace FountainEditor
                 default:
                     return new NullTextElement(lastword);
             }
+        }
+
+        private Element ScanTabs(TokenReader tokenReader)
+        {
+            while (!tokenReader.EndOfString)
+            {
+                if (tokenReader.PeekChar() == '\t')
+                {
+                    tokenReader.TakeChar();
+                }
+                else
+                {
+                    return new TabElement(tokenReader.GetToken());
+                }
+            }
+            return new TabElement(tokenReader.GetToken());
         }
 
         private Element ScanParenthetical(TokenReader tokenReader)
