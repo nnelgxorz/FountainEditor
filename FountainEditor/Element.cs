@@ -14,5 +14,7 @@ namespace FountainEditor
         {
             this.Text = text;
         }
+
+        public abstract string Print();
     }
 }

@@ -15,5 +15,10 @@ namespace FountainEditor.Elements
         {
             this.Level = level;
         }
+
+        public override string Print()
+        {
+            return string.Format("<O>{0}</O>", Text);
+        }
     }
 }

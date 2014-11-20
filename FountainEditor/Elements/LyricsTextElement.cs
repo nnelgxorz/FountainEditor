@@ -12,5 +12,10 @@ namespace FountainEditor.Elements
             : base(text)
         {
         }
+
+        public override string Print()
+        {
+            return string.Format("<L>{0}</L>", Text);
+        }
     }
 }
