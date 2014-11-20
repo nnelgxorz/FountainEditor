@@ -208,7 +208,7 @@ namespace FountainEditor
 
         private Element ScanNote(TokenReader tokenReader)
         {
-            while (!tokenReader.EndOfString)
+            while (!tokenReader.LastChar)
             {
                 if (tokenReader.PeekChar(0) == '\r' &&
                     tokenReader.PeekChar(1) == '\n' &&
