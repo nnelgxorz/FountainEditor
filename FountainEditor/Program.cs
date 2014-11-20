@@ -7,7 +7,7 @@ namespace FountainEditor
     {
         static void Main(params string[] args)
         { 
-            var text = new StreamReader(@"C:\Users\Glenn\Desktop\test\screenplayIN1.txt");
+            var text = new StreamReader(@"C:\Users\Glenn\Desktop\Test\screenplayIN.txt");
 
             var tokenizer = new Tokenizer();
             var tokens = tokenizer.Parse(text.ReadToEnd());
@@ -15,7 +15,7 @@ namespace FountainEditor
             var optimizer = new Optimizer();
             optimizer.Optimize(tokens);
 
-            var writer = new StreamWriter(@"C:\Users\Glenn\Desktop\test\screenplayOUT.txt");
+            var writer = new StreamWriter(@"C:\Users\Glenn\Desktop\Test\screenplayOUT.txt");
 
             foreach (var element in tokens)
             {
