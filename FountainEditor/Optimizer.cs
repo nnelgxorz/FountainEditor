@@ -112,6 +112,29 @@ namespace FountainEditor
                     }
                 }
 
+                if (i >= 3 &&
+                    elements[i - 0] is NullTextElement &&
+                    elements[i - 1] is TabElement &&
+                    elements[i - 2] is LineEnding)
+                {
+                    if (elements[i - 3] is CharacterTextElement ||
+                        elements[i - 3] is DualDialogueTextElement ||
+                        elements[i - 3] is ParentheticalTextElement ||
+                        elements[i - 3] is DialogueTextElement)
+                    {
+                        var dialogueElements = ScanDialogue(elements, i).ToArray();
+                        var dialogue = string.Join("", dialogueElements.Select(e => e.Text));
+
+                        foreach (var dialogueElement in dialogueElements)
+                        {
+                            elements.Remove(dialogueElement);
+                        }
+
+                        elements.Insert(i, new DialogueTextElement(dialogue));
+                        continue;
+                    }
+                }
+
                 if (elements[i] is NullTextElement && elements[i].Text.StartsWith("."))
                 {
                     var sceneHeadingElements = ScanForward(elements, i).ToArray();
