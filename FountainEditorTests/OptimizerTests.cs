@@ -213,15 +213,15 @@ namespace FountainEditorTests
             };
 
             new Optimizer().Optimize(elements);
-            TestElementTypeAndValue(elements[1], typeof(CharacterTextElement), "TESTO");
-            TestElementTypeAndValue(elements[2], typeof(LineEnding), "\r\n");
-            TestElementTypeAndValue(elements[3], typeof(DialogueTextElement), "This is");
-            TestElementTypeAndValue(elements[4], typeof(LineEnding), "\r\n");
-            TestElementTypeAndValue(elements[5], typeof(NullTextElement), "  ");
+            TestElementTypeAndValue(elements[0], typeof(CharacterTextElement), "TESTO");
+            TestElementTypeAndValue(elements[1], typeof(LineEnding), "\r\n");
+            TestElementTypeAndValue(elements[2], typeof(DialogueTextElement), "This is");
+            TestElementTypeAndValue(elements[3], typeof(LineEnding), "\r\n");
+            TestElementTypeAndValue(elements[4], typeof(DialogueTextElement), "  ");
             TestElementTypeAndValue(elements[5], typeof(LineEnding), "\r\n");
-            TestElementTypeAndValue(elements[3], typeof(DialogueTextElement), "Dialogue.");
-            TestElementTypeAndValue(elements[4], typeof(LineEnding), "\r\n");
-            TestElementTypeAndValue(elements[5], typeof(LineEnding), "\r\n");
+            TestElementTypeAndValue(elements[6], typeof(DialogueTextElement), "Dialogue.");
+            TestElementTypeAndValue(elements[7], typeof(LineEnding), "\r\n");
+            TestElementTypeAndValue(elements[8], typeof(LineEnding), "\r\n");
         }
 
         [TestMethod]
