@@ -82,7 +82,7 @@ namespace FountainEditorTests
                 new NullTextElement("test"),
                 new SingleSpaceElement(" "),
                 new NullTextElement("- Day"),
-                new SingleSpaceElement(""),
+                new LineEnding(""),
                 new NullTextElement("Test."),
 
             };
@@ -103,7 +103,7 @@ namespace FountainEditorTests
                 new NullTextElement("on"),
                 new SingleSpaceElement(" "),
                 new NullTextElement("test"),
-                new SingleSpaceElement(""),
+                new LineEnding(""),
                 new NullTextElement("Test."),
             };
 
@@ -218,7 +218,7 @@ namespace FountainEditorTests
                 new NullTextElement("This"),
                 new SingleSpaceElement(" "),
                 new NullTextElement("is"),
-                new SingleSpaceElement("\r\n"),
+                new LineEnding("\r\n"),
                 new NullTextElement("Dialogue."),
                 new LineEnding("\r\n"),
                 new LineEnding("\r\n"),
