@@ -53,6 +53,35 @@ namespace FountainEditorTests
         }
 
         [TestMethod]
+        public void OptimizeDualDialogueCharacterAndDialogue()
+        {
+            var elements = new List<Element>
+            {
+                new LineEnding(""),
+                new NullTextElement("^OTHER"),
+                new SingleSpaceElement(" "),
+                new NullTextElement("TEST"),
+                new LineEnding(""),
+                new NullTextElement("I"),
+                new SingleSpaceElement(" "),
+                new NullTextElement("love"),
+                 new SingleSpaceElement(" "),
+                new NullTextElement("tests"),
+                 new SingleSpaceElement(" "),
+                new NullTextElement("too."),
+                new LineEnding(""),
+                new LineEnding("")
+            };
+
+            new Optimizer().Optimize(elements);
+            TestElementTypeAndValue(elements[0], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[1], typeof(DualDialogueTextElement), "^OTHER TEST");
+            TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[3], typeof(DialogueTextElement), "I love tests too.");
+            TestElementTypeAndValue(elements[4], typeof(LineEnding), "");
+        }
+
+        [TestMethod]
         public void OptimizeSceneHeadings()
         {
             var elements = new List<Element>
