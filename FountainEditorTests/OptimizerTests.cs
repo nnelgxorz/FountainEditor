@@ -262,9 +262,9 @@ namespace FountainEditorTests
             };
 
             new Optimizer().Optimize(elements);
-            TestElementTypeAndValue(elements[1], typeof(ActionTextElement), "!TEST TEST");
-            TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[3], typeof(ActionTextElement), "Test Test.");
+            TestElementTypeAndValue(elements[0], typeof(ActionTextElement), "!TEST TEST");
+            TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[2], typeof(ActionTextElement), "Test Test.");
 
         }
 
