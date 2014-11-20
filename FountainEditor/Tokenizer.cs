@@ -43,20 +43,23 @@ namespace FountainEditor
                     }
                 }
 
-                if (tokenReader.PeekChar(1) == '\r' ||
+                if (!tokenReader.LastChar)
+                {
+                    if (tokenReader.PeekChar(1) == '\r' ||
                     tokenReader.PeekChar(1) == '[' &&
                     tokenReader.PeekChar(2) == '[')
-                {
-                    tokenReader.TakeChar();
-                    var word = tokenReader.GetToken();
-
-                    switch (word.ToLower())
                     {
-                        case "to:":
-                            return new TransitionTextElement(word);
+                        tokenReader.TakeChar();
+                        var word = tokenReader.GetToken();
 
-                        default:
-                            return new NullTextElement(word);
+                        switch (word.ToLower())
+                        {
+                            case "to:":
+                                return new TransitionTextElement(word);
+
+                            default:
+                                return new NullTextElement(word);
+                        }
                     }
                 }
 
