@@ -18,7 +18,7 @@ namespace FountainEditor
                 {
                     var transitionElements = ScanBackward(elements, i).ToArray();
                     Array.Reverse(transitionElements);
-                    var transitionText = string.Join(" ", transitionElements.Select(e => e.Text));
+                    var transitionText = string.Join("", transitionElements.Select(e => e.Text));
 
                     foreach (var transitionElement in transitionElements)
                     {
@@ -50,7 +50,7 @@ namespace FountainEditor
                     elements[i].Text.Length > 1)
                 {
                     var characterElements = ScanCharacter(elements, i).ToArray();
-                    var characterName = string.Join(" ", characterElements.Select(e => e.Text));
+                    var characterName = string.Join("", characterElements.Select(e => e.Text));
 
                     foreach (var characterElement in characterElements)
                     {
@@ -72,7 +72,7 @@ namespace FountainEditor
                 if (elements[i].Text.StartsWith("@") && elements[i - 1] is LineEnding)
                 {
                     var characterElements = ScanForward(elements, i).ToArray();
-                    var characterName = string.Join(" ", characterElements.Select(e => e.Text));
+                    var characterName = string.Join("", characterElements.Select(e => e.Text));
 
                     foreach (var characterElement in characterElements)
                     {
@@ -93,7 +93,7 @@ namespace FountainEditor
                         elements[i - 2] is DialogueTextElement)
                     {
                         var dialogueElements = ScanDialogue(elements, i).ToArray();
-                        var dialogue = string.Join(" ", dialogueElements.Select(e => e.Text));
+                        var dialogue = string.Join("", dialogueElements.Select(e => e.Text));
 
                         foreach (var dialogueElement in dialogueElements)
                         {
@@ -108,7 +108,7 @@ namespace FountainEditor
                 if (elements[i] is NullTextElement && elements[i].Text.StartsWith("."))
                 {
                     var sceneHeadingElements = ScanForward(elements, i).ToArray();
-                    var sceneHeading = string.Join(" ", sceneHeadingElements.Select(e => e.Text));
+                    var sceneHeading = string.Join("", sceneHeadingElements.Select(e => e.Text));
 
                     foreach (var sceneHeadingElement in sceneHeadingElements)
                     {
@@ -122,7 +122,7 @@ namespace FountainEditor
                 if (elements[i] is SceneHeadingTextElement)
                 {
                     var sceneHeadingElements = ScanForward(elements, i).ToArray();
-                    var sceneHeading = string.Join(" ", sceneHeadingElements.Select(e => e.Text));
+                    var sceneHeading = string.Join("", sceneHeadingElements.Select(e => e.Text));
 
                     foreach (var sceneHeadingElement in sceneHeadingElements)
                     {
@@ -170,7 +170,7 @@ namespace FountainEditor
                 if (elements[i] is NullTextElement)
                 {
                     var actionElements = ScanAction(elements, i).ToArray();
-                    var actionText = string.Join(" ", actionElements.Select(e => e.Text));
+                    var actionText = string.Join("", actionElements.Select(e => e.Text));
 
                     foreach (var actionElement in actionElements)
                     {

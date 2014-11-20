@@ -20,7 +20,7 @@ namespace FountainEditor
 
         public Element ParseElement(TokenReader tokenReader)
         {
-            while (!tokenReader.EndOfString)
+            while (!tokenReader.LastChar)
             {
                 if (tokenReader.PeekChar() == ' ')
                 {
@@ -32,8 +32,20 @@ namespace FountainEditor
 
                     else
                     {
+                        tokenReader.TakeChar();
+                        return new SingleSpaceElement(tokenReader.GetToken());
+                    }
+                }
+
+                if (!tokenReader.LastChar)
+                {
+                    if (tokenReader.PeekChar(1) == '\r' ||
+                    tokenReader.PeekChar(1) == '[' &&
+                    tokenReader.PeekChar(2) == '[' ||
+                    tokenReader.PeekChar(1) == ' ')
+                    {
+                        tokenReader.TakeChar();
                         var word = tokenReader.GetToken();
-                        tokenReader.SkipChar();
 
                         switch (word.ToLower())
                         {
@@ -43,26 +55,6 @@ namespace FountainEditor
                             case "ext.":
                                 return new SceneHeadingTextElement(word);
 
-                            case "to:":
-                                return new TransitionTextElement(word);
-
-                            default:
-                                return new NullTextElement(word);
-                        }
-                    }
-                }
-
-                if (!tokenReader.LastChar)
-                {
-                    if (tokenReader.PeekChar(1) == '\r' ||
-                    tokenReader.PeekChar(1) == '[' &&
-                    tokenReader.PeekChar(2) == '[')
-                    {
-                        tokenReader.TakeChar();
-                        var word = tokenReader.GetToken();
-
-                        switch (word.ToLower())
-                        {
                             case "to:":
                                 return new TransitionTextElement(word);
 
@@ -128,7 +120,8 @@ namespace FountainEditor
 
                 tokenReader.TakeChar();
             }
-            
+
+            tokenReader.TakeChar();
             var lastword = tokenReader.GetToken();
             tokenReader.SkipChar();
 
