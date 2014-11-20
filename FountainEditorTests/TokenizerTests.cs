@@ -136,5 +136,17 @@ namespace FountainEditorTests
             Assert.AreEqual(typeof(NullTextElement), tokens[1].GetType());
 
         }
+
+        [TestMethod]
+        public void ReturnDoubleSpace()
+        {
+            var tokens = new Tokenizer().Parse("Blah.\r\n  \r\n");
+
+            Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
+            Assert.AreEqual(typeof(LineEnding), tokens[1].GetType());
+            Assert.AreEqual(typeof(DoubleSpaceElement), tokens[2].GetType());
+            Assert.AreEqual(typeof(LineEnding), tokens[3].GetType());
+
+        }
     }
 }

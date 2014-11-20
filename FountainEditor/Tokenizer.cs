@@ -24,22 +24,31 @@ namespace FountainEditor
             {
                 if (tokenReader.PeekChar() == ' ')
                 {
-                    var word = tokenReader.GetToken();
-                    tokenReader.SkipChar();
-
-                    switch (word.ToLower())
+                    if (tokenReader.PeekChar(1) == ' ')
                     {
-                        case "int.":
-                            return new SceneHeadingTextElement(word);
-                
-                        case "ext.":
-                            return new SceneHeadingTextElement(word);
-                        
-                        case "to:":
-                            return new TransitionTextElement(word);
+                        tokenReader.TakeChar(2);
+                        return new DoubleSpaceElement(tokenReader.GetToken());
+                    }
 
-                        default:
-                            return new NullTextElement(word);
+                    else
+                    {
+                        var word = tokenReader.GetToken();
+                        tokenReader.SkipChar();
+
+                        switch (word.ToLower())
+                        {
+                            case "int.":
+                                return new SceneHeadingTextElement(word);
+
+                            case "ext.":
+                                return new SceneHeadingTextElement(word);
+
+                            case "to:":
+                                return new TransitionTextElement(word);
+
+                            default:
+                                return new NullTextElement(word);
+                        }
                     }
                 }
 
@@ -63,13 +72,6 @@ namespace FountainEditor
                     }
                 }
 
-                if (tokenReader.PeekChar(0) == ' ' &&
-                    tokenReader.PeekChar(1) == ' ')
-                {
-                    tokenReader.TakeChar(2);
-                    return new NullTextElement(tokenReader.GetToken());
-                }
-                    
                 if (tokenReader.PeekChar(0) == '\r' && 
                     tokenReader.PeekChar(1) == '\n')
                 {
