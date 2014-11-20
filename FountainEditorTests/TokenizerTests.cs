@@ -120,7 +120,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void NoteWithoutPrecedingSpace()
         {
-            var tokens = new Tokenizer().Parse("Blah[[Blah]]");
+            var tokens = new Tokenizer().Parse("Blah.[[Blah\r\nBlah]]");
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
             Assert.AreEqual(typeof(NoteTextElement), tokens[1].GetType());
