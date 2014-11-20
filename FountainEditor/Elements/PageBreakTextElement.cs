@@ -15,7 +15,7 @@ namespace FountainEditor.Elements
 
         public override string Print()
         {
-            return string.Format("<PB>{0}</PB>", Text);
+            return string.Format("<pb>{0}</pb>", Text);
         }
 
     }
