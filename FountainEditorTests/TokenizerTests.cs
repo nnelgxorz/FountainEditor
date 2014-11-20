@@ -148,5 +148,15 @@ namespace FountainEditorTests
             Assert.AreEqual(typeof(LineEnding), tokens[3].GetType());
 
         }
+
+        [TestMethod]
+        public void ReturnSingleSpace()
+        {
+            var tokens = new Tokenizer().Parse("Blah. Blah.");
+
+            Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
+            Assert.AreEqual(typeof(SingleSpaceElement), tokens[1].GetType());
+            Assert.AreEqual(typeof(NullTextElement), tokens[2].GetType());
+        }
     }
 }

@@ -205,7 +205,7 @@ namespace FountainEditorTests
                 new NullTextElement("This"),
                 new NullTextElement("is"),
                 new LineEnding("\r\n"),
-                new NullTextElement("  "),
+                new DoubleSpaceElement("  "),
                 new LineEnding("\r\n"),
                 new NullTextElement("Dialogue."),
                 new LineEnding("\r\n"),
@@ -309,6 +309,22 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[0], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[1], typeof(CenteredTextElement), ">The End<");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
+
+        }
+
+        [TestMethod]
+        public void RetainSpacesBetweenElements()
+        {
+            var elements = new List<Element>
+            {
+                new NullTextElement("Action."),
+                new SingleSpaceElement(" "),
+                new NoteTextElement("[[Note]]"),
+            };
+
+            new Optimizer().Optimize(elements);
+            TestElementTypeAndValue(elements[0], typeof(ActionTextElement), "Action. ");
+            TestElementTypeAndValue(elements[1], typeof(CenteredTextElement), "[[Note]]");
 
         }
 
