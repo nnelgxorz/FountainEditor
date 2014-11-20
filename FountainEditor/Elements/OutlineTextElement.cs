@@ -18,7 +18,7 @@ namespace FountainEditor.Elements
 
         public override string Print()
         {
-            return string.Format("<O>{0}</O>", Text);
+            return string.Format("<o>{0}</o> lvl ", Text, Level);
         }
     }
 }
