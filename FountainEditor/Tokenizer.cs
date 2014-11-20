@@ -37,33 +37,30 @@ namespace FountainEditor
                     }
                 }
 
-                if (!tokenReader.LastChar)
+                if (tokenReader.PeekChar(1) == '\r' ||
+                tokenReader.PeekChar(1) == '[' &&
+                tokenReader.PeekChar(2) == '[' ||
+                tokenReader.PeekChar(1) == ' ')
                 {
-                    if (tokenReader.PeekChar(1) == '\r' ||
-                    tokenReader.PeekChar(1) == '[' &&
-                    tokenReader.PeekChar(2) == '[' ||
-                    tokenReader.PeekChar(1) == ' ')
+                    tokenReader.TakeChar();
+                    var word = tokenReader.GetToken();
+
+                    switch (word.ToLower())
                     {
-                        tokenReader.TakeChar();
-                        var word = tokenReader.GetToken();
+                        case "int.":
+                            return new SceneHeadingTextElement(word);
 
-                        switch (word.ToLower())
-                        {
-                            case "int.":
-                                return new SceneHeadingTextElement(word);
+                        case "ext.":
+                            return new SceneHeadingTextElement(word);
 
-                            case "ext.":
-                                return new SceneHeadingTextElement(word);
+                        case "to:":
+                            return new TransitionTextElement(word);
 
-                            case "to:":
-                                return new TransitionTextElement(word);
-
-                            default:
-                                return new NullTextElement(word);
-                        }
+                        default:
+                            return new NullTextElement(word);
                     }
                 }
-
+                
                 if (tokenReader.PeekChar(0) == '\r' && 
                     tokenReader.PeekChar(1) == '\n')
                 {
