@@ -324,7 +324,7 @@ namespace FountainEditorTests
 
             new Optimizer().Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(ActionTextElement), "Action. ");
-            TestElementTypeAndValue(elements[1], typeof(CenteredTextElement), "[[Note]]");
+            TestElementTypeAndValue(elements[1], typeof(NoteTextElement), "[[Note]]");
 
         }
 
