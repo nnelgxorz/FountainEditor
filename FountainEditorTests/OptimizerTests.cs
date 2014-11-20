@@ -248,6 +248,26 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[3], typeof(DialogueTextElement), "Test Test Test.");
             
         }
+
+        [TestMethod]
+        public void ForcedActionElement()
+        {
+            var elements = new List<Element>
+            {
+                new NullTextElement("!TEST"),
+                new NullTextElement("TEST"),
+                new LineEnding(""),
+                new NullTextElement("Test"),
+                new NullTextElement("Test."),
+            };
+
+            new Optimizer().Optimize(elements);
+            TestElementTypeAndValue(elements[1], typeof(ActionTextElement), "!TEST TEST");
+            TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[3], typeof(ActionTextElement), "Test Test.");
+
+        }
+
         private static void TestElementTypeAndValue(Element element, Type type, string value)
         {
             Assert.AreEqual(type, element.GetType());
