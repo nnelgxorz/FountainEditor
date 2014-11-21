@@ -47,7 +47,6 @@ namespace FountainEditorTests
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
             Assert.AreEqual(typeof(SingleSpaceElement), tokens[1].GetType());
             Assert.AreEqual(typeof(TransitionTextElement), tokens[2].GetType());
-
         }
 
         [TestMethod]
@@ -104,7 +103,6 @@ namespace FountainEditorTests
             var tokens = Tokenizer.Parse("Blah");
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
-
         }
 
         [TestMethod]
@@ -115,7 +113,6 @@ namespace FountainEditorTests
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
             Assert.AreEqual(typeof(SingleSpaceElement), tokens[1].GetType());
             Assert.AreEqual(typeof(LineEnding), tokens[2].GetType());
-
         }
 
         [TestMethod]
@@ -125,7 +122,6 @@ namespace FountainEditorTests
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
             Assert.AreEqual(typeof(NoteTextElement), tokens[1].GetType());
-
         }
 
         [TestMethod]
@@ -135,7 +131,6 @@ namespace FountainEditorTests
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
             Assert.AreEqual(typeof(NullTextElement), tokens[1].GetType());
-
         }
 
         [TestMethod]
@@ -147,7 +142,6 @@ namespace FountainEditorTests
             Assert.AreEqual(typeof(LineEnding), tokens[1].GetType());
             Assert.AreEqual(typeof(DoubleSpaceElement), tokens[2].GetType());
             Assert.AreEqual(typeof(LineEnding), tokens[3].GetType());
-
         }
 
         [TestMethod]

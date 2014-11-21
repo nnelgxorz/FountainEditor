@@ -140,7 +140,7 @@ namespace FountainEditorTests
         {
             var elements = new List<Element>
             {
-                new NullTextElement("Test"), 
+                new NullTextElement("Test"),
                 new SingleSpaceElement(" "),
                 new NullTextElement("Test."),
                 new LineEnding(""),
@@ -307,7 +307,7 @@ namespace FountainEditorTests
                 new LineEnding(""),
                 new NullTextElement("@McTEST"),
                 new LineEnding(""),
-                new NullTextElement("Test"), 
+                new NullTextElement("Test"),
                 new SingleSpaceElement(" "),
                 new NullTextElement("Test."),
             };
@@ -317,7 +317,6 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[1], typeof(CharacterTextElement), "@McTEST");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[3], typeof(DialogueTextElement), "Test Test.");
-            
         }
 
         [TestMethod]
@@ -338,7 +337,6 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[0], typeof(ActionTextElement), "!TEST TEST");
             TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[2], typeof(ActionTextElement), "Test Test.");
-
         }
 
         [TestMethod]
@@ -355,7 +353,6 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[0], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[1], typeof(CenteredTextElement), ">The End<");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
-
         }
 
         [TestMethod]
@@ -371,7 +368,6 @@ namespace FountainEditorTests
             Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(ActionTextElement), "Action. ");
             TestElementTypeAndValue(elements[1], typeof(NoteTextElement), "[[Note]]");
-
         }
 
         [TestMethod]
@@ -416,7 +412,6 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[3], typeof(TabElement), "");
             TestElementTypeAndValue(elements[4], typeof(DialogueTextElement), "Test.");
             TestElementTypeAndValue(elements[5], typeof(LineEnding), "");
-
         }
 
         [TestMethod]
@@ -439,7 +434,6 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[3], typeof(TabElement), "");
             TestElementTypeAndValue(elements[4], typeof(DialogueTextElement), "Test.");
             TestElementTypeAndValue(elements[5], typeof(LineEnding), "");
-
         }
 
         [TestMethod]
@@ -462,7 +456,6 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[3], typeof(TabElement), "");
             TestElementTypeAndValue(elements[4], typeof(ParentheticalTextElement), "(Test)");
             TestElementTypeAndValue(elements[5], typeof(LineEnding), "");
-
         }
 
         [TestMethod]
@@ -481,7 +474,6 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[0], typeof(TabElement), "");
             TestElementTypeAndValue(elements[1], typeof(TransitionTextElement), "Cut to:");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
-
         }
 
         private static void TestElementTypeAndValue(Element element, Type type, string value)
