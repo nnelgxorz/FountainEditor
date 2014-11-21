@@ -439,6 +439,48 @@ namespace FountainEditorTests
 
         }
 
+        [TestMethod]
+        public void TabbedParentheticals()
+        {
+            var elements = new List<Element>
+            {
+                new TabElement(""),
+                new CharacterTextElement("TEST"),
+                new LineEnding(""),
+                new TabElement(""),
+                new ParentheticalTextElement("(Test)"),
+                new LineEnding("")
+            };
+
+            new Optimizer().Optimize(elements);
+            TestElementTypeAndValue(elements[0], typeof(TabElement), "");
+            TestElementTypeAndValue(elements[1], typeof(CharacterTextElement), "TEST");
+            TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[3], typeof(TabElement), "");
+            TestElementTypeAndValue(elements[4], typeof(ParentheticalTextElement), "(Test)");
+            TestElementTypeAndValue(elements[5], typeof(LineEnding), "");
+
+        }
+
+        [TestMethod]
+        public void TabbedTransitions()
+        {
+            var elements = new List<Element>
+            {
+                new TabElement(""),
+                new NullTextElement("Cut"),
+                new SingleSpaceElement(" "),
+                new TransitionTextElement("to:"),
+                new LineEnding("")
+            };
+
+            new Optimizer().Optimize(elements);
+            TestElementTypeAndValue(elements[0], typeof(TabElement), "");
+            TestElementTypeAndValue(elements[1], typeof(TransitionTextElement), "Cut to:");
+            TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
+
+        }
+
         private static void TestElementTypeAndValue(Element element, Type type, string value)
         {
             Assert.AreEqual(type, element.GetType());
