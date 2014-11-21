@@ -24,7 +24,7 @@ namespace FountainEditor
         {
             get
             {
-                return (offset + length) == text.Length - 1;
+                return (offset + length) == (text.Length - 1);
             }
         }
 
