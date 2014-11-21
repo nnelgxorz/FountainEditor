@@ -7,9 +7,9 @@ using FountainEditor.Elements;
 
 namespace FountainEditor
 {
-    public class Optimizer
+    public static class Optimizer
     {
-        public void Optimize(List<Element> elements)
+        public static void Optimize(List<Element> elements)
         {
             for (int i = 0; i < elements.Count; i++)
             {
@@ -214,7 +214,7 @@ namespace FountainEditor
             }
         }
 
-        private bool CheckUpper(string text)
+        private static bool CheckUpper(string text)
         {
             for (int i = 0; i < text.Length; i++)
             {
@@ -227,7 +227,7 @@ namespace FountainEditor
             return true;
         }
 
-        public IEnumerable<Element> ScanCharacter(List<Element> elements, int start)
+        private static IEnumerable<Element> ScanCharacter(List<Element> elements, int start)
         {
             for (int i = start; i < elements.Count; i++)
             {
@@ -245,7 +245,7 @@ namespace FountainEditor
             }
         }
 
-        public IEnumerable<Element> ScanDialogue(List<Element> elements, int start)
+        private static IEnumerable<Element> ScanDialogue(List<Element> elements, int start)
         {
             for (int i = start; i < elements.Count; i++)
             {
@@ -258,7 +258,7 @@ namespace FountainEditor
             }
         }
 
-        public IEnumerable<Element> ScanForward(List<Element> elements, int start)
+        private static IEnumerable<Element> ScanForward(List<Element> elements, int start)
         {
             for (int i = start; i < elements.Count; i++)
             {
@@ -270,7 +270,7 @@ namespace FountainEditor
             }
         }
 
-        public IEnumerable<Element> ScanBackward(List<Element> elements, int start)
+        private static IEnumerable<Element> ScanBackward(List<Element> elements, int start)
         {
             for (int i = start; i < elements.Count; i--)
             {
@@ -283,7 +283,7 @@ namespace FountainEditor
             }
         }
 
-        public IEnumerable<Element> ScanAction(List<Element> elements, int start)
+        private static IEnumerable<Element> ScanAction(List<Element> elements, int start)
         {
             for (int i = start; i < elements.Count; i++)
             {
@@ -295,6 +295,5 @@ namespace FountainEditor
                 yield return elements[i];
             }
         }
-
     }
 }

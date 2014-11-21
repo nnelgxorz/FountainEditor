@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace FountainEditor
 {
-    public class Tokenizer
+    public static class Tokenizer
     {
-        public List<Element> Parse(string text)
+        public static List<Element> Parse(string text)
         {
             var tokenReader = new TokenReader(text);
             var list = new List<Element>();
@@ -18,7 +18,7 @@ namespace FountainEditor
             return list;
         }
 
-        public Element ParseElement(TokenReader tokenReader)
+        private static Element ParseElement(TokenReader tokenReader)
         {
             while (!tokenReader.LastChar)
             {
@@ -145,7 +145,7 @@ namespace FountainEditor
             }
         }
 
-        private Element ScanTabs(TokenReader tokenReader)
+        private static Element ScanTabs(TokenReader tokenReader)
         {
             while (!tokenReader.EndOfString)
             {
@@ -161,7 +161,7 @@ namespace FountainEditor
             return new TabElement(tokenReader.GetToken());
         }
 
-        private Element ScanParenthetical(TokenReader tokenReader)
+        private static Element ScanParenthetical(TokenReader tokenReader)
         {
             while (!tokenReader.EndOfString)
             {
@@ -183,7 +183,7 @@ namespace FountainEditor
             return new NullTextElement(tokenReader.GetToken());
         }
 
-        private Element ScanLyrics(TokenReader tokenReader)
+        private static Element ScanLyrics(TokenReader tokenReader)
         {
             while (!tokenReader.EndOfString)
             {
@@ -199,7 +199,7 @@ namespace FountainEditor
             return new LyricsTextElement(tokenReader.GetToken());
         }
 
-        private Element ScanTransition(TokenReader tokenReader)
+        private static Element ScanTransition(TokenReader tokenReader)
         {
             while (!tokenReader.EndOfString)
             {
@@ -221,7 +221,7 @@ namespace FountainEditor
             return new TransitionTextElement(tokenReader.GetToken());
         }
 
-        private Element ScanNote(TokenReader tokenReader)
+        private static Element ScanNote(TokenReader tokenReader)
         {
             while (!tokenReader.LastChar)
             {
@@ -246,7 +246,7 @@ namespace FountainEditor
             return new NullTextElement(tokenReader.GetToken());
         }
 
-        private Element ScanSynopsis(TokenReader tokenReader)
+        private static Element ScanSynopsis(TokenReader tokenReader)
         {
             while (!tokenReader.EndOfString)
             {
@@ -269,7 +269,7 @@ namespace FountainEditor
             return new SynopsisTextElement(tokenReader.GetToken());
         }
 
-        private Element ScanOutline(TokenReader tokenReader)
+        private static Element ScanOutline(TokenReader tokenReader)
         {
             int count = 1;
 

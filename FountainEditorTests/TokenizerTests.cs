@@ -1,8 +1,6 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using FountainEditor;
 using FountainEditor.Elements;
-using FountainEditor;
-using System.Collections.Generic;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace FountainEditorTests
 {
@@ -12,7 +10,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnOutlineCheck()
         {
-            var tokens = new Tokenizer().Parse("# Outline Element");
+            var tokens = Tokenizer.Parse("# Outline Element");
 
             Assert.AreEqual(typeof(OutlineTextElement), tokens[0].GetType());
         }
@@ -20,7 +18,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnSynopsis()
         {
-            var tokens = new Tokenizer().Parse("= Synopsis Element");
+            var tokens = Tokenizer.Parse("= Synopsis Element");
 
             Assert.AreEqual(typeof(SynopsisTextElement), tokens[0].GetType());
         }
@@ -28,7 +26,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnSceneHeadingINT()
         {
-            var tokens = new Tokenizer().Parse("Int. SceneHeading - Day");
+            var tokens = Tokenizer.Parse("Int. SceneHeading - Day");
 
             Assert.AreEqual(typeof(SceneHeadingTextElement), tokens[0].GetType());
         }
@@ -36,7 +34,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnSceneHeadingEXT()
         {
-            var tokens = new Tokenizer().Parse("Ext. Scene Heading - Day");
+            var tokens = Tokenizer.Parse("Ext. Scene Heading - Day");
 
             Assert.AreEqual(typeof(SceneHeadingTextElement), tokens[0].GetType());
         }
@@ -44,18 +42,17 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnTransition()
         {
-            var tokens = new Tokenizer().Parse("Cut to:");
+            var tokens = Tokenizer.Parse("Cut to:");
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
             Assert.AreEqual(typeof(SingleSpaceElement), tokens[1].GetType());
             Assert.AreEqual(typeof(TransitionTextElement), tokens[2].GetType());
-
         }
 
         [TestMethod]
         public void ReturnTransitionForced()
         {
-            var tokens = new Tokenizer().Parse("> Fade to Black");
+            var tokens = Tokenizer.Parse("> Fade to Black");
 
             Assert.AreEqual(typeof(TransitionTextElement), tokens[0].GetType());
         }
@@ -63,7 +60,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnCenteredText()
         {
-            var tokens = new Tokenizer().Parse(">The End<");
+            var tokens = Tokenizer.Parse(">The End<");
 
             Assert.AreEqual(typeof(CenteredTextElement), tokens[0].GetType());
         }
@@ -71,7 +68,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnNote()
         {
-            var tokens = new Tokenizer().Parse("[[This is a note\r\n  \r\n]]");
+            var tokens = Tokenizer.Parse("[[This is a note\r\n  \r\n]]");
 
             Assert.AreEqual(typeof(NoteTextElement), tokens[0].GetType());
         }
@@ -79,7 +76,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnLyrics()
         {
-            var tokens = new Tokenizer().Parse("~ Sing this");
+            var tokens = Tokenizer.Parse("~ Sing this");
 
             Assert.AreEqual(typeof(LyricsTextElement), tokens[0].GetType());
         }
@@ -87,7 +84,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnPageBreak()
         {
-            var tokens = new Tokenizer().Parse("===");
+            var tokens = Tokenizer.Parse("===");
 
             Assert.AreEqual(typeof(PageBreakTextElement), tokens[0].GetType());
         }
@@ -95,7 +92,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnParenthetical()
         {
-            var tokens = new Tokenizer().Parse("(Wryly)");
+            var tokens = Tokenizer.Parse("(Wryly)");
 
             Assert.AreEqual(typeof(ParentheticalTextElement), tokens[0].GetType());
         }
@@ -103,59 +100,54 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnNullTextElement()
         {
-            var tokens = new Tokenizer().Parse("Blah");
+            var tokens = Tokenizer.Parse("Blah");
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
-
         }
 
         [TestMethod]
         public void ReturnLineEnding()
         {
-            var tokens = new Tokenizer().Parse("T \r\n");
+            var tokens = Tokenizer.Parse("T \r\n");
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
             Assert.AreEqual(typeof(SingleSpaceElement), tokens[1].GetType());
             Assert.AreEqual(typeof(LineEnding), tokens[2].GetType());
-
         }
 
         [TestMethod]
         public void NoteWithoutPrecedingSpace()
         {
-            var tokens = new Tokenizer().Parse("Blah.[[Blah\r\nBlah]]");
+            var tokens = Tokenizer.Parse("Blah.[[Blah\r\nBlah]]");
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
             Assert.AreEqual(typeof(NoteTextElement), tokens[1].GetType());
-
         }
 
         [TestMethod]
         public void UnfinishedNote()
         {
-            var tokens = new Tokenizer().Parse("Blah[[Blah\r\n  \r\nBlah]");
+            var tokens = Tokenizer.Parse("Blah[[Blah\r\n  \r\nBlah]");
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
             Assert.AreEqual(typeof(NullTextElement), tokens[1].GetType());
-
         }
 
         [TestMethod]
         public void ReturnDoubleSpace()
         {
-            var tokens = new Tokenizer().Parse("Blah.\r\n  \r\n");
+            var tokens = Tokenizer.Parse("Blah.\r\n  \r\n");
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
             Assert.AreEqual(typeof(LineEnding), tokens[1].GetType());
             Assert.AreEqual(typeof(DoubleSpaceElement), tokens[2].GetType());
             Assert.AreEqual(typeof(LineEnding), tokens[3].GetType());
-
         }
 
         [TestMethod]
         public void ReturnSingleSpace()
         {
-            var tokens = new Tokenizer().Parse("Blah. Blah.");
+            var tokens = Tokenizer.Parse("Blah. Blah.");
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
             Assert.AreEqual(typeof(SingleSpaceElement), tokens[1].GetType());
@@ -165,7 +157,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ConsolidateTabs()
         {
-            var tokens = new Tokenizer().Parse("\t\t\tBlah\r\n\t\tBlah.");
+            var tokens = Tokenizer.Parse("\t\t\tBlah\r\n\t\tBlah.");
 
             Assert.AreEqual(typeof(TabElement), tokens[0].GetType());
             Assert.AreEqual(typeof(NullTextElement), tokens[1].GetType());
