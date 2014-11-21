@@ -15,7 +15,7 @@ namespace FountainEditor.Elements
 
         public override string Print()
         {
-            return string.Format("<sy>{0}</sy>", Text);
+            return string.Format("<Synp> {0} </Synp>", Text);
         }
     }
 }

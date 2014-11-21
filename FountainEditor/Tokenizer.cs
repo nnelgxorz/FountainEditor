@@ -131,7 +131,7 @@ namespace FountainEditor
                         case "contact:":
                             return new TitlePageKey(word);
 
-                        case "copyright:":
+                        case "notes:":
                             return new TitlePageKey(word);
 
                         default:

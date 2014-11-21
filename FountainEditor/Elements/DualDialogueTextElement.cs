@@ -15,7 +15,7 @@ namespace FountainEditor.Elements
 
         public override string Print()
         {
-            return string.Format("<dch>{0}</dch>", Text);
+            return string.Format("<dChr>{0}</dChr>", Text);
         }
     }
 }

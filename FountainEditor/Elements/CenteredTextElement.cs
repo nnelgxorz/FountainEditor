@@ -15,7 +15,7 @@ namespace FountainEditor.Elements
 
         public override string Print()
         {
-            return string.Format("<ct>{0}</ct>", Text);
+            return string.Format("<CenT> {0} </CenT>", Text);
         }
     }
 }

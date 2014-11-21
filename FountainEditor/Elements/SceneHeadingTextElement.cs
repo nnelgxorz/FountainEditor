@@ -15,7 +15,7 @@ namespace FountainEditor.Elements
 
         public override string Print()
         {
-            return string.Format("<sh>{0}</sh>", Text);
+            return string.Format("<ScHd> {0} </ScHd>", Text);
         }
     }
 }
