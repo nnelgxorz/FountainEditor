@@ -13,6 +13,58 @@ namespace FountainEditor
         {
             for (int i = 0; i < elements.Count; i++)
             {
+                if (elements[i] is LineEnding && elements[i + 1] is LineEnding)
+                    break;
+
+                if (elements[i] is TitlePageKey)
+                {
+                    while (!(elements[i] is NullTextElement))
+                    {
+                        i++;
+                    }
+
+                    if (elements[i] is NullTextElement)
+                    {
+                        var valueElements = ScanTitlePage(elements, i).ToArray();
+                        var valueText = string.Join("", valueElements.Select(e => e.Text));
+
+                        foreach (var valueElement in valueElements)
+                        {
+                            elements.Remove(valueElement);
+                        }
+
+                        elements.Insert(i, new TitlePageValue(valueText));
+                        continue;
+                    }
+                }
+
+                if (elements[i - 1] is TitlePageValue &&
+                    !(elements[i + 1] is TitlePageKey) ||
+                    !(elements[i + 1] is LineEnding))
+                {
+                    while (!(elements[i] is NullTextElement))
+                    {
+                        i++;
+                    }
+
+                    if (elements[i] is NullTextElement)
+                    {
+                        var valueElements = ScanTitlePage(elements, i).ToArray();
+                        var valueText = string.Join("", valueElements.Select(e => e.Text));
+
+                        foreach (var valueElement in valueElements)
+                        {
+                            elements.Remove(valueElement);
+                        }
+
+                        elements.Insert(i, new TitlePageValue(valueText));
+                        continue;
+                    }
+                }
+            }
+
+            for (int i = 0; i < elements.Count; i++)
+            {
                 if (elements[i] is TransitionTextElement &&
                     !elements[i].Text.StartsWith("."))
                 {
@@ -211,6 +263,11 @@ namespace FountainEditor
                     continue;
                 }
             }
+        }
+
+        private static IEnumerable<Element> ScanTitlePage(List<Element> elements, int start)
+        {
+            return elements.Skip(start).TakeWhile(e => !(e is LineEnding));
         }
 
         private static bool CheckUpper(string text)

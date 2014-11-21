@@ -93,7 +93,8 @@ namespace FountainEditor
                 if (tokenReader.PeekChar(1) == '\r' ||
                 tokenReader.PeekChar(1) == '[' &&
                 tokenReader.PeekChar(2) == '[' ||
-                tokenReader.PeekChar(1) == ' ')
+                tokenReader.PeekChar(1) == ' ' ||
+                tokenReader.PeekChar() == ':')
                 {
                     tokenReader.TakeChar();
                     var word = tokenReader.GetToken();
@@ -106,8 +107,32 @@ namespace FountainEditor
                         case "ext.":
                             return new SceneHeadingTextElement(word);
 
-                        case "to:":
-                            return new TransitionTextElement(word);
+                        case "title:":
+                            return new TitlePageKey(word);
+
+                        case "credit:":
+                            return new TitlePageKey(word);
+
+                        case "author:":
+                            return new TitlePageKey(word);
+
+                        case "authors:":
+                            return new TitlePageKey(word);
+
+                        case "source:":
+                            return new TitlePageKey(word);
+
+                        case "date:":
+                            return new TitlePageKey(word);
+
+                        case "draft date:":
+                            return new TitlePageKey(word);
+
+                        case "contact:":
+                            return new TitlePageKey(word);
+
+                        case "copyright:":
+                            return new TitlePageKey(word);
 
                         default:
                             return new NullTextElement(word);

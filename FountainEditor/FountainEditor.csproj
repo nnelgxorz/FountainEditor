@@ -41,6 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Elements\TitlePageValue.cs" />
+    <Compile Include="Elements\TitlePageKey.cs" />
     <Compile Include="Elements\ActionTextElement.cs" />
     <Compile Include="Elements\BoneyardTextElement.cs" />
     <Compile Include="Elements\TabElement.cs" />
