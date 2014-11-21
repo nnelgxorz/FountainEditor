@@ -11,54 +11,35 @@ namespace FountainEditor
     {
         public static void Optimize(List<Element> elements)
         {
-            for (int i = 0; i < elements.Count; i++)
+            if (elements[0] is TitlePageKey)
             {
-                if (elements[i] is LineEnding && elements[i + 1] is LineEnding)
-                    break;
-
-                if (elements[i] is TitlePageKey)
+                for (int i = 0; i < elements.Count; i++)
                 {
-                    while (!(elements[i] is NullTextElement))
+                    if (elements[i] is LineEnding &&
+                        elements[i + 1] is LineEnding)
                     {
-                        i++;
+                        break;
                     }
 
-                    if (elements[i] is NullTextElement)
+                    if (elements[i] is TitlePageKey)
                     {
-                        var valueElements = ScanTitlePage(elements, i).ToArray();
-                        var valueText = string.Join("", valueElements.Select(e => e.Text));
-
-                        foreach (var valueElement in valueElements)
+                        while (!(elements[i] is NullTextElement))
                         {
-                            elements.Remove(valueElement);
+                            i++;
                         }
 
-                        elements.Insert(i, new TitlePageValue(valueText));
-                        continue;
-                    }
-                }
-
-                if (elements[i - 1] is TitlePageValue &&
-                    !(elements[i + 1] is TitlePageKey) ||
-                    !(elements[i + 1] is LineEnding))
-                {
-                    while (!(elements[i] is NullTextElement))
-                    {
-                        i++;
-                    }
-
-                    if (elements[i] is NullTextElement)
-                    {
-                        var valueElements = ScanTitlePage(elements, i).ToArray();
-                        var valueText = string.Join("", valueElements.Select(e => e.Text));
-
-                        foreach (var valueElement in valueElements)
+                        if (elements[i] is NullTextElement)
                         {
-                            elements.Remove(valueElement);
-                        }
+                            var titleValues = ScanTitlePage(elements, i).ToArray();
+                            var titleText = string.Join("", titleValues.Select(e => e.Text));
 
-                        elements.Insert(i, new TitlePageValue(valueText));
-                        continue;
+                            foreach (var titleValue in titleValues)
+                            {
+                                elements.Remove(titleValue);
+                            }
+
+                            elements.Insert(i, new TitlePageValue(titleText));
+                        }
                     }
                 }
             }
