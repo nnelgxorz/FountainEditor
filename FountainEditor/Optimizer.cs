@@ -16,8 +16,7 @@ namespace FountainEditor
                 if (elements[i] is TransitionTextElement &&
                     !elements[i].Text.StartsWith("."))
                 {
-                    var transitionElements = ScanBackward(elements, i).ToArray();
-                    Array.Reverse(transitionElements);
+                    var transitionElements = ScanBackward(elements, i).Reverse().ToArray();
                     var transitionText = string.Join("", transitionElements.Select(e => e.Text));
 
                     foreach (var transitionElement in transitionElements)
@@ -216,58 +215,22 @@ namespace FountainEditor
 
         private static bool CheckUpper(string text)
         {
-            for (int i = 0; i < text.Length; i++)
-            {
-                if (char.IsLower(text[i]))
-                {
-                    return false;
-                }
-            }
-
-            return true;
+            return !text.Any(char.IsLower);
         }
 
         private static IEnumerable<Element> ScanCharacter(List<Element> elements, int start)
         {
-            for (int i = start; i < elements.Count; i++)
-            {
-                if (elements[i] is LineEnding)
-                {
-                    yield break;
-                }
-
-                if (CheckUpper(elements[i].Text) == false)
-                {
-                    break;
-                }
-
-                yield return elements[i];
-            }
+            return elements.Skip(start).TakeWhile(e => !(e is LineEnding) && CheckUpper(e.Text));
         }
 
         private static IEnumerable<Element> ScanDialogue(List<Element> elements, int start)
         {
-            for (int i = start; i < elements.Count; i++)
-            {
-                if (elements[i] is LineEnding)
-                {
-                    yield break;
-                }
-              
-                yield return elements[i];
-            }
+            return elements.Skip(start).TakeWhile(e => !(e is LineEnding));
         }
 
         private static IEnumerable<Element> ScanForward(List<Element> elements, int start)
         {
-            for (int i = start; i < elements.Count; i++)
-            {
-                if (elements[i] is LineEnding)
-                {
-                    yield break;
-                }
-                yield return elements[i];
-            }
+            return elements.Skip(start).TakeWhile(e => !(e is LineEnding));
         }
 
         private static IEnumerable<Element> ScanBackward(List<Element> elements, int start)
@@ -279,21 +242,14 @@ namespace FountainEditor
                 {
                     yield break;
                 }
+
                 yield return elements[i];
             }
         }
 
         private static IEnumerable<Element> ScanAction(List<Element> elements, int start)
         {
-            for (int i = start; i < elements.Count; i++)
-            {
-                if (elements[i] is LineEnding ||
-                    elements[i] is NoteTextElement)
-                {
-                    yield break;
-                }
-                yield return elements[i];
-            }
+            return elements.Skip(start).TakeWhile(e => !(e is LineEnding) && !(e is NoteTextElement));
         }
     }
 }
