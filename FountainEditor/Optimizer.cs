@@ -180,7 +180,8 @@ namespace FountainEditor
             {
                 if (elements[i] is ParentheticalTextElement)
                 {
-                    if(elements[i - 1] is LineEnding && elements[i + 1] is LineEnding)
+                    if(elements[i - 1] is LineEnding && elements[i + 1] is LineEnding ||
+                       elements[i - 1] is TabElement)
                     {
                         break;
                     }
