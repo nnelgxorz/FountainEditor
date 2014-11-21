@@ -32,7 +32,7 @@ namespace FountainEditorTests
                 new LineEnding(""),
             };
 
-            new Optimizer().Optimize(elements);
+            Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[1], typeof(CharacterTextElement), "TESTY TEST (O.S.)");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
@@ -64,7 +64,7 @@ namespace FountainEditorTests
                 new LineEnding("")
             };
 
-            new Optimizer().Optimize(elements);
+            Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[1], typeof(DualDialogueTextElement), "^OTHER TEST");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
@@ -87,7 +87,7 @@ namespace FountainEditorTests
 
             };
 
-            new Optimizer().Optimize(elements);
+            Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(SceneHeadingTextElement), "int. test - Day");
             TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[2], typeof(ActionTextElement), "Test.");
@@ -107,7 +107,7 @@ namespace FountainEditorTests
                 new NullTextElement("Test."),
             };
 
-            new Optimizer().Optimize(elements);
+            Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(SceneHeadingTextElement), ".Close on test");
             TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[2], typeof(ActionTextElement), "Test.");
@@ -129,7 +129,7 @@ namespace FountainEditorTests
                 new LineEnding("")
             };
 
-            new Optimizer().Optimize(elements);
+            Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[1], typeof(TransitionTextElement), "SUPER SMASH CUT TO:");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
@@ -151,7 +151,7 @@ namespace FountainEditorTests
 
             };
 
-            new Optimizer().Optimize(elements);
+            Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(ActionTextElement), "Test Test.");
             TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[2], typeof(ActionTextElement), "Test Test.");
@@ -176,7 +176,7 @@ namespace FountainEditorTests
                 new LineEnding(""),
             };
 
-            new Optimizer().Optimize(elements);
+            Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(CharacterTextElement), "Mr. Test");
             TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[2], typeof(ParentheticalTextElement), "Wryly");
@@ -203,7 +203,7 @@ namespace FountainEditorTests
                 new LineEnding("")
             };
 
-            new Optimizer().Optimize(elements);
+            Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(ActionTextElement), "What a CRAZY TEST, man!");
             TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
         }
@@ -229,7 +229,7 @@ namespace FountainEditorTests
                 new NullTextElement("not.")
             };
 
-            new Optimizer().Optimize(elements);
+            Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(CharacterTextElement), "TESTO");
             TestElementTypeAndValue(elements[1], typeof(LineEnding), "\r\n");
             TestElementTypeAndValue(elements[2], typeof(DialogueTextElement), "This is");
@@ -258,7 +258,7 @@ namespace FountainEditorTests
                 new LineEnding("\r\n"),
             };
 
-            new Optimizer().Optimize(elements);
+            Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(CharacterTextElement), "TESTO");
             TestElementTypeAndValue(elements[1], typeof(LineEnding), "\r\n");
             TestElementTypeAndValue(elements[2], typeof(DialogueTextElement), "This is");
@@ -289,7 +289,7 @@ namespace FountainEditorTests
                 new LineEnding(""),
             };
 
-            new Optimizer().Optimize(elements);
+            Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(CharacterTextElement), "TEST");
             TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[2], typeof(DialogueTextElement), "Test Test.");
@@ -312,7 +312,7 @@ namespace FountainEditorTests
                 new NullTextElement("Test."),
             };
 
-            new Optimizer().Optimize(elements);
+            Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[1], typeof(CharacterTextElement), "@McTEST");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
@@ -334,7 +334,7 @@ namespace FountainEditorTests
                 new NullTextElement("Test."),
             };
 
-            new Optimizer().Optimize(elements);
+            Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(ActionTextElement), "!TEST TEST");
             TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[2], typeof(ActionTextElement), "Test Test.");
@@ -351,7 +351,7 @@ namespace FountainEditorTests
                 new LineEnding(""),
             };
 
-            new Optimizer().Optimize(elements);
+            Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[1], typeof(CenteredTextElement), ">The End<");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
@@ -368,7 +368,7 @@ namespace FountainEditorTests
                 new NoteTextElement("[[Note]]"),
             };
 
-            new Optimizer().Optimize(elements);
+            Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(ActionTextElement), "Action. ");
             TestElementTypeAndValue(elements[1], typeof(NoteTextElement), "[[Note]]");
 
@@ -387,7 +387,7 @@ namespace FountainEditorTests
                 new LineEnding("")
             };
 
-            new Optimizer().Optimize(elements);
+            Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(TabElement), "");
             TestElementTypeAndValue(elements[1], typeof(CharacterTextElement), "TEST");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
@@ -409,7 +409,7 @@ namespace FountainEditorTests
                 new LineEnding("")
             };
 
-            new Optimizer().Optimize(elements);
+            Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(TabElement), "");
             TestElementTypeAndValue(elements[1], typeof(DualDialogueTextElement), "^TEST");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
@@ -432,7 +432,7 @@ namespace FountainEditorTests
                 new LineEnding("")
             };
 
-            new Optimizer().Optimize(elements);
+            Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(TabElement), "");
             TestElementTypeAndValue(elements[1], typeof(CharacterTextElement), "@McTEST");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
@@ -455,7 +455,7 @@ namespace FountainEditorTests
                 new LineEnding("")
             };
 
-            new Optimizer().Optimize(elements);
+            Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(TabElement), "");
             TestElementTypeAndValue(elements[1], typeof(CharacterTextElement), "TEST");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
@@ -477,7 +477,7 @@ namespace FountainEditorTests
                 new LineEnding("")
             };
 
-            new Optimizer().Optimize(elements);
+            Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(TabElement), "");
             TestElementTypeAndValue(elements[1], typeof(TransitionTextElement), "Cut to:");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");

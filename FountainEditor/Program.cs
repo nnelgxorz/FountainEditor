@@ -7,20 +7,18 @@ namespace FountainEditor
     {
         static void Main(params string[] args)
         { 
-            var text = new StreamReader(@"C:\Users\Glenn\Desktop\Test\screenplayIN.txt");
+            var reader = new StreamReader(args[0]);
+            var tokens = Tokenizer.Parse(reader.ReadToEnd());
 
-            var tokenizer = new Tokenizer();
-            var tokens = tokenizer.Parse(text.ReadToEnd());
+            Optimizer.Optimize(tokens);
 
-            var optimizer = new Optimizer();
-            optimizer.Optimize(tokens);
-
-            var writer = new StreamWriter(@"C:\Users\Glenn\Desktop\Test\screenplayOUT.txt");
+            var writer = new StreamWriter(args[1]);
 
             foreach (var element in tokens)
             {
                 writer.Write(element.Print());
             }
+
             writer.Flush();
         }
     }
