@@ -476,6 +476,34 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
         }
 
+        [TestMethod]
+        public void TitlePageKeysAndValues()
+        {
+            var elements = new List<Element>
+            {
+                new TitlePageKey("Title:"),
+                new NullTextElement("Test"),
+                new SingleSpaceElement(" "),
+                new NullTextElement("Script"),
+                new LineEnding(""),
+                new TitlePageKey("Author:"),
+                new NullTextElement("Glenn"),
+                new SingleSpaceElement(" "),
+                new NullTextElement("Becker"),
+                new LineEnding(""),
+                new LineEnding("")
+            };
+
+            Optimizer.Optimize(elements);
+            TestElementTypeAndValue(elements[0], typeof(TitlePageKey), "Title:");
+            TestElementTypeAndValue(elements[1], typeof(TitlePageValue), "Test Script");
+            TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[3], typeof(TitlePageKey), "Author:");
+            TestElementTypeAndValue(elements[4], typeof(TitlePageValue), "Glenn Becker");
+            TestElementTypeAndValue(elements[5], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[5], typeof(LineEnding), "");
+        }
+
         private static void TestElementTypeAndValue(Element element, Type type, string value)
         {
             Assert.AreEqual(type, element.GetType());

@@ -165,5 +165,18 @@ namespace FountainEditorTests
             Assert.AreEqual(typeof(TabElement), tokens[3].GetType());
             Assert.AreEqual(typeof(NullTextElement), tokens[4].GetType());
         }
+
+        [TestMethod]
+        public void ReturnTitlePageKey()
+        {
+            var tokens = Tokenizer.Parse("Title: Blah\r\nauthor:Blah");
+
+            Assert.AreEqual(typeof(TitlePageKey), tokens[0].GetType());
+            Assert.AreEqual(typeof(SingleSpaceElement), tokens[1].GetType());
+            Assert.AreEqual(typeof(NullTextElement), tokens[2].GetType());
+            Assert.AreEqual(typeof(LineEnding), tokens[3].GetType());
+            Assert.AreEqual(typeof(TitlePageKey), tokens[4].GetType());
+            Assert.AreEqual(typeof(NullTextElement), tokens[5].GetType());
+        }
     }
 }
