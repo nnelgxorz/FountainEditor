@@ -415,6 +415,8 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[3], typeof(TabElement), "");
             TestElementTypeAndValue(elements[4], typeof(DialogueTextElement), "Test.");
+            TestElementTypeAndValue(elements[5], typeof(LineEnding), "");
+
         }
 
         [TestMethod]
@@ -436,6 +438,7 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[3], typeof(TabElement), "");
             TestElementTypeAndValue(elements[4], typeof(DialogueTextElement), "Test.");
+            TestElementTypeAndValue(elements[5], typeof(LineEnding), "");
 
         }
 

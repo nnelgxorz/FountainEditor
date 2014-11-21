@@ -249,14 +249,11 @@ namespace FountainEditor
         {
             for (int i = start; i < elements.Count; i++)
             {
-                if (i < (elements.Count - 1))
+                if (elements[i] is LineEnding)
                 {
-                    if (elements[i] is LineEnding)
-                    {
-                        yield break;
-                    }
+                    yield break;
                 }
-
+              
                 yield return elements[i];
             }
         }
