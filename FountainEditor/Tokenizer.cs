@@ -70,17 +70,6 @@ namespace FountainEditor
                 {
                     tokenReader.TakeChar();
                     return ScanSynopsis(tokenReader);
-
-                    //var synopsis = tokenReader.GetToken();
-                    //if (synopsis.Length >= 3)
-                    //{
-                    //    return new PageBreakTextElement(synopsis);
-                    //}
-
-                    //else
-                    //{
-                    //    return new SynopsisTextElement(synopsis); 
-                    //}
                 }
 
                 if (tokenReader.PeekChar() == '>')
@@ -175,6 +164,12 @@ namespace FountainEditor
 
                 case "to:":
                     return new TransitionTextElement(lastword);
+                   
+                case "\r":
+                    return new LineEnding(lastword);
+
+                case "\n":
+                    return new LineEnding(lastword);
 
                 default:
                     return new NullTextElement(lastword);
@@ -272,8 +267,7 @@ namespace FountainEditor
 
         private static Element ScanSynopsis(TokenReader tokenReader)
         {
-            while (!tokenReader.EndOfString //&& !tokenReader.IsLineEnding()
-                )
+            while (!tokenReader.EndOfString)
             {
                 if (!(tokenReader.PeekChar() == '='))
                 {
