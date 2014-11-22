@@ -84,7 +84,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnPageBreak()
         {
-            var tokens = Tokenizer.Parse("===");
+            var tokens = Tokenizer.Parse("===\r\n");
 
             Assert.AreEqual(typeof(PageBreakTextElement), tokens[0].GetType());
         }

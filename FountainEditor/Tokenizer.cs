@@ -70,6 +70,17 @@ namespace FountainEditor
                 {
                     tokenReader.TakeChar();
                     return ScanSynopsis(tokenReader);
+
+                    //var synopsis = tokenReader.GetToken();
+                    //if (synopsis.Length >= 3)
+                    //{
+                    //    return new PageBreakTextElement(synopsis);
+                    //}
+
+                    //else
+                    //{
+                    //    return new SynopsisTextElement(synopsis); 
+                    //}
                 }
 
                 if (tokenReader.PeekChar() == '>')
@@ -261,13 +272,21 @@ namespace FountainEditor
 
         private static Element ScanSynopsis(TokenReader tokenReader)
         {
-            while (!tokenReader.EndOfString && !tokenReader.IsLineEnding())
+            while (!tokenReader.EndOfString //&& !tokenReader.IsLineEnding()
+                )
             {
-                if (tokenReader.PeekChar(0) == '=' &&
-                    tokenReader.PeekChar(1) == '=')
+                if (!(tokenReader.PeekChar() == '='))
                 {
-                    tokenReader.TakeChar(2);
-                    return new PageBreakTextElement(tokenReader.GetToken());
+                    var synopsis = tokenReader.GetToken();
+                    if (synopsis.Length >= 3)
+                    {
+                        return new PageBreakTextElement(synopsis);
+                    }
+
+                    else
+                    {
+                        return new SynopsisTextElement(synopsis);
+                    }
                 }
 
                 tokenReader.TakeChar();
