@@ -70,39 +70,19 @@ namespace FountainEditor
                     continue;
                 }
 
-                if (elements[i] is NullTextElement &&
-                    CheckUpper(elements[i].Text) &&
-                    elements[i].Text.StartsWith("!"))
+                if (elements[i].Text.StartsWith("!"))
                 {
-                    continue;
-                }
+                    var actionElements = ScanForward(elements, i).ToArray();
+                    var actionText = string.Join("", actionElements.Select(e => e.Text));
 
-                if (elements[i] is NullTextElement &&
-                    CheckUpper(elements[i].Text) &&
-                    elements[i].Text.Length > 1)
-                {
-                    if (elements[i - 1] is LineEnding ||
-                        elements[i - 1] is TabElement)
+                    foreach (var actionElement in actionElements)
                     {
-                        var characterElements = ScanCharacter(elements, i).ToArray();
-                        var characterName = string.Join("", characterElements.Select(e => e.Text));
-
-                        foreach (var characterElement in characterElements)
-                        {
-                            elements.Remove(characterElement);
-                        }
-
-                        if (characterName.StartsWith("^"))
-                        {
-                            elements.Insert(i, new DualDialogueTextElement(characterName));
-                        }
-                        else
-                        {
-                            elements.Insert(i, new CharacterTextElement(characterName));
-                        }
+                        elements.Remove(actionElement);
                     }
-                    continue;
+
+                    elements.Insert(i, new ActionTextElement(actionText));
                 }
+
 
                 if (elements[i].Text.StartsWith("@"))
                 {
@@ -167,6 +147,38 @@ namespace FountainEditor
                     }
                 }
 
+                if (elements[i] is NullTextElement &&
+                    CheckUpper(elements[i].Text) &&
+                    elements[i].Text.Length > 1)
+                {
+                    var characterElements = ScanCharacter(elements, i).ToArray();
+                    int check = i + characterElements.Count() + 1;
+
+                    if (elements[check] is LineEnding)
+                    {
+                        continue;
+                    }
+
+                    else
+                    {
+                        var characterName = string.Join("", characterElements.Select(e => e.Text));
+
+                        foreach (var characterElement in characterElements)
+                        {
+                            elements.Remove(characterElement);
+                        }
+
+                        if (characterName.StartsWith("^"))
+                        {
+                            elements.Insert(i, new DualDialogueTextElement(characterName));
+                        }
+
+                        else
+                        {
+                            elements.Insert(i, new CharacterTextElement(characterName));
+                        }
+                    }
+                }
                 if (elements[i] is NullTextElement && elements[i].Text.StartsWith("."))
                 {
                     var sceneHeadingElements = ScanForward(elements, i).ToArray();
