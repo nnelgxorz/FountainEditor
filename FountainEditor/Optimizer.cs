@@ -70,6 +70,20 @@ namespace FountainEditor
                     continue;
                 }
 
+                if (elements[i] is NullTextElement && elements[i].Text.StartsWith("."))
+                {
+                    var sceneHeadingElements = ScanForward(elements, i).ToArray();
+                    var sceneHeading = string.Join("", sceneHeadingElements.Select(e => e.Text));
+
+                    foreach (var sceneHeadingElement in sceneHeadingElements)
+                    {
+                        elements.Remove(sceneHeadingElement);
+                    }
+
+                    elements.Insert(i, new SceneHeadingTextElement (sceneHeading));
+                    continue;
+                }
+
                 if (elements[i].Text.StartsWith("!"))
                 {
                     var actionElements = ScanForward(elements, i).ToArray();
@@ -178,19 +192,6 @@ namespace FountainEditor
                             elements.Insert(i, new CharacterTextElement(characterName));
                         }
                     }
-                }
-                if (elements[i] is NullTextElement && elements[i].Text.StartsWith("."))
-                {
-                    var sceneHeadingElements = ScanForward(elements, i).ToArray();
-                    var sceneHeading = string.Join("", sceneHeadingElements.Select(e => e.Text));
-
-                    foreach (var sceneHeadingElement in sceneHeadingElements)
-                    {
-                        elements.Remove(sceneHeadingElement);
-                    }
-
-                    elements.Insert(i, new SceneHeadingTextElement (sceneHeading));
-                    continue;
                 }
 
                 if (elements[i] is SceneHeadingTextElement)
