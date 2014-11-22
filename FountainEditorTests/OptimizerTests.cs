@@ -547,12 +547,14 @@ namespace FountainEditorTests
                 new NullTextElement("Title"),
                 new LineEnding(""),
                 new TabElement(""),
-                new NullTextElement(" "),
+                new SingleSpaceElement(" "),
                 new NullTextElement("Based"),
                 new SingleSpaceElement(" "),
                 new NullTextElement("on"),
                 new LineEnding(""),
-                new TitlePageKey("Author")
+                new TitlePageKey("Author"),
+                new LineEnding(""),
+                new LineEnding("")
             };
 
             Optimizer.Optimize(elements);
@@ -562,9 +564,12 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[3], typeof(TitlePageValue), "Title");
             TestElementTypeAndValue(elements[4], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[5], typeof(TabElement), "");
-            TestElementTypeAndValue(elements[6], typeof(TitlePageValue), "Based on");
-            TestElementTypeAndValue(elements[7], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[8], typeof(TitlePageValue), "");
+            TestElementTypeAndValue(elements[6], typeof(SingleSpaceElement), " ");
+            TestElementTypeAndValue(elements[7], typeof(TitlePageValue), "Based on");
+            TestElementTypeAndValue(elements[8], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[9], typeof(TitlePageKey), "Author");
+            TestElementTypeAndValue(elements[10], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[11], typeof(LineEnding), "");
         }
         private static void TestElementTypeAndValue(Element element, Type type, string value)
         {

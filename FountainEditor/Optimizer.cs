@@ -23,6 +23,12 @@ namespace FountainEditor
 
                     if (elements[i] is TitlePageKey)
                     {
+                        if (elements[i + 1] is LineEnding &&
+                        elements[i + 2] is LineEnding)
+
+                        {
+                            continue;
+                        }
                         while (!(elements[i] is NullTextElement))
                         {
                             i++;
@@ -39,6 +45,23 @@ namespace FountainEditor
                             }
 
                             elements.Insert(i, new TitlePageValue(titleText));
+                            continue;
+                        }
+                    }
+
+                    if (elements[i] is NullTextElement)
+                    {
+                        {
+                            var titleValues = ScanTitlePage(elements, i).ToArray();
+                            var titleText = string.Join("", titleValues.Select(e => e.Text));
+
+                            foreach (var titleValue in titleValues)
+                            {
+                                elements.Remove(titleValue);
+                            }
+
+                            elements.Insert(i, new TitlePageValue(titleText));
+                            continue;
                         }
                     }
                 }
