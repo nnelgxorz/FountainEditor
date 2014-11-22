@@ -70,7 +70,8 @@ namespace FountainEditor
                     continue;
                 }
 
-                if (elements[i] is NullTextElement && elements[i].Text.StartsWith("."))
+                if (elements[i] is NullTextElement && elements[i].Text.StartsWith(".") &&
+                    !(elements[i].Text.Contains("...")))
                 {
                     var sceneHeadingElements = ScanForward(elements, i).ToArray();
                     var sceneHeading = string.Join("", sceneHeadingElements.Select(e => e.Text));
@@ -168,7 +169,8 @@ namespace FountainEditor
                     var characterElements = ScanCharacter(elements, i).ToArray();
                     int check = i + characterElements.Count() + 1;
 
-                    if (elements[check] is LineEnding)
+                    if (elements[check] is LineEnding ||
+                        !(elements[check - 1] is LineEnding))
                     {
                         continue;
                     }
