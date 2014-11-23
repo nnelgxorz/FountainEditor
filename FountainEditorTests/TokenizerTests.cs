@@ -106,19 +106,9 @@ namespace FountainEditorTests
         }
 
         [TestMethod]
-        public void ReturnLineEndingWindows()
+        public void ReturnLineEnding()
         {
-            var tokens = Tokenizer.Parse("T \r\n");
-
-            Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
-            Assert.AreEqual(typeof(SingleSpaceElement), tokens[1].GetType());
-            Assert.AreEqual(typeof(LineEnding), tokens[2].GetType());
-        }
-
-        [TestMethod]
-        public void ReturnLineEndingMacLinux()
-        {
-            var tokens = Tokenizer.Parse("T \rT \n");
+            var tokens = Tokenizer.Parse("T \nT \n");
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
             Assert.AreEqual(typeof(SingleSpaceElement), tokens[1].GetType());
@@ -149,7 +139,7 @@ namespace FountainEditorTests
         [TestMethod]
         public void ReturnDoubleSpace()
         {
-            var tokens = Tokenizer.Parse("Blah.\r\n  \r\n");
+            var tokens = Tokenizer.Parse("Blah.\n  \n");
 
             Assert.AreEqual(typeof(NullTextElement), tokens[0].GetType());
             Assert.AreEqual(typeof(LineEnding), tokens[1].GetType());

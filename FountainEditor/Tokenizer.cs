@@ -42,18 +42,7 @@ namespace FountainEditor
                     tokenReader.TakeChar();
                     return ScanTabs(tokenReader);
                 }
-
-                if (tokenReader.PeekChar(0) == '\r' && 
-                    tokenReader.PeekChar(1) == '\n')
-                {
-                    tokenReader.TakeChar(2);
-                    return new LineEnding(tokenReader.GetToken());
-                }
-                else if (tokenReader.PeekChar() == '\r')
-                {
-                    tokenReader.TakeChar();
-                    return new LineEnding(tokenReader.GetToken());
-                }
+                
                 else if (tokenReader.PeekChar() == '\n')
                 {
                     tokenReader.TakeChar();
@@ -90,8 +79,7 @@ namespace FountainEditor
                     return ScanParenthetical(tokenReader);
                 }
 
-                if (tokenReader.PeekChar(1) == '\r' ||
-                    tokenReader.PeekChar(1) == '\n' ||
+                if (tokenReader.PeekChar(1) == '\n' ||
                     tokenReader.PeekChar(1) == '[' &&
                     tokenReader.PeekChar(2) == '[' ||
                     tokenReader.PeekChar(1) == ' ' ||
@@ -168,9 +156,6 @@ namespace FountainEditor
 
                 case "to:":
                     return new TransitionTextElement(lastword);
-                   
-                case "\r":
-                    return new LineEnding(lastword);
 
                 case "\n":
                     return new LineEnding(lastword);
@@ -248,10 +233,8 @@ namespace FountainEditor
         {
             while (!tokenReader.LastChar)
             {
-                if (tokenReader.PeekChar(0) == '\r' &&
-                    tokenReader.PeekChar(1) == '\n' &&
-                    tokenReader.PeekChar(2) == '\r' &&
-                    tokenReader.PeekChar(3) == '\n')
+                if (tokenReader.PeekChar(0) == '\n' &&
+                    tokenReader.PeekChar(1) == '\n')
                 {
                     return new NullTextElement(tokenReader.GetToken());
                 }
@@ -313,20 +296,9 @@ namespace FountainEditor
 
         private static bool IsLineEnding(this TokenReader reader)
         {
-            if (reader.PeekChar(0) == '\r' &&
-                reader.PeekChar(1) == '\n')
-            {
-                return true; // Windows line ending
-            }
-
             if (reader.PeekChar(0) == '\n')
             {
-                return true; // Posix line ending
-            }
-
-            if (reader.PeekChar(0) == '\r')
-            {
-                return true; // Apple line ending
+                return true;
             }
 
             return false;
