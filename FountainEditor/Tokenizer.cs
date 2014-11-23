@@ -134,6 +134,9 @@ namespace FountainEditor
                         case "notes:":
                             return new TitlePageKey(word);
 
+                        case "to:":
+                            return new TransitionTextElement(word);
+
                         default:
                             return new NullTextElement(word);
                     }
