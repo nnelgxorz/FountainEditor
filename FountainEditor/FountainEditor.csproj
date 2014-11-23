@@ -64,6 +64,7 @@
     <Compile Include="Elements\SceneHeadingTextElement.cs" />
     <Compile Include="Elements\CenteredTextElement.cs" />
     <Compile Include="Element.cs" />
+    <Compile Include="Normalizer.cs" />
     <Compile Include="Optimizer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
