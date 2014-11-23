@@ -571,6 +571,30 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[10], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[11], typeof(LineEnding), "");
         }
+
+        [TestMethod]
+        public void OptimizeSynopsis()
+        {
+            var elements = new List<Element>
+            {
+                new SynopsisTextElement("="),
+                new SingleSpaceElement(" "),
+                new NullTextElement("Synopsis"),
+                new LineEnding(""),
+                new SynopsisTextElement("="),
+                new NullTextElement("Another"),
+                new SingleSpaceElement(" "),
+                new NullTextElement("Synopsis"),
+                new LineEnding("")
+            };
+
+            Optimizer.Optimize(elements);
+            TestElementTypeAndValue(elements[0], typeof(SynopsisTextElement), "= Synopsis");
+            TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[2], typeof(SynopsisTextElement), "=Another Synopsis");
+            TestElementTypeAndValue(elements[3], typeof(LineEnding), "");
+        }
+
         private static void TestElementTypeAndValue(Element element, Type type, string value)
         {
             Assert.AreEqual(type, element.GetType());

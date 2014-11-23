@@ -121,6 +121,18 @@ namespace FountainEditor
                     elements.Insert(i, new ActionTextElement(actionText));
                 }
 
+                if (elements[i] is SynopsisTextElement)
+                {
+                    var synopsisElements = ScanForward(elements, i).ToArray();
+                    var synopsisText = string.Join("", synopsisElements.Select(e => e.Text));
+
+                    foreach (var synopsisElement in synopsisElements)
+                    {
+                        elements.Remove(synopsisElement);
+                    }
+
+                    elements.Insert(i, new SynopsisTextElement(synopsisText));
+                }
 
                 if (elements[i].Text.StartsWith("@"))
                 {
