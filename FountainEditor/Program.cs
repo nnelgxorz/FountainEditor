@@ -9,7 +9,7 @@ namespace FountainEditor
         static void Main(params string[] args)
         {
             var reader = new StreamReader(args[0]);
-            var tokens = Tokenizer.Parse(reader.ReadToEnd());
+            var tokens = Tokenizer.Parse( Normalizer.Normalize(reader.ReadToEnd()) );
 
             Optimizer.Optimize(tokens);
 
