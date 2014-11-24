@@ -49,9 +49,11 @@ namespace FountainEditorTests
             var elements = new List<Element>
             {
                 new LineEnding(""),
-                new NullTextElement("^OTHER"),
+                new NullTextElement("OTHER"),
                 new SingleSpaceElement(" "),
                 new NullTextElement("TEST"),
+                new SingleSpaceElement(" "),
+                new NullTextElement("^"),
                 new LineEnding(""),
                 new NullTextElement("I"),
                 new SingleSpaceElement(" "),
@@ -66,7 +68,7 @@ namespace FountainEditorTests
 
             Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[1], typeof(DualDialogueTextElement), "^OTHER TEST");
+            TestElementTypeAndValue(elements[1], typeof(DualDialogueTextElement), "OTHER TEST ^");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[3], typeof(DialogueTextElement), "I love tests too.");
             TestElementTypeAndValue(elements[4], typeof(LineEnding), "");
@@ -398,7 +400,7 @@ namespace FountainEditorTests
             var elements = new List<Element>
             {
                 new TabElement(""),
-                new NullTextElement("^TEST"),
+                new NullTextElement("TEST^"),
                 new LineEnding(""),
                 new TabElement(""),
                 new NullTextElement("Test."),
@@ -407,11 +409,31 @@ namespace FountainEditorTests
 
             Optimizer.Optimize(elements);
             TestElementTypeAndValue(elements[0], typeof(TabElement), "");
-            TestElementTypeAndValue(elements[1], typeof(DualDialogueTextElement), "^TEST");
+            TestElementTypeAndValue(elements[1], typeof(DualDialogueTextElement), "TEST^");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[3], typeof(TabElement), "");
             TestElementTypeAndValue(elements[4], typeof(DialogueTextElement), "Test.");
             TestElementTypeAndValue(elements[5], typeof(LineEnding), "");
+        }
+
+        [TestMethod]
+        public void ForcedDualDialogueCharacterAndDialogue()
+        {
+            var elements = new List<Element>
+            {
+                new TabElement(""),
+                new NullTextElement("@TEST^"),
+                new LineEnding(""),
+                new NullTextElement("Test."),
+                new LineEnding("")
+            };
+
+            Optimizer.Optimize(elements);
+            TestElementTypeAndValue(elements[0], typeof(TabElement), "");
+            TestElementTypeAndValue(elements[1], typeof(DualDialogueTextElement), "@TEST^");
+            TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[3], typeof(DialogueTextElement), "Test.");
+            TestElementTypeAndValue(elements[4], typeof(LineEnding), "");
         }
 
         [TestMethod]
@@ -481,12 +503,12 @@ namespace FountainEditorTests
         {
             var elements = new List<Element>
             {
-                new TitlePageKey("Title:"),
+                new cTitlePageKey("Title:"),
                 new NullTextElement("Test"),
                 new SingleSpaceElement(" "),
                 new NullTextElement("Script"),
                 new LineEnding(""),
-                new TitlePageKey("Author:"),
+                new rTitlePageKey("Author:"),
                 new SingleSpaceElement(" "),
                 new NullTextElement("Glenn"),
                 new SingleSpaceElement(" "),
@@ -496,10 +518,10 @@ namespace FountainEditorTests
             };
 
             Optimizer.Optimize(elements);
-            TestElementTypeAndValue(elements[0], typeof(TitlePageKey), "Title:");
+            TestElementTypeAndValue(elements[0], typeof(cTitlePageKey), "Title:");
             TestElementTypeAndValue(elements[1], typeof(TitlePageValue), "Test Script");
             TestElementTypeAndValue(elements[2], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[3], typeof(TitlePageKey), "Author:");
+            TestElementTypeAndValue(elements[3], typeof(rTitlePageKey), "Author:");
             TestElementTypeAndValue(elements[4], typeof(SingleSpaceElement), " ");
             TestElementTypeAndValue(elements[5], typeof(TitlePageValue), "Glenn Becker");
             TestElementTypeAndValue(elements[6], typeof(LineEnding), "");
@@ -541,7 +563,7 @@ namespace FountainEditorTests
         {
             var elements = new List<Element>
             {
-                new TitlePageKey("Title:"),
+                new cTitlePageKey("Title:"),
                 new LineEnding(""),
                 new TabElement(""),
                 new NullTextElement("Title"),
@@ -552,13 +574,13 @@ namespace FountainEditorTests
                 new SingleSpaceElement(" "),
                 new NullTextElement("on"),
                 new LineEnding(""),
-                new TitlePageKey("Author"),
+                new rTitlePageKey("Author"),
                 new LineEnding(""),
                 new LineEnding("")
             };
 
             Optimizer.Optimize(elements);
-            TestElementTypeAndValue(elements[0], typeof(TitlePageKey), "Title:");
+            TestElementTypeAndValue(elements[0], typeof(cTitlePageKey), "Title:");
             TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[2], typeof(TabElement), "");
             TestElementTypeAndValue(elements[3], typeof(TitlePageValue), "Title");
@@ -567,7 +589,7 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[6], typeof(SingleSpaceElement), " ");
             TestElementTypeAndValue(elements[7], typeof(TitlePageValue), "Based on");
             TestElementTypeAndValue(elements[8], typeof(LineEnding), "");
-            TestElementTypeAndValue(elements[9], typeof(TitlePageKey), "Author");
+            TestElementTypeAndValue(elements[9], typeof(rTitlePageKey), "Author");
             TestElementTypeAndValue(elements[10], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[11], typeof(LineEnding), "");
         }
@@ -593,6 +615,36 @@ namespace FountainEditorTests
             TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
             TestElementTypeAndValue(elements[2], typeof(SynopsisTextElement), "=Another Synopsis");
             TestElementTypeAndValue(elements[3], typeof(LineEnding), "");
+        }
+
+        [TestMethod]
+        public void MultiWordTitleKey()
+        {
+            var elements = new List<Element>
+            {
+                new cTitlePageKey("Author:"),
+                new LineEnding(""),
+                new NullTextElement("Author"),
+                new LineEnding(""),
+                new NullTextElement("Draft"),
+                new SingleSpaceElement(" "),
+                new rTitlePageKey("date:"),
+                new LineEnding(""),
+                new NullTextElement("11/23/2014"),
+                new LineEnding(""),
+                new LineEnding("")
+            };
+
+            Optimizer.Optimize(elements);
+            TestElementTypeAndValue(elements[0], typeof(cTitlePageKey), "Author:");
+            TestElementTypeAndValue(elements[1], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[2], typeof(TitlePageValue), "Author");
+            TestElementTypeAndValue(elements[3], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[4], typeof(rTitlePageKey), "Draft date:");
+            TestElementTypeAndValue(elements[5], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[6], typeof(TitlePageValue), "11/23/2014");
+            TestElementTypeAndValue(elements[7], typeof(LineEnding), "");
+            TestElementTypeAndValue(elements[8], typeof(LineEnding), "");
         }
 
         private static void TestElementTypeAndValue(Element element, Type type, string value)

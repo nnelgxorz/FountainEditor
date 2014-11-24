@@ -11,58 +11,42 @@ namespace FountainEditor
     {
         public static void Optimize(List<Element> elements)
         {
-            if (elements[0] is TitlePageKey)
+            if (elements[0] is cTitlePageKey || elements[0] is rTitlePageKey)
             {
                 for (int i = 0; i < elements.Count; i++)
                 {
-                    if (elements[i] is LineEnding &&
-                        elements[i + 1] is LineEnding)
+                    if (elements[i] is LineEnding && elements[i + 1] is LineEnding)
                     {
                         break;
                     }
 
-                    if (elements[i] is TitlePageKey)
+                    if (elements.Count > 0)
                     {
-                        if (elements[i + 1] is LineEnding &&
-                        elements[i + 2] is LineEnding)
-
+                        if (elements[i] is rTitlePageKey)
                         {
-                            continue;
-                        }
-                        while (!(elements[i] is NullTextElement))
-                        {
-                            i++;
-                        }
+                            var keyElements = ScanBackward(elements, i).Reverse().ToArray();
+                            var keyText = string.Join("", keyElements.Select(e => e.Text));
 
-                        if (elements[i] is NullTextElement)
-                        {
-                            var titleValues = ScanTitlePage(elements, i).ToArray();
-                            var titleText = string.Join("", titleValues.Select(e => e.Text));
-
-                            foreach (var titleValue in titleValues)
+                            foreach (var keyElement in keyElements)
                             {
-                                elements.Remove(titleValue);
+                                elements.Remove(keyElement);
                             }
 
-                            elements.Insert(i, new TitlePageValue(titleText));
-                            continue;
+                            elements.Insert(i - (keyElements.Count() - 1), new rTitlePageKey(keyText));
                         }
                     }
 
-                    if (elements[i] is NullTextElement)
+                    if (elements[i] is NullTextElement || elements[i] is ParentheticalTextElement)
                     {
+                        var valueElements = ScanTitlePage(elements, i).ToArray();
+                        var valueText = string.Join("", valueElements.Select(e => e.Text));
+
+                        foreach (var valueElement in valueElements)
                         {
-                            var titleValues = ScanTitlePage(elements, i).ToArray();
-                            var titleText = string.Join("", titleValues.Select(e => e.Text));
-
-                            foreach (var titleValue in titleValues)
-                            {
-                                elements.Remove(titleValue);
-                            }
-
-                            elements.Insert(i, new TitlePageValue(titleText));
-                            continue;
+                            elements.Remove(valueElement);
                         }
+
+                        elements.Insert(i, new TitlePageValue(valueText));
                     }
                 }
             }
@@ -80,7 +64,7 @@ namespace FountainEditor
                         elements.Remove(transitionElement);
                     }
 
-                    elements.Insert(i -= transitionElements.Count() - 1, new TransitionTextElement(transitionText));
+                    elements.Insert(i - (transitionElements.Count() - 1), new TransitionTextElement(transitionText));
                     i++;
                 }
             }
@@ -147,7 +131,14 @@ namespace FountainEditor
                             elements.Remove(characterElement);
                         }
 
-                        elements.Insert(i, new CharacterTextElement(characterName));
+                        if (characterName.EndsWith("^"))
+                        {
+                            elements.Insert(i, new DualDialogueTextElement(characterName));
+                        }
+                        else
+                        {
+                            elements.Insert(i, new CharacterTextElement(characterName));
+                        }
                     }
                     continue;
                 }
@@ -219,7 +210,7 @@ namespace FountainEditor
                             elements.Remove(characterElement);
                         }
 
-                        if (characterName.StartsWith("^"))
+                        if (characterName.EndsWith("^"))
                         {
                             elements.Insert(i, new DualDialogueTextElement(characterName));
                         }
@@ -298,7 +289,7 @@ namespace FountainEditor
 
         private static IEnumerable<Element> ScanTitlePage(List<Element> elements, int start)
         {
-            return elements.Skip(start).TakeWhile(e => !(e is LineEnding));
+            return elements.Skip(start).TakeWhile(e => !(e is LineEnding) && !(e is rTitlePageKey));
         }
 
         private static bool CheckUpper(string text)
