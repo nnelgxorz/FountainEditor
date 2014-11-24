@@ -79,59 +79,6 @@ namespace FountainEditor
                     return ScanParenthetical(tokenReader);
                 }
 
-                if (tokenReader.PeekChar(1) == '\n' ||
-                    tokenReader.PeekChar(1) == '[' &&
-                    tokenReader.PeekChar(2) == '[' ||
-                    tokenReader.PeekChar(1) == ' ' ||
-                    tokenReader.PeekChar() == ':')
-                {
-                    tokenReader.TakeChar();
-                    var word = tokenReader.GetToken();
-
-                    switch (word.ToLower())
-                    {
-                        case "int.":
-                            return new SceneHeadingTextElement(word);
-
-                        case "ext.":
-                            return new SceneHeadingTextElement(word);
-
-                        case "title:":
-                            return new TitlePageKey(word);
-
-                        case "credit:":
-                            return new TitlePageKey(word);
-
-                        case "author:":
-                            return new TitlePageKey(word);
-
-                        case "authors:":
-                            return new TitlePageKey(word);
-
-                        case "source:":
-                            return new TitlePageKey(word);
-
-                        case "date:":
-                            return new TitlePageKey(word);
-
-                        case "draft date:":
-                            return new TitlePageKey(word);
-
-                        case "contact:":
-                            return new TitlePageKey(word);
-
-                        case "notes:":
-                            return new TitlePageKey(word);
-
-                        case "to:":
-                            return new TransitionTextElement(word);
-
-                        default:
-                            return new NullTextElement(word);
-                    }
-                }
-                
-                
                 if (tokenReader.PeekChar(0) == '[' &&
                     tokenReader.PeekChar(1) == '[')
                 {
@@ -139,6 +86,57 @@ namespace FountainEditor
                     return ScanNote(tokenReader);
                 }
 
+                if (tokenReader.PeekChar(1) == '\n' ||
+                    tokenReader.PeekChar(1) == '[' ||
+                    tokenReader.PeekChar(1) == ' ' ||
+                    tokenReader.PeekChar() == ':')
+                {
+                    tokenReader.TakeChar();
+                    var word = tokenReader.GetToken();
+
+                    if (word.EndsWith(":"))
+                    {
+                        switch (word.ToLower())
+                        {
+                            case "title:":
+                                return new cTitlePageKey(word);
+
+                            case "credit:":
+                                return new cTitlePageKey(word);
+
+                            case "author:":
+                                return new cTitlePageKey(word);
+
+                            case "authors:":
+                                return new cTitlePageKey(word);
+
+                            case "source:":
+                                return new cTitlePageKey(word);
+
+                            case "to:":
+                                return new TransitionTextElement(word);
+
+                            default:
+                                return new rTitlePageKey(word);
+                        }
+                    }
+
+                    else
+                    {
+                        switch (word.ToLower())
+                        {
+                            case "int.":
+                                return new SceneHeadingTextElement(word);
+
+                            case "ext.":
+                                return new SceneHeadingTextElement(word);
+
+                            default:
+                                return new NullTextElement(word);
+                        }
+                    }
+                }
+                
                 tokenReader.TakeChar();
             }
 
