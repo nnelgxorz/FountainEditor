@@ -1,6 +1,24 @@
 ﻿<Window x:Class="FountainEditorGUI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525" WindowState="Maximized">
-    <Grid/>
+        Title="MainWindow" Height="350" Width="525" Background="#FF7F7F7F">
+    <Window.BorderBrush>
+        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+            <GradientStop Color="#FFB2D5E6" Offset="0"/>
+            <GradientStop Color="#FF8DC7E2" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.BorderBrush>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0*"/>
+        </Grid.ColumnDefinitions>
+        <RichTextBox HorizontalAlignment="Center" Height="287" Margin="0,0,0,0" VerticalAlignment="Bottom" Width="345">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text="RichTextBox"/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+    </Grid>
 </Window>
