@@ -116,6 +116,9 @@ namespace FountainEditor
                             case "to:":
                                 return new TransitionTextElement(word);
 
+                            case "out":
+                                return new TransitionTextElement(word);
+
                             default:
                                 return new rTitlePageKey(word);
                         }
@@ -151,6 +154,9 @@ namespace FountainEditor
 
                 case "ext.":
                     return new SceneHeadingTextElement(lastword);
+
+                case "out":
+                    return new TransitionTextElement(lastword);
 
                 case "to:":
                     return new TransitionTextElement(lastword);
