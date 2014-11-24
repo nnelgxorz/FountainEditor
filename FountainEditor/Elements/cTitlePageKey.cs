@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace FountainEditor.Elements
 {
-    public class TitlePageKey : Element
+    public class cTitlePageKey : Element
     {
-        public TitlePageKey(string text)
+        public cTitlePageKey(string text)
             : base(text)
         {
         }
