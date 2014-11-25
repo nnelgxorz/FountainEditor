@@ -18,7 +18,8 @@
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Menu IsMainMenu="True" Height="20" Width="Auto" VerticalAlignment="Top" Grid.ColumnSpan="2" Grid.Row="0">
-            <MenuItem Header="File">
+            <MenuItem Header="File" Click="MenuItem_Click">
+                <MenuItem Header="New"/>
                 <MenuItem Header="Open"/>
                 <MenuItem Header="Save"/>
             </MenuItem>

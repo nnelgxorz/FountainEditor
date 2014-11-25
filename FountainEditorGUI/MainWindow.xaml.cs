@@ -31,5 +31,22 @@ namespace FountainEditorGUI
         {
             InitializeComponent();
         }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Microsoft.Win32.OpenFileDialog dlg = new
+            Microsoft.Win32.OpenFileDialog();
+
+            dlg.DefaultExt = ".txt";
+            dlg.Filter = "Text documents (.txt)|*.txt|Fountain documents (.fountain)|*.fountain";
+
+            Nullable<bool> result = dlg.ShowDialog();
+
+            if (result == true)
+            {
+                string filename = dlg.FileName;
+                ScriptText = System.IO.File.ReadAllText(dlg.FileName);
+            }
+        }
     }
 }
