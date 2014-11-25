@@ -20,6 +20,13 @@ namespace FountainEditorGUI
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static DependencyProperty ScriptTextProperty = DependencyProperty.Register("ScriptText", typeof(string), typeof(MainWindow));
+
+        public string ScriptText {
+            get { return (string)GetValue(ScriptTextProperty); }
+            set { SetValue(ScriptTextProperty, value); }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
