@@ -22,7 +22,8 @@ namespace FountainEditorGUI
     {
         public static DependencyProperty ScriptTextProperty = DependencyProperty.Register("ScriptText", typeof(string), typeof(MainWindow));
 
-        public string ScriptText {
+        public string ScriptText
+        {
             get { return (string)GetValue(ScriptTextProperty); }
             set { SetValue(ScriptTextProperty, value); }
         }
@@ -38,14 +39,21 @@ namespace FountainEditorGUI
             Microsoft.Win32.OpenFileDialog();
 
             dlg.DefaultExt = ".txt";
-            dlg.Filter = "Text documents (.txt)|*.txt|Fountain documents (.fountain)|*.fountain";
+            dlg.Filter = "Text documents (.txt)|*.txt|(.fountain)|*.fountain";
 
             Nullable<bool> result = dlg.ShowDialog();
 
             if (result == true)
             {
-                string filename = dlg.FileName;
-                ScriptText = System.IO.File.ReadAllText(dlg.FileName);
+                var filename = dlg.FileName;
+                var inputText = new System.IO.StreamReader(dlg.FileName).ReadToEnd();
+
+                var normalText = FountainEditor.Normalizer.Normalize(inputText);
+                var tree = FountainEditor.Tokenizer.Parse(normalText);
+                FountainEditor.Optimizer.Optimize(tree);
+
+                ScriptText = tree.Aggregate("", (curr, next) => curr + next.Print());
+                //ScriptText = System.IO.File.ReadAllText(dlg.FileName);
             }
         }
     }
