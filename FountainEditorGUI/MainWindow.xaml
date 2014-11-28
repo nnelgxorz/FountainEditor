@@ -1,46 +1,34 @@
 ﻿<Window x:Name="Window" x:Class="FountainEditorGUI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="FountainEditor" Height="350" Width="525" WindowState="Maximized" Background="#515255">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="233*"/>
-            <ColumnDefinition Width="50*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition/>
-            <RowDefinition Height="20*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <Menu Height="20" VerticalAlignment="Top" Grid.ColumnSpan="3" Grid.Row="0" VerticalContentAlignment="Center" HorizontalAlignment="Center">
-            <Menu.Background>
-                <SolidColorBrush Color="#595e5e"/>
-            </Menu.Background>
-            <Menu.Foreground>
-                <SolidColorBrush Color="White"/>
-            </Menu.Foreground>
-            <MenuItem Header="File" Click="MenuItem_Click">
-                <MenuItem Header="New"/>
-                <MenuItem Header="Open"/>
-                <MenuItem Header="Save"/>
-                <Separator/>
-                <MenuItem Header="Export"/>
-                <MenuItem Header="Print"/>
-                <Separator/>
-                <MenuItem Header="Exit"/>
-            </MenuItem>
-            <MenuItem Header="Options">
-                <MenuItem Header="Print Options"/>
-            </MenuItem>
-            <MenuItem Header="Help">
-                <MenuItem Header="Learn Syntax"/>
-                <MenuItem Header="About"/>
-            </MenuItem>
-        </Menu>
-        <TextBox Grid.Column="1" Grid.Row="2" TextWrapping="Wrap" FontFamily="Courier Prime" FontSize="16"
+        Title="(intEXT)" Height="350" Width="525" WindowState="Maximized" Background="#515255"/>
+<Grid>
+    <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="3*"/>
+        <ColumnDefinition Width="1*"/>
+        <ColumnDefinition Width="8*"/>
+        <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition/>
+        <RowDefinition Height="20*"/>
+        <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+    <Menu Height="25" Width="Auto" Grid.ColumnSpan="4" Grid.Row="0" Background="#595e5e" Foreground="White">
+        <MenuItem Header="File" Click="MenuItem_Click">
+            <MenuItem Header="New"/>
+            <MenuItem Header="Open"/>
+            <MenuItem Header="Save"/>
+        </MenuItem>
+        <MenuItem Header="Print"/>
+        <MenuItem Header="Options"/>
+        <MenuItem Header="Help">
+        </MenuItem>
+    </Menu>
+    <TextBox Grid.Column="2" Grid.Row="2" TextWrapping="Wrap" FontFamily="Courier Prime" FontSize="18"
                  AcceptsReturn="True" AcceptsTab="True" ScrollViewer.VerticalScrollBarVisibility="Visible" 
-                 Text="{Binding ScriptText, ElementName=Window, UpdateSourceTrigger=PropertyChanged}"/>     
-    </Grid> 
-</Window>
+                 Text="{Binding ScriptText, ElementName=Window, UpdateSourceTrigger=PropertyChanged}"/>
+    <StackPanel Grid.Column="0" Grid.Row="2" Background="White" ScrollViewer.VerticalScrollBarVisibility="Visible"/>
+</Grid> 
+
