@@ -53,7 +53,6 @@ namespace FountainEditorGUI
                 FountainEditor.Optimizer.Optimize(tree);
 
                 ScriptText = tree.Aggregate("", (curr, next) => curr + next.Print());
-                //ScriptText = System.IO.File.ReadAllText(dlg.FileName);
             }
         }
     }
