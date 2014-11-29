@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using FountainEditor;
 using FountainEditor.Elements;
 using System.IO;
+using Microsoft.Win32;
 
 namespace FountainEditorGUI
 {
@@ -28,7 +29,7 @@ namespace FountainEditorGUI
 
         public ObservableCollection<Element> DocumentTree { get; set; }
 
-        public ObservableCollection<Element> OutlineElements { get; set; }
+        public ObservableCollection<Element> OutlineElements { get; set; }   
 
         public string ScriptText
         {
@@ -78,7 +79,10 @@ namespace FountainEditorGUI
 
                 foreach (var item in tree)
                 {
-                    OutlineElements.Add(item);
+                    if (item is OutlineTextElement || item is SynopsisTextElement)
+                    {
+                        OutlineElements.Add(item);
+                    }
                 }
             }
         }
