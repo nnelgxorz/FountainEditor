@@ -24,26 +24,16 @@ namespace FountainEditorGUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static List<FountainEditor.Element> DocumentTree
-        {
-            get;
-            set;
-        }
-
         public static DependencyProperty ScriptTextProperty = DependencyProperty.Register("ScriptText", typeof(string), typeof(MainWindow));
+
+        public ObservableCollection<Element> DocumentTree { get; set; }
+
+        public ObservableCollection<Element> OutlineElements { get; set; }
 
         public string ScriptText
         {
             get { return (string)GetValue(ScriptTextProperty); }
             set { SetValue(ScriptTextProperty, value); }
-        }
-
-        public static DependencyProperty OutlineElementProperty = DependencyProperty.Register("OutlineElement", typeof(ObservableCollection<Element>), typeof(MainWindow));
-        
-        public ObservableCollection<Element> OutlineElements
-        {
-            get { return (ObservableCollection<Element>)GetValue(OutlineElementProperty); }
-            set { SetValue(OutlineElementProperty, value); }
         }
 
         public static DependencyProperty DocumentNameProperty = DependencyProperty.Register("DocumentName", typeof(string), typeof(MainWindow));
@@ -56,6 +46,7 @@ namespace FountainEditorGUI
         
         public MainWindow()
         {
+            OutlineElements = new ObservableCollection<Element>();
             InitializeComponent();
         }
 
@@ -66,54 +57,46 @@ namespace FountainEditorGUI
 
         private void OpenItem_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog dlg = new
-            Microsoft.Win32.OpenFileDialog();
+            var dlg = new OpenFileDialog();
 
             dlg.DefaultExt = ".txt";
             dlg.Filter = "Text Documents (.txt)|*.txt| Fountain Documents (.fountain)|*.fountain";
 
-            Nullable<bool> result = dlg.ShowDialog();
-
-            if (result == true)
+            if (dlg.ShowDialog() == true)
             {
                 var filename = dlg.FileName;
                 var inputText = new StreamReader(dlg.FileName).ReadToEnd();
 
                 var normalText = Normalizer.Normalize(inputText);
                 var tree = Tokenizer.Parse(normalText);
+
                 Optimizer.Optimize(tree);
 
-                DocumentTree = tree;
+                DocumentTree = new ObservableCollection<Element>(tree);
                 ScriptText = DocumentTree.Aggregate("", (curr, next) => curr + next.Print());
-                var oc = new ObservableCollection<Element>();
                 DocumentName = System.IO.Path.GetFileName(filename);
 
                 foreach (var item in tree)
                 {
-                    oc.Add(item);
+                    OutlineElements.Add(item);
                 }
-                OutlineElements = oc;
             }
         }
 
         private void SaveAs_Click(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.SaveFileDialog dlg = new
-            Microsoft.Win32.SaveFileDialog();
+            var dlg = new SaveFileDialog();
 
             dlg.FileName = DocumentName;
             dlg.DefaultExt = ".txt";
             dlg.Filter = "Text Documents (.txt)|*.txt| Fountain Documents (.fountain)|*.fountain";
 
-            Nullable<bool> result = dlg.ShowDialog();
-
-            if (result == true)
+            if (dlg.ShowDialog() == true)
             {
                 var saveText = new StreamWriter(DocumentName);
                 saveText.Write(ScriptText);
                 DocumentName = System.IO.Path.GetFileName(dlg.FileName);
             }
-
         }
     }
 }
