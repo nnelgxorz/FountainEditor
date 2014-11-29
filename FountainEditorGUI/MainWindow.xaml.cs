@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,11 +38,11 @@ namespace FountainEditorGUI
             set { SetValue(ScriptTextProperty, value); }
         }
 
-        public static DependencyProperty OutlineElementProperty = DependencyProperty.Register("OutlineElement", typeof(List<Element>), typeof(MainWindow));
+        public static DependencyProperty OutlineElementProperty = DependencyProperty.Register("OutlineElement", typeof(ObservableCollection<Element>), typeof(MainWindow));
         
-        public List<Element> OutlineElements
+        public ObservableCollection<Element> OutlineElements
         {
-            get { return (List<Element>)GetValue(OutlineElementProperty); }
+            get { return (ObservableCollection<Element>)GetValue(OutlineElementProperty); }
             set { SetValue(OutlineElementProperty, value); }
         }
 
@@ -84,8 +85,14 @@ namespace FountainEditorGUI
 
                 DocumentTree = tree;
                 ScriptText = DocumentTree.Aggregate("", (curr, next) => curr + next.Print());
-                OutlineElements = DocumentTree;
+                var oc = new ObservableCollection<Element>();
                 DocumentName = System.IO.Path.GetFileName(filename);
+
+                foreach (var item in tree)
+                {
+                    oc.Add(item);
+                }
+                OutlineElements = oc;
             }
         }
 
@@ -102,8 +109,9 @@ namespace FountainEditorGUI
 
             if (result == true)
             {
-                //var saveText = new StreamWriter();
-                DocumentName = dlg.FileName;
+                var saveText = new StreamWriter(DocumentName);
+                saveText.Write(ScriptText);
+                DocumentName = System.IO.Path.GetFileName(dlg.FileName);
             }
 
         }
