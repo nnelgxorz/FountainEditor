@@ -61,7 +61,7 @@ namespace FountainEditorGUI
             var dlg = new OpenFileDialog();
 
             dlg.DefaultExt = ".txt";
-            dlg.Filter = "Text Documents (.txt)|*.txt| Fountain Documents (.fountain)|*.fountain";
+            dlg.Filter = "Text Documents (.txt)|*.txt|Fountain Documents(.fountain)|*.fountain";
 
             if (dlg.ShowDialog() == true)
             {
@@ -74,7 +74,7 @@ namespace FountainEditorGUI
                 Optimizer.Optimize(tree);
 
                 DocumentTree = new ObservableCollection<Element>(tree);
-                ScriptText = DocumentTree.Aggregate("", (curr, next) => curr + next.Print());
+                ScriptText = DocumentTree.Aggregate("", (curr, next) => curr + next.Text);
                 DocumentName = System.IO.Path.GetFileName(filename);
 
                 foreach (var item in tree)
@@ -84,6 +84,7 @@ namespace FountainEditorGUI
                         OutlineElements.Add(item);
                     }
                 }
+                
             }
         }
 

@@ -6,8 +6,8 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="3*"/>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="6*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -32,16 +32,21 @@
         <TextBox Grid.Column="2" Grid.Row="2" FontFamily="Courier Prime" FontSize="16"
                  AcceptsReturn="True" AcceptsTab="True" ScrollViewer.VerticalScrollBarVisibility="Visible" 
                  Text="{Binding ScriptText, ElementName=Window, UpdateSourceTrigger=PropertyChanged}"
-                 TextWrapping="Wrap"/>
+                 TextWrapping="Wrap">
+        </TextBox>
         
-        <ListView Grid.Column="0" Grid.Row="2" Background="#515255" Foreground="#d2d2d2" FontFamily="Courier Prime" FontSize="16"
-                  ItemsSource="{Binding OutlineElements, ElementName=Window}" BorderBrush="{x:Null}">
+        <ListView x:Name="Outliner" Grid.Column="0" Grid.Row="2" Background="#515255" Foreground="#d2d2d2" 
+                  FontFamily="Courier Prime" FontSize="16" BorderBrush="{x:Null}"
+                  ItemsSource="{Binding OutlineElements, ElementName=Window}"
+                  ScrollViewer.HorizontalScrollBarVisibility="Hidden" HorizontalContentAlignment="Stretch">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <Grid Width="325">
-                        <TextBlock Text="{Binding Text}" FontSize="16" FontFamily="courier prime" FontWeight="Light" 
-                   Margin="10,10,0,0" HorizontalAlignment="Left"
-                   TextTrimming="WordEllipsis" TextWrapping="Wrap"/>
+                    <Grid Width="{Binding ElementName=Outliner, Path=ActualWidth}">
+                        <TextBlock Text="{Binding Text}" FontSize="16" HorizontalAlignment="Left"
+                                   FontFamily="courier prime" FontWeight="Light" 
+                                   Margin="10,10,30,10" FontStyle="Italic"
+                                   TextTrimming="WordEllipsis" TextWrapping="Wrap">
+                        </TextBlock>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
