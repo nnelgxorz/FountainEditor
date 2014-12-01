@@ -9,15 +9,15 @@ namespace FountainEditorGUI
 {
     class CustomTextBox : RichTextBox
     {
-        int fontSize;
-        int pageNumber;
-        static double pageWidth = 8.5;
-        static string textBoxHeight = ActualHeightProperty.ToString();
-        static string textBoxWidth = ActualWidthProperty.ToString();
-        double inch = Convert.ToDouble(textBoxWidth) / pageWidth;
+        int fontSize = 16;
 
-        public void GetMargins()
-        {
-        }
+        private static double pageWidth = 8.5;
+        private static string textBoxHeight = ActualHeightProperty.ToString();
+        private static string textBoxWidth = ActualWidthProperty.ToString();
+        private static double inch = Convert.ToDouble(textBoxWidth) / pageWidth;
+
+        double margin = 1 * inch;
+
+        double[] marginValues;
     }
 }

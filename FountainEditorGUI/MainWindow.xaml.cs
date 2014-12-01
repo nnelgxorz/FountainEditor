@@ -71,30 +71,37 @@ namespace FountainEditorGUI
         {
             var dlg = new OpenFileDialog();
 
-            dlg.DefaultExt = ".txt";
-            dlg.Filter = "Text Documents (.txt)|*.txt|Fountain Documents(.fountain)|*.fountain";
+            dlg.DefaultExt = "*.*";
+            dlg.Filter = "Text Documents (.txt)|*.txt|Fountain Documents(.fountain)|*.fountain|All Documents (*.*)|*.*";
 
             if (dlg.ShowDialog() == true)
             {
-                var filename = dlg.FileName;
-                var inputText = new StreamReader(dlg.FileName).ReadToEnd();
+                var fileName = dlg.FileName;
+                DocumentName = System.IO.Path.GetFileName(fileName);
+                var stream = new Antlr4.Runtime.AntlrFileStream(fileName);
+                var lexer = new FountainLexer(stream);
+                var tokens = new Antlr4.Runtime.CommonTokenStream(lexer);
+                var parser = new FountainParser(tokens);
+                var tree = parser.compileUnit();
+                var treeWalker = new Antlr4.Runtime.Tree.ParseTreeWalker();
+                var visitor = new FlowVisitor();
+                treeWalker.Walk(visitor, tree);
 
-                var normalText = Normalizer.Normalize(inputText);
-                var tree = Tokenizer.Parse(normalText);
+                this.DisplayBox.Document = visitor.displayDoc;
+                //var inputText = new StreamReader(dlg.FileName).ReadToEnd();
+                //var normalText = Normalizer.Normalize(inputText);
+                //var tree = Tokenizer.Parse(normalText);
+                //Optimizer.Optimize(tree);
+                //DocumentTree = new ObservableCollection<Element>(tree);
+                //ScriptText = DocumentTree.Aggregate("", (curr, next) => curr + next.Text);
 
-                Optimizer.Optimize(tree);
-
-                DocumentTree = new ObservableCollection<Element>(tree);
-                ScriptText = DocumentTree.Aggregate("", (curr, next) => curr + next.Text);
-                DocumentName = System.IO.Path.GetFileName(filename);
-
-                foreach (var item in tree)
-                {
-                    if(item is OutlineTextElement || item is SynopsisTextElement)
-                    {
-                    OutlineElements.Add(item);
-                    }
-                }
+                //foreach (var item in tree)
+                //{
+                //    if(item is OutlineTextElement || item is SynopsisTextElement)
+                //    {
+                //    OutlineElements.Add(item);
+                //    }
+                //}
             }
         }
     }

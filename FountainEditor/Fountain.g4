@@ -17,7 +17,7 @@ centered
 	;
 
 character
-	:	Character ( EOL+ Parenthetical )? EOL+ Span*
+	:	Character ( Span | Parenthetical | EOL)*? EOL EOL
 	;
 
 heading
@@ -59,13 +59,31 @@ compileUnit
 //
 // Lexer Rules
 //
+fragment Ext
+	: [eE] [xX] [tT]
+	;
+
+fragment Int
+	: [iI] [nN] [tT]
+	;
+
+Heading
+	:	( Ext	|	Int )	Period      ~( '\r' | '\n' )*
+	|	( Ext  '/'	Int )	Period      ~( '\r' | '\n' )*
+	|	( Int  '/'	Ext )	Period      ~( '\r' | '\n' )*
+	|	[iI]   '/'	[eE]	Period		~( '\r'	| '\n' )*
+	|	{Column == 0}?		Period		~( '\r'	| '\n' )*
+	;
 
 EOL
-	:	( '\r'? '\n' )
+	:	'\r\n'
+	|	'\r'
+	|	'\n'
 	;
 
 fragment Uppercase
 	:	'A'..'Z'
+	|	['().]
 	;
 
 fragment UppercaseWord
@@ -73,7 +91,7 @@ fragment UppercaseWord
 	;
 
 Character
-	:	UppercaseWord ( Space UppercaseWord )* Caret?
+	:	UppercaseWord ( Space+ | UppercaseWord )* Caret?
 	|	At Span
 	;
 
@@ -81,7 +99,7 @@ fragment Symbol
 	:	'A'..'Z'
 	|	'a'..'z'
 	|	'0'..'9'
-	|	[_*.]
+	|	[\-_*.,!?'":()/]
 	;
 
 fragment Word
@@ -89,7 +107,8 @@ fragment Word
 	;
 
 Span
-	:	Word ( Space Word )* Space?
+	:	Word ( Space+ Word )*
+	|	UppercaseWord ( Space+ UppercaseWord )* EOL EOL
 	;
 
 fragment Period
@@ -164,14 +183,12 @@ fragment CNote
 	:	']]'
 	;
 
-PageBreak
-	:	'==='
+fragment To
+	:	[tT] [oO] Colon
 	;
 
-Heading
-	:	[Ee] [Xx] [Tt] Period      ~( '\r' | '\n' )*
-	|	[Ii] [Nn] [Tt] Period      ~( '\r' | '\n' )*
-	|	{Column == 0}? Period ~'.' ~( '\r' | '\n' )*
+PageBreak
+	:	'==='
 	;
 
 Boneyard
@@ -204,6 +221,10 @@ Synopsis
 	;
 
 Transition
-	:	Span Space [Tt] [Oo] Colon
+	:	Span Space To
 	|	OAngle ~( '\r' | '\n' )*
+	;
+
+WS
+	: [ \t] -> skip
 	;
