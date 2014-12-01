@@ -29,7 +29,18 @@ namespace FountainEditorGUI
 
         public ObservableCollection<Element> DocumentTree { get; set; }
 
-        public ObservableCollection<Element> OutlineElements { get; set; }   
+        public ObservableCollection<Element> OutlineElements { get; set; }
+
+        private bool FilterOutlineSynopsis(object item)
+        {
+            if (item is OutlineTextElement || item is SynopsisTextElement)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public FlowDocument DisplayText { get; set; }
 
         public string ScriptText
         {
@@ -79,28 +90,11 @@ namespace FountainEditorGUI
 
                 foreach (var item in tree)
                 {
-                    if (item is OutlineTextElement || item is SynopsisTextElement)
+                    if(item is OutlineTextElement || item is SynopsisTextElement)
                     {
-                        OutlineElements.Add(item);
+                    OutlineElements.Add(item);
                     }
                 }
-                
-            }
-        }
-
-        private void SaveAs_Click(object sender, RoutedEventArgs e)
-        {
-            var dlg = new SaveFileDialog();
-
-            dlg.FileName = DocumentName;
-            dlg.DefaultExt = ".txt";
-            dlg.Filter = "Text Documents (.txt)|*.txt| Fountain Documents (.fountain)|*.fountain";
-
-            if (dlg.ShowDialog() == true)
-            {
-                var saveText = new StreamWriter(DocumentName);
-                saveText.Write(ScriptText);
-                DocumentName = System.IO.Path.GetFileName(dlg.FileName);
             }
         }
     }
