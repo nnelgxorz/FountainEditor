@@ -19,7 +19,7 @@ namespace FountainEditorGUI
             Run r = new Run(text);
             Paragraph p = new Paragraph();
 
-            p.Margin = new System.Windows.Thickness(100, 0, 100, 20);
+            p.Margin = new System.Windows.Thickness(20, 0, 100, 20);
             p.Foreground = System.Windows.Media.Brushes.Gray;
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
@@ -32,7 +32,7 @@ namespace FountainEditorGUI
             Run r = new Run(text);
             Paragraph p = new Paragraph();
 
-            p.Margin = new System.Windows.Thickness(100, 0, 100, 20);
+            p.Margin = new System.Windows.Thickness(40, 0, 100, 20);
             p.Foreground = System.Windows.Media.Brushes.Gray;
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
@@ -45,7 +45,7 @@ namespace FountainEditorGUI
             Run r = new Run(text.ToUpper());
             Paragraph p = new Paragraph();
 
-            p.Margin = new System.Windows.Thickness(150, 0, 100, 20);
+            p.Margin = new System.Windows.Thickness(150, 40, 100, 20);
             p.FontWeight = System.Windows.FontWeights.Bold;
 
             p.Inlines.Add(r);
@@ -98,17 +98,6 @@ namespace FountainEditorGUI
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
         }
-
-        //public override void EnterEol(FountainEditor.FountainParser.EolContext context)
-        //{
-        //    string text = "";
-        //    Run r = new Run(text);
-        //    Paragraph p = new Paragraph();
-
-        //    p.Inlines.Add(r);
-        //    displayDoc.Blocks.Add(p);
-        //}
-
         public override void EnterPageBreak(FountainEditor.FountainParser.PageBreakContext context)
         {
             string text = context.GetText();
