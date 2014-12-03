@@ -67,7 +67,7 @@ namespace FountainEditorGUI
         public override void EnterCharacter(FountainEditor.FountainParser.CharacterContext context)
         {
             //Character     370,0,100,0
-            //Parenthetical 310,0,290,0 
+            //Parenthetical 310,0,290,0
             //Dialogue      250,0,250,0
             string text = context.GetText();
             Run r = new Run(text);
@@ -78,7 +78,7 @@ namespace FountainEditorGUI
             displayDoc.Blocks.Add(p);
         }
 
-        public override void EnterLine(FountainEditor.FountainParser.LineContext context)
+        public override void EnterSpan(FountainEditor.FountainParser.SpanContext context)
         {
             string text = context.GetText();
             Run r = new Run(text);
@@ -98,6 +98,7 @@ namespace FountainEditorGUI
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
         }
+
         public override void EnterPageBreak(FountainEditor.FountainParser.PageBreakContext context)
         {
             string text = context.GetText();

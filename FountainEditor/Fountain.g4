@@ -4,61 +4,27 @@ grammar Fountain;
 // Parser Rules
 //
 
-eol
-	:	EOL
-	;
+boneyard	:	Boneyard	;
+centered	:	Centered	;
+heading		:	Heading		;
+lyric		:	Lyric		;
+note		:	Note		;
+pageBreak	:	PageBreak	;
+section		:	Section		;
+span		:	Span		;
+synopsis	:	Synopsis	;
+transition	:	Transition	;
 
-boneyard
-	:	Boneyard
-	;
-
-centered
-	:	Centered
-	;
-
-character
-	:	Character ( Span | Parenthetical | EOL)*? EOL EOL
-	;
-
-heading
-	:	Heading
-	;
-
-line
-	:	Span
-	;
-
-lyric
-	:	Lyric
-	;
-
-note
-	:	Note
-	;
-
-pageBreak
-	:	PageBreak
-	;
-
-section
-	:	Section
-	;
-
-synopsis
-	:	Synopsis
-	;
-
-transition
-	:	Transition
-	;
+character	:	Character Span+ EOL EOL	;
 
 compileUnit
-	:	( eol | boneyard | centered | character | heading | line | lyric | note | pageBreak | section | synopsis | transition )* EOF
+	:	( boneyard | centered | heading | lyric | note | pageBreak | section | span | synopsis | transition | character )* EOF
 	;
 
 //
 // Lexer Rules
 //
+
 fragment Ext
 	: [eE] [xX] [tT]
 	;
@@ -68,163 +34,60 @@ fragment Int
 	;
 
 Heading
-	:	( Ext	|	Int )	Period      ~( '\r' | '\n' )*
-	|	( Ext  '/'	Int )	Period      ~( '\r' | '\n' )*
-	|	( Int  '/'	Ext )	Period      ~( '\r' | '\n' )*
-	|	[iI]   '/'	[eE]	Period		~( '\r'	| '\n' )*
-	|	{Column == 0}?		Period		~( '\r'	| '\n' )*
-	;
-
-EOL
-	:	'\r\n'
-	|	'\r'
-	|	'\n'
-	;
-
-fragment Uppercase
-	:	'A'..'Z'
-	|	['().]
-	;
-
-fragment UppercaseWord
-	:	Uppercase+
-	;
-
-Character
-	:	UppercaseWord ( Space+ | UppercaseWord )* Caret?
-	|	At Span
-	;
-
-fragment Symbol
-	:	'A'..'Z'
-	|	'a'..'z'
-	|	'0'..'9'
-	|	[\-_*.,!?'":()/]
-	;
-
-fragment Word
-	:	Symbol+
-	;
-
-Span
-	:	Word ( Space+ Word )*
-	|	UppercaseWord ( Space+ UppercaseWord )* EOL EOL
-	;
-
-fragment Period
-	:	'.'
-	;
-
-fragment At
-	:	'@'
-	;
-
-fragment Caret
-	:	'^'
-	;
-
-fragment Colon
-	:	':'
-	;
-
-fragment Equal
-	:	'='
-	;
-
-fragment Hyphen
-	:	'-'
-	;
-
-fragment Pound
-	:	{Column == 0}? '#'
-	;
-
-fragment Question
-	:	'?'
-	;
-
-fragment Space
-	:	' '
-	;
-
-fragment Tilde
-	:	'~'
-	;
-
-fragment OAngle
-	:	'>'
-	;
-
-fragment CAngle
-	:	'<'
-	;
-
-fragment OParen
-	:	'('
-	;
-
-fragment CParen
-	:	')'
-	;
-
-fragment OComment
-	:	'/*'
-	;
-
-fragment CComment
-	:	'*/'
-	;
-
-fragment ONote
-	:	'[['
-	;
-
-fragment CNote
-	:	']]'
-	;
-
-fragment To
-	:	[tT] [oO] Colon
+	:	( Ext  |  Int ) '.'      Span
+	|	  Ext '/' Int   '.'      Span
+	|	  Int '/' Ext   '.'      Span
+	|	 [iI] '/' [eE]  '.'      Span
+	|	                '.' ~'.' Span
 	;
 
 PageBreak
-	:	'===' '='+?
+	:	'===' '='*
 	;
 
 Boneyard
-	:	OComment .*? CComment
+	:	'/*' .*? '*/'
+	;
+
+// TODO: Check for double return
+Note
+	:	'[[' .*? ']]'
 	;
 
 Centered
-	:	OAngle ~( '\r' | '\n' )* CAngle
+	:	'>' ~[\t\r\n]*? '<'
 	;
 	
-// TODO: Check for double return
-Note
-	:	ONote .*? CNote
-	;
-
-Parenthetical
-	:	OParen .*? CParen
-	;
-
 Lyric
-	:	Tilde  ~( '\r' | '\n' )*
+	:	'~' Span
 	;
 
 Section
-	:	Pound+ ~( '\r' | '\n' )*
+	:	'#'+ Span
 	;
 
 Synopsis
-	:	Equal  ~( '\r' | '\n' )*
+	:	'=' Span
 	;
 
 Transition
-	:	Span Space To
-	|	OAngle ~( '\r' | '\n' )*
+	:	Span [tT] [oO] ':'
+	|	'>' Span
+	;
+
+Character
+	:	~[a-z\t\r\n]+ '^'?
+	|	'@' Span
+	;
+
+Span
+	:	~[\t\r\n]+
+	;
+
+EOL
+	:	'\r'? '\n'
 	;
 
 WS
-	: [ \t] -> skip
+	:	[ \t] -> skip
 	;
