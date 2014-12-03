@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,16 +11,19 @@ namespace FountainEditorGUI
     class FlowVisitor : FountainEditor.FountainBaseListener
     {
         public FlowDocument displayDoc = new  FlowDocument();
+        public ObservableCollection<String> displayOutline = new ObservableCollection<String>();
+
         public override void EnterSection(FountainEditor.FountainParser.SectionContext context)
         {
             string text = context.GetText();
             Run r = new Run(text);
             Paragraph p = new Paragraph();
 
-            p.Margin = new System.Windows.Thickness(100, 0, 50, 0);
+            p.Margin = new System.Windows.Thickness(100, 0, 100, 20);
             p.Foreground = System.Windows.Media.Brushes.Gray;
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
+            displayOutline.Add(text);
         }
 
         public override void EnterSynopsis(FountainEditor.FountainParser.SynopsisContext context)
@@ -28,18 +32,20 @@ namespace FountainEditorGUI
             Run r = new Run(text);
             Paragraph p = new Paragraph();
 
-            p.Margin = new System.Windows.Thickness(100, 0, 50, 0);
+            p.Margin = new System.Windows.Thickness(100, 0, 100, 20);
             p.Foreground = System.Windows.Media.Brushes.Gray;
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
+            displayOutline.Add(text);
         }
 
         public override void EnterHeading(FountainEditor.FountainParser.HeadingContext context)
         {
             string text = context.GetText();
-            Run r = new Run(text);
+            Run r = new Run(text.ToUpper());
             Paragraph p = new Paragraph();
 
+            p.Margin = new System.Windows.Thickness(150, 0, 100, 20);
             p.FontWeight = System.Windows.FontWeights.Bold;
 
             p.Inlines.Add(r);
@@ -59,26 +65,17 @@ namespace FountainEditorGUI
         }
 
         public override void EnterCharacter(FountainEditor.FountainParser.CharacterContext context)
-
         {
+            //Character     370,0,100,0
+            //Parenthetical 310,0,290,0 
+            //Dialogue      250,0,250,0
             string text = context.GetText();
             Run r = new Run(text);
             Paragraph p = new Paragraph();
 
-            p.Margin = new System.Windows.Thickness(270, 0, 230, 0);
+            p.Margin = new System.Windows.Thickness(250, 0, 250, 20);
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
-
-            foreach (var item in context.children.Skip(1))
-            {
-                string dialogueText = context.GetText();
-                Run run = new Run(dialogueText);
-                Paragraph paragraph = new Paragraph();
-
-                //p.Margin = new System.Windows.Thickness(270, 0, 230, 0);
-                p.Inlines.Add(r);
-                displayDoc.Blocks.Add(p);
-            }
         }
 
         public override void EnterLine(FountainEditor.FountainParser.LineContext context)
@@ -87,8 +84,6 @@ namespace FountainEditorGUI
             Run r = new Run(text);
             Paragraph p = new Paragraph();
 
-            //p.Margin = new System.Windows.Thickness(100, 0, 100, 0);
-            p.Foreground = System.Windows.Media.Brushes.Black;
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
         }
@@ -104,12 +99,24 @@ namespace FountainEditorGUI
             displayDoc.Blocks.Add(p);
         }
 
-        public override void EnterEol(FountainEditor.FountainParser.EolContext context)
+        //public override void EnterEol(FountainEditor.FountainParser.EolContext context)
+        //{
+        //    string text = "";
+        //    Run r = new Run(text);
+        //    Paragraph p = new Paragraph();
+
+        //    p.Inlines.Add(r);
+        //    displayDoc.Blocks.Add(p);
+        //}
+
+        public override void EnterPageBreak(FountainEditor.FountainParser.PageBreakContext context)
         {
-            string text = "";
+            string text = context.GetText();
             Run r = new Run(text);
             Paragraph p = new Paragraph();
 
+            p.Foreground = System.Windows.Media.Brushes.Gray;
+            p.TextAlignment = System.Windows.TextAlignment.Center;
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
         }

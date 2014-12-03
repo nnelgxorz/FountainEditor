@@ -136,7 +136,7 @@ fragment Hyphen
 	;
 
 fragment Pound
-	:	'#'
+	:	{Column == 0}? '#'
 	;
 
 fragment Question
@@ -188,7 +188,7 @@ fragment To
 	;
 
 PageBreak
-	:	'==='
+	:	'===' '='+?
 	;
 
 Boneyard

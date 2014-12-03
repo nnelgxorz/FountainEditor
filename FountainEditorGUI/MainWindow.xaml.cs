@@ -71,7 +71,7 @@ namespace FountainEditorGUI
         {
             var dlg = new OpenFileDialog();
 
-            dlg.DefaultExt = "*.*";
+            dlg.DefaultExt = "*.fountain";
             dlg.Filter = "Text Documents (.txt)|*.txt|Fountain Documents(.fountain)|*.fountain|All Documents (*.*)|*.*";
 
             if (dlg.ShowDialog() == true)
@@ -88,6 +88,7 @@ namespace FountainEditorGUI
                 treeWalker.Walk(visitor, tree);
 
                 this.DisplayBox.Document = visitor.displayDoc;
+                this.Outliner.ItemsSource = visitor.displayOutline;
                 //var inputText = new StreamReader(dlg.FileName).ReadToEnd();
                 //var normalText = Normalizer.Normalize(inputText);
                 //var tree = Tokenizer.Parse(normalText);
