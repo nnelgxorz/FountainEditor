@@ -98,7 +98,7 @@ namespace FountainEditorGUI
                 return;
             }
 
-            if (e.Key == Key.Space || e.Key == Key.OemPeriod)
+            if (e.Key == Key.Space || e.Key == Key.OemPeriod || e.Key == Key.D3 || e.Key == Key.OemPlus)
             {
                 count++;
 
