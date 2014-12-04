@@ -15,7 +15,7 @@ span		:	Span		;
 synopsis	:	Synopsis	;
 transition	:	Transition	;
 
-character	:	Character EOL Parenthetical? ~(BlankLine)	;
+character	:	Character EOL (Parenthetical | Span | EOL)* ~(BlankLine)	;
 upperCaseLine:	Character EOL BlankLine	;
 
 compileUnit
