@@ -15,10 +15,11 @@ span		:	Span		;
 synopsis	:	Synopsis	;
 transition	:	Transition	;
 
-character	:	Character Span+ EOL EOL	;
+character	:	Character EOL Parenthetical? ~(BlankLine)	;
+upperCaseLine:	Character EOL BlankLine	;
 
 compileUnit
-	:	( boneyard | centered | heading | lyric | note | pageBreak | section | span | synopsis | transition | character )* EOF
+	:	( boneyard | centered | heading | lyric | note | pageBreak | section | span | synopsis | transition | character | upperCaseLine )* EOF
 	;
 
 //
@@ -78,6 +79,14 @@ Transition
 Character
 	:	~[a-z\t\r\n]+ '^'?
 	|	'@' Span
+	;
+
+Parenthetical
+	: '(' ~[\r\n] ')'
+	;
+
+BlankLine
+	: {Column == 0}? EOL
 	;
 
 Span
