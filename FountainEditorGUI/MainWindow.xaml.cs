@@ -25,28 +25,8 @@ namespace FountainEditorGUI
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static DependencyProperty ScriptTextProperty = DependencyProperty.Register("ScriptText", typeof(string), typeof(MainWindow));
-
-        public ObservableCollection<Element> DocumentTree { get; set; }
-
-        public ObservableCollection<Element> OutlineElements { get; set; }
-
-        private bool FilterOutlineSynopsis(object item)
-        {
-            if (item is OutlineTextElement || item is SynopsisTextElement)
-            {
-                return true;
-            }
-            return false;
-        }
 
         public FlowDocument DisplayText { get; set; }
-
-        public string ScriptText
-        {
-            get { return (string)GetValue(ScriptTextProperty); }
-            set { SetValue(ScriptTextProperty, value); }
-        }
 
         public static DependencyProperty DocumentNameProperty = DependencyProperty.Register("DocumentName", typeof(string), typeof(MainWindow));
         
@@ -58,7 +38,6 @@ namespace FountainEditorGUI
         
         public MainWindow()
         {
-            OutlineElements = new ObservableCollection<Element>();
             InitializeComponent();
         }
 
@@ -89,21 +68,68 @@ namespace FountainEditorGUI
 
                 this.DisplayBox.Document = visitor.displayDoc;
                 this.Outliner.ItemsSource = visitor.displayOutline;
-                //var inputText = new StreamReader(dlg.FileName).ReadToEnd();
-                //var normalText = Normalizer.Normalize(inputText);
-                //var tree = Tokenizer.Parse(normalText);
-                //Optimizer.Optimize(tree);
-                //DocumentTree = new ObservableCollection<Element>(tree);
-                //ScriptText = DocumentTree.Aggregate("", (curr, next) => curr + next.Text);
-
-                //foreach (var item in tree)
-                //{
-                //    if(item is OutlineTextElement || item is SynopsisTextElement)
-                //    {
-                //    OutlineElements.Add(item);
-                //    }
-                //}
             }
         }
+
+        int count = 0;
+        private void PressEnter(object sender, KeyEventArgs e)
+        {
+
+            if (e.Key == Key.Enter)
+            {
+                FlowDocument current = DisplayBox.Document;
+                string input = new TextRange(current.ContentStart, current.ContentEnd).Text;
+
+                var stream = new Antlr4.Runtime.AntlrInputStream(input);
+                var lexer = new FountainLexer(stream);
+                var tokens = new Antlr4.Runtime.CommonTokenStream(lexer);
+                var parser = new FountainParser(tokens);
+                var tree = parser.compileUnit();
+                var treeWalker = new Antlr4.Runtime.Tree.ParseTreeWalker();
+                var visitor = new FlowVisitor();
+                treeWalker.Walk(visitor, tree);
+
+                this.Outliner.ItemsSource = visitor.displayOutline;
+                count = 0;
+                this.DisplayBox.Document = visitor.displayDoc;
+                Paragraph p = new Paragraph();
+                this.DisplayBox.Document.Blocks.Add(p);
+                this.DisplayBox.CaretPosition = this.DisplayBox.CaretPosition.DocumentEnd;
+                return;
+            }
+
+            if (e.Key == Key.Space || e.Key == Key.OemPeriod)
+            {
+                count++;
+
+                if (count >= 2)
+                {
+                    FlowDocument current = DisplayBox.Document;
+                    string input = new TextRange(current.ContentStart, current.ContentEnd).Text;
+
+                    var stream = new Antlr4.Runtime.AntlrInputStream(input);
+                    var lexer = new FountainLexer(stream);
+                    var tokens = new Antlr4.Runtime.CommonTokenStream(lexer);
+                    var parser = new FountainParser(tokens);
+                    var tree = parser.compileUnit();
+                    var treeWalker = new Antlr4.Runtime.Tree.ParseTreeWalker();
+                    var visitor = new FlowVisitor();
+                    treeWalker.Walk(visitor, tree);
+
+                    this.Outliner.ItemsSource = visitor.displayOutline;
+                    count = 0;
+                    this.DisplayBox.Document = visitor.displayDoc;
+                    this.DisplayBox.CaretPosition = this.DisplayBox.CaretPosition.DocumentEnd;
+                    return;
+                }
+            }
+
+            else
+            {
+                count = 0;
+            }
+            return;
+        }
     }
+            
 }

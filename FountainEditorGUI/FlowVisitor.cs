@@ -45,7 +45,7 @@ namespace FountainEditorGUI
             Run r = new Run(text.ToUpper());
             Paragraph p = new Paragraph();
 
-            p.Margin = new System.Windows.Thickness(150, 40, 100, 20);
+            p.Margin = new System.Windows.Thickness(150, 0, 100, 20);
             p.FontWeight = System.Windows.FontWeights.Bold;
 
             p.Inlines.Add(r);
@@ -55,7 +55,7 @@ namespace FountainEditorGUI
         public override void EnterTransition(FountainEditor.FountainParser.TransitionContext context)
         {
             string text = context.GetText();
-            Run r = new Run(text);
+            Run r = new Run(text.ToUpper());
             Paragraph p = new Paragraph();
 
             p.Foreground = System.Windows.Media.Brushes.Black;
@@ -73,7 +73,7 @@ namespace FountainEditorGUI
             Run r = new Run(text);
             Paragraph p = new Paragraph();
 
-            p.Margin = new System.Windows.Thickness(250, 0, 250, 20);
+            p.Margin = new System.Windows.Thickness(250, 0, 250, 0);
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
         }
@@ -86,6 +86,8 @@ namespace FountainEditorGUI
 
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
+            p.Margin = new System.Windows.Thickness(150, 20, 100, 0);
+
         }
 
         public override void EnterCentered(FountainEditor.FountainParser.CenteredContext context)
