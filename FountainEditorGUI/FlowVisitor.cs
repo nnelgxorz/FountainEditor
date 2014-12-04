@@ -78,6 +78,20 @@ namespace FountainEditorGUI
             displayDoc.Blocks.Add(p);
         }
 
+        public override void EnterNote(FountainEditor.FountainParser.NoteContext context)
+        {
+            string text = context.GetText();
+            Run r = new Run(text);
+            Paragraph p = new Paragraph();
+
+            p.FontStyle = System.Windows.FontStyles.Italic;
+            p.Foreground = System.Windows.Media.Brushes.Green;
+
+            p.Margin = new System.Windows.Thickness(60, 0, 0, 20);
+            p.Inlines.Add(r);
+            displayDoc.Blocks.Add(p);
+            displayOutline.Add(text);
+        }
         public override void EnterSpan(FountainEditor.FountainParser.SpanContext context)
         {
             string text = context.GetText();
@@ -86,7 +100,7 @@ namespace FountainEditorGUI
 
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
-            p.Margin = new System.Windows.Thickness(150, 20, 100, 0);
+            p.Margin = new System.Windows.Thickness(150, 0, 100, 20);
 
         }
 
