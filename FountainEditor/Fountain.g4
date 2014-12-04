@@ -74,6 +74,9 @@ Synopsis
 Transition
 	:	Span [tT] [oO] ':'
 	|	'>' Span
+	|	[fF][aA][dD][eE]' '[oO][uU][tT]'.'
+	|	[fF][aA][dD][eE]' '[tT][oO]' '[bB][lL][aA][cC][kK]'.'
+	|	[cC][uU][tT]' '[tT][oO]' '[bB][lL][aA][cC][kK]'.'
 	;
 
 Character

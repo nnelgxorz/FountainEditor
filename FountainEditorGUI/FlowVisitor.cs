@@ -73,7 +73,7 @@ namespace FountainEditorGUI
             Run r = new Run(text);
             Paragraph p = new Paragraph();
 
-            p.Margin = new System.Windows.Thickness(250, 0, 250, 20);
+            p.Margin = new System.Windows.Thickness(250, 0, 250, 0);
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
         }
@@ -84,6 +84,7 @@ namespace FountainEditorGUI
             Run r = new Run(text);
             Paragraph p = new Paragraph();
 
+            p.Margin = new System.Windows.Thickness(150, 0, 100, 0);
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
         }
