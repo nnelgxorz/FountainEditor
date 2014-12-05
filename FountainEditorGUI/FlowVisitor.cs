@@ -13,13 +13,22 @@ namespace FountainEditorGUI
         public FlowDocument displayDoc = new  FlowDocument();
         public ObservableCollection<String> displayOutline = new ObservableCollection<String>();
 
+        public override void EnterBlankLine(FountainEditor.FountainParser.BlankLineContext context)
+        {
+            string text = "";
+            Run r = new Run(text);
+            Paragraph p = new Paragraph();
+
+            p.Inlines.Add(r);
+            displayDoc.Blocks.Add(p);
+        }
         public override void EnterSection(FountainEditor.FountainParser.SectionContext context)
         {
             string text = context.GetText();
             Run r = new Run(text);
             Paragraph p = new Paragraph();
 
-            p.Margin = new System.Windows.Thickness(20, 0, 100, 20);
+            p.Margin = new System.Windows.Thickness(20, 0, 100, 0);
             p.Foreground = System.Windows.Media.Brushes.Gray;
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
@@ -32,7 +41,7 @@ namespace FountainEditorGUI
             Run r = new Run(text);
             Paragraph p = new Paragraph();
 
-            p.Margin = new System.Windows.Thickness(40, 0, 100, 20);
+            p.Margin = new System.Windows.Thickness(40, 0, 100, 0);
             p.Foreground = System.Windows.Media.Brushes.Gray;
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
@@ -45,7 +54,7 @@ namespace FountainEditorGUI
             Run r = new Run(text.ToUpper());
             Paragraph p = new Paragraph();
 
-            p.Margin = new System.Windows.Thickness(150, 0, 100, 20);
+            p.Margin = new System.Windows.Thickness(150, 0, 100, 0);
             p.FontWeight = System.Windows.FontWeights.Bold;
 
             p.Inlines.Add(r);
@@ -69,6 +78,11 @@ namespace FountainEditorGUI
             //Character     370,0,100,0
             //Parenthetical 310,0,290,0
             //Dialogue      250,0,250,0
+            context.RemoveLastChild();
+            string character = context.Character().ToString();
+            string dialogue = context.Span().ToString();
+            string parenthetical = context.Parenthetical().ToString();
+
             string text = context.GetText();
             Run r = new Run(text);
             Paragraph p = new Paragraph();
@@ -80,6 +94,7 @@ namespace FountainEditorGUI
 
         public override void EnterUpperCaseLine(FountainEditor.FountainParser.UpperCaseLineContext context)
         {
+            context.RemoveLastChild();
             string text = context.GetText();
             Run r = new Run(text);
             Paragraph p = new Paragraph();
@@ -97,7 +112,7 @@ namespace FountainEditorGUI
             p.FontStyle = System.Windows.FontStyles.Italic;
             p.Foreground = System.Windows.Media.Brushes.Green;
 
-            p.Margin = new System.Windows.Thickness(60, 0, 0, 20);
+            p.Margin = new System.Windows.Thickness(60, 0, 0, 0);
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
             displayOutline.Add(text);
@@ -110,7 +125,7 @@ namespace FountainEditorGUI
 
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
-            p.Margin = new System.Windows.Thickness(150, 0, 100, 20);
+            p.Margin = new System.Windows.Thickness(150, 0, 100, 0);
 
         }
 

@@ -14,12 +14,13 @@ section		:	Section		;
 span		:	Span		;
 synopsis	:	Synopsis	;
 transition	:	Transition	;
+blankLine	:	BlankLine	;
 
 character	:	Character EOL (Parenthetical | Span | EOL)* ~(BlankLine)	;
 upperCaseLine:	Character EOL BlankLine	;
 
 compileUnit
-	:	( boneyard | centered | heading | lyric | note | pageBreak | section | span | synopsis | transition | character | upperCaseLine )* EOF
+	:	( boneyard | centered | heading | lyric | note | pageBreak | section | span | synopsis | transition | character | upperCaseLine | blankLine )* EOF
 	;
 
 //

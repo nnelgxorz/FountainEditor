@@ -36,7 +36,7 @@
                           Padding="0,50,0,0" KeyUp="PressEnter">
                 <RichTextBox.Resources>
                 <Style TargetType="{x:Type Paragraph}">
-                    <Setter Property="Margin" Value="150,0,100,20"/>
+                    <Setter Property="Margin" Value="150,0,100,0"/>
                 </Style>
             </RichTextBox.Resources>
         </RichTextBox>

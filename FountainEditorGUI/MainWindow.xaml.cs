@@ -90,20 +90,21 @@ namespace FountainEditorGUI
                 treeWalker.Walk(visitor, tree);
 
                 this.Outliner.ItemsSource = visitor.displayOutline;
-                count = 0;
                 this.DisplayBox.Document = visitor.displayDoc;
                 Paragraph p = new Paragraph();
                 this.DisplayBox.Document.Blocks.Add(p);
                 this.DisplayBox.CaretPosition = this.DisplayBox.CaretPosition.DocumentEnd;
+                count = 0;
                 return;
             }
 
-            if (e.Key == Key.Space || e.Key == Key.OemPeriod || e.Key == Key.D3 || e.Key == Key.OemPlus)
+            if (e.Key == Key.Space || e.Key == Key.OemPeriod)
             {
                 count++;
 
                 if (count >= 2)
                 {
+                    var cursor = DisplayBox.CaretPosition;
                     FlowDocument current = DisplayBox.Document;
                     string input = new TextRange(current.ContentStart, current.ContentEnd).Text;
 
@@ -119,7 +120,7 @@ namespace FountainEditorGUI
                     this.Outliner.ItemsSource = visitor.displayOutline;
                     count = 0;
                     this.DisplayBox.Document = visitor.displayDoc;
-                    this.DisplayBox.CaretPosition = this.DisplayBox.CaretPosition.DocumentEnd;
+                    this.DisplayBox.CaretPosition = DisplayBox.CaretPosition.DocumentEnd;
                     return;
                 }
             }
