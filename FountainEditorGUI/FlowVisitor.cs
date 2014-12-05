@@ -71,6 +71,7 @@ namespace FountainEditorGUI
             p.TextAlignment = System.Windows.TextAlignment.Right;
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
+            
         }
 
         public override void EnterCharacter(FountainEditor.FountainParser.CharacterContext context)
@@ -78,6 +79,18 @@ namespace FountainEditorGUI
             //Character     370,0,100,0
             //Parenthetical 310,0,290,0
             //Dialogue      250,0,250,0
+
+            //var visitor = new DialogVisitor();
+
+            //foreach (var item in context.children)
+            //{
+            //    var node = visitor.Visit(item);
+            //    if (node != null)
+            //    {
+            //        displayDoc.Blocks.Add(node);
+            //    }
+            //}
+
             context.RemoveLastChild();
             string character = context.Character().ToString();
             string dialogue = context.Span().ToString();
@@ -148,6 +161,18 @@ namespace FountainEditorGUI
 
             p.Foreground = System.Windows.Media.Brushes.Gray;
             p.TextAlignment = System.Windows.TextAlignment.Center;
+            p.Inlines.Add(r);
+            displayDoc.Blocks.Add(p);
+        }
+
+        public override void EnterTitlePage(FountainEditor.FountainParser.TitlePageContext context)
+        {
+            string text = context.GetText();
+            Run r = new Run(text);
+            Paragraph p = new Paragraph();
+
+            p.Foreground = System.Windows.Media.Brushes.Red;
+            p.TextAlignment = System.Windows.TextAlignment.Right;
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
         }

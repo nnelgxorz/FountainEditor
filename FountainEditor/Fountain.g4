@@ -15,12 +15,14 @@ span		:	Span		;
 synopsis	:	Synopsis	;
 transition	:	Transition	;
 blankLine	:	BlankLine	;
-
+parenthetical:	Parenthetical	;
 character	:	Character EOL (Parenthetical | Span | EOL)* ~(BlankLine)	;
 upperCaseLine:	Character EOL BlankLine	;
+titlePage	:	TitlePageValue+ ~(BlankLine)	;
 
 compileUnit
-	:	( boneyard | centered | heading | lyric | note | pageBreak | section | span | synopsis | transition | character | upperCaseLine | blankLine )* EOF
+	:	( boneyard | centered | heading | lyric | note | pageBreak | section | span | synopsis | 
+		titlePage | transition | character | upperCaseLine | blankLine | parenthetical)* EOF
 	;
 
 //
@@ -87,6 +89,19 @@ Character
 
 Parenthetical
 	: '(' ~[\r\n] ')'
+	;
+TitlePageKey
+	:	[tT][iI][tT][lL][eE]':'
+	|	[aA][uU][tT][hH][oO][rR]':'
+	|	[cC][rR][eE][dD][iI][tT]':'
+	|	[sS][oO][uU][rR][cC][eE]':'
+	|	[dD][rR][aA][fF][tT]' '[dD][aA][tT][eE]':'
+	|	[cC][oO][nN][tT][aA][cC][tT]':'
+	|	[nN][oO][tT][eE][sS]':'
+	;
+
+TitlePageValue
+	:	{Column == 0}? TitlePageKey .*? EOL
 	;
 
 BlankLine
