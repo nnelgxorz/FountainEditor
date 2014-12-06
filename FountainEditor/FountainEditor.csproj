@@ -73,6 +73,12 @@
     <Compile Include="Elements\SceneHeadingTextElement.cs" />
     <Compile Include="Elements\CenteredTextElement.cs" />
     <Compile Include="Element.cs" />
+    <Compile Include="Markdown.g4.lexer.cs">
+      <DependentUpon>Markdown.g4</DependentUpon>
+    </Compile>
+    <Compile Include="Markdown.g4.parser.cs">
+      <DependentUpon>Markdown.g4</DependentUpon>
+    </Compile>
     <Compile Include="Normalizer.cs" />
     <Compile Include="Optimizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -82,6 +88,10 @@
   <ItemGroup>
     <None Include="App.config" />
     <Antlr4 Include="Fountain.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>FountainEditor</CustomToolNamespace>
+    </Antlr4>
+    <Antlr4 Include="Markdown.g4">
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>FountainEditor</CustomToolNamespace>
     </Antlr4>

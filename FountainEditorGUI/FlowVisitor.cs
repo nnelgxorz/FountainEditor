@@ -22,6 +22,7 @@ namespace FountainEditorGUI
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
         }
+
         public override void EnterSection(FountainEditor.FountainParser.SectionContext context)
         {
             string text = context.GetText();
@@ -76,33 +77,17 @@ namespace FountainEditorGUI
 
         public override void EnterCharacter(FountainEditor.FountainParser.CharacterContext context)
         {
-            //Character     370,0,100,0
-            //Parenthetical 310,0,290,0
-            //Dialogue      250,0,250,0
+            var visitor = new DialogVisitor(displayDoc);
 
-            //var visitor = new DialogVisitor();
-
-            //foreach (var item in context.children)
-            //{
-            //    var node = visitor.Visit(item);
-            //    if (node != null)
-            //    {
-            //        displayDoc.Blocks.Add(node);
-            //    }
-            //}
-
-            context.RemoveLastChild();
-            string character = context.Character().ToString();
-            string dialogue = context.Span().ToString();
-            string parenthetical = context.Parenthetical().ToString();
-
-            string text = context.GetText();
-            Run r = new Run(text);
-            Paragraph p = new Paragraph();
-
-            p.Margin = new System.Windows.Thickness(250, 0, 250, 0);
-            p.Inlines.Add(r);
-            displayDoc.Blocks.Add(p);
+            visitor.Visit(context);
+            
+            //context.RemoveLastChild();
+            //string text = context.GetText();
+            //Run r = new Run(text);
+            //Paragraph p = new Paragraph();
+            //p.Margin = new System.Windows.Thickness(250, 0, 250, 0);
+            //p.Inlines.Add(r);
+            //displayDoc.Blocks.Add(p);
         }
 
         public override void EnterUpperCaseLine(FountainEditor.FountainParser.UpperCaseLineContext context)
@@ -116,20 +101,21 @@ namespace FountainEditorGUI
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
         }
+
         public override void EnterNote(FountainEditor.FountainParser.NoteContext context)
         {
             string text = context.GetText();
             Run r = new Run(text);
             Paragraph p = new Paragraph();
+            r.Background = System.Windows.Media.Brushes.LightYellow;
+            p.Background = System.Windows.Media.Brushes.White;
+            p.Foreground = System.Windows.Media.Brushes.Gray;
 
-            p.FontStyle = System.Windows.FontStyles.Italic;
-            p.Foreground = System.Windows.Media.Brushes.Green;
-
-            p.Margin = new System.Windows.Thickness(60, 0, 0, 0);
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
             displayOutline.Add(text);
         }
+
         public override void EnterSpan(FountainEditor.FountainParser.SpanContext context)
         {
             string text = context.GetText();
@@ -171,7 +157,7 @@ namespace FountainEditorGUI
             Run r = new Run(text);
             Paragraph p = new Paragraph();
 
-            p.Foreground = System.Windows.Media.Brushes.Red;
+            p.Foreground = System.Windows.Media.Brushes.Gray;
             p.TextAlignment = System.Windows.TextAlignment.Right;
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);

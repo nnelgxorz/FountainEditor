@@ -18,7 +18,7 @@ blankLine	:	BlankLine	;
 parenthetical:	Parenthetical	;
 character	:	Character EOL (Parenthetical | Span | EOL)* ~(BlankLine)	;
 upperCaseLine:	Character EOL BlankLine	;
-titlePage	:	TitlePageValue+ ~(BlankLine)	;
+titlePage	:	TitlePageValue;
 
 compileUnit
 	:	( boneyard | centered | heading | lyric | note | pageBreak | section | span | synopsis | 
@@ -101,7 +101,7 @@ TitlePageKey
 	;
 
 TitlePageValue
-	:	{Column == 0}? TitlePageKey .*? EOL
+	:	{Column == 0}? TitlePageKey .*? BlankLine
 	;
 
 BlankLine
