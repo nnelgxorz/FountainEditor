@@ -50,8 +50,8 @@ namespace FountainEditorGUI
         {
             var dlg = new OpenFileDialog();
 
-            dlg.DefaultExt = "*.fountain";
-            dlg.Filter = "Text Documents (.txt)|*.txt|Fountain Documents(.fountain)|*.fountain|All Documents (*.*)|*.*";
+            dlg.DefaultExt = "*.txt";
+            dlg.Filter = "Text Documents (.txt)|*.txt|Fountain Documents(.fountain)|*.fountain";
 
             if (dlg.ShowDialog() == true)
             {
@@ -91,8 +91,6 @@ namespace FountainEditorGUI
 
                 this.Outliner.ItemsSource = visitor.displayOutline;
                 this.DisplayBox.Document = visitor.displayDoc;
-                Paragraph p = new Paragraph();
-                this.DisplayBox.Document.Blocks.Add(p);
                 this.DisplayBox.CaretPosition = this.DisplayBox.CaretPosition.DocumentEnd;
                 count = 0;
                 return;
@@ -130,6 +128,32 @@ namespace FountainEditorGUI
                 count = 0;
             }
             return;
+        }
+
+        private void SaveAsItem_Click(object sender, RoutedEventArgs e)
+        {
+            var documentText = this.DisplayBox.Document.ToString();
+            var dlgsave = new SaveFileDialog();
+            dlgsave.DefaultExt = "*.txt";
+            dlgsave.OverwritePrompt = true;
+
+            dlgsave.Filter = "Text Documents (.txt)|*.txt|Fountain Documents(.fountain)|*.fountain";
+
+            if (dlgsave.ShowDialog() == true)
+            {
+                {
+                    var utf8 = new UTF8Encoding();
+                    var stream = new System.IO.StreamWriter(dlgsave.FileName, false, utf8);
+                    stream.Write(documentText);
+                    stream.Close();
+                    DocumentName = System.IO.Path.GetFileName(dlgsave.FileName);
+                }
+            }
+        }
+
+        private void NewItem_Click(object sender, RoutedEventArgs e)
+        {
+            this.DisplayBox.Document = new FlowDocument();
         }
     }
             

@@ -21,8 +21,9 @@
         
         <Menu Height="25" Width="Auto" Grid.ColumnSpan="4" Grid.Row="0" Background="#595e5e" Foreground="#e1e1e1" FontSize="16">
             <MenuItem Header="File">
-                <MenuItem Header="New"/>
-                <MenuItem Header="Save As"/>
+                <MenuItem Header="New"/> 
+                <MenuItem Header="Save"/>
+                <MenuItem Header="Save As" Click="SaveAsItem_Click"/>
                 <MenuItem Header="Exit" Click="ExitItem_Click"/>
             </MenuItem>
             <MenuItem Header="Open" Click="OpenItem_Click"/>
@@ -45,7 +46,8 @@
         <DockPanel Grid.Column="0" Grid.Row="2">
             <ListView Name="Outliner" Grid.Column="0" Grid.Row="3" Background="#515255" Foreground="#d2d2d2" 
                   BorderBrush="{x:Null}" ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                  HorizontalContentAlignment="Stretch" DockPanel.Dock="Bottom" Padding="0,25,0,0">
+                  HorizontalContentAlignment="Stretch" DockPanel.Dock="Bottom" Padding="0,25,0,0"
+                      AllowDrop="True">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid Width="{Binding ElementName=Outliner, Path=ActualWidth}" AllowDrop="True">
