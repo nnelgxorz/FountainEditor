@@ -26,7 +26,7 @@ dialogLine
 	;
 
 parenthetical
-	:	'(' span ')'
+	:	PARENTHETICAL
 	;
 
 // ===========
@@ -65,7 +65,7 @@ synopsis
 
 transition
 	:	'>' span
-	|	span TO
+	|	TO
 	;
 
 span // HACK: I hate '...' and how it breaks the forced heading rule.
@@ -117,7 +117,11 @@ HEADING
 	;
 
 TO
-	:	[tT][oO] ':'
+	:	( USPAN | SPAN ) [tT][oO] ':'
+	;
+
+PARENTHETICAL
+	:	'(' ( USPAN | SPAN ) ')'
 	;
 
 fragment UFIRST

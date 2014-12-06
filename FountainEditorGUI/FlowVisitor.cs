@@ -13,16 +13,6 @@ namespace FountainEditorGUI
         public FlowDocument displayDoc = new  FlowDocument();
         public ObservableCollection<String> displayOutline = new ObservableCollection<String>();
 
-        public override void EnterBlankLine(FountainEditor.FountainParser.BlankLineContext context)
-        {
-            string text = "";
-            Run r = new Run(text);
-            Paragraph p = new Paragraph();
-
-            p.Inlines.Add(r);
-            displayDoc.Blocks.Add(p);
-        }
-
         public override void EnterSection(FountainEditor.FountainParser.SectionContext context)
         {
             string text = context.GetText();
@@ -75,48 +65,27 @@ namespace FountainEditorGUI
             
         }
 
-        public override void EnterCharacter(FountainEditor.FountainParser.CharacterContext context)
+        public override void EnterDialog(FountainEditor.FountainParser.DialogContext context)
         {
-            var visitor = new DialogVisitor(displayDoc);
+            //Character     370,0,100,0
+            //Parenthetical 310,0,290,0
+            //Dialogue      250,0,250,0
 
-            visitor.Visit(context);
+            var visitor = new DialogVisitor();
             
-            //context.RemoveLastChild();
-            //string text = context.GetText();
-            //Run r = new Run(text);
-            //Paragraph p = new Paragraph();
-            //p.Margin = new System.Windows.Thickness(250, 0, 250, 0);
-            //p.Inlines.Add(r);
-            //displayDoc.Blocks.Add(p);
+            displayDoc.Blocks.Add(visitor.VisitCharacter(context.character()));
+
+            foreach (var item in context.dialogBlock().children)
+            {
+                var node = visitor.Visit(item);
+                if (node != null)
+                {
+                    displayDoc.Blocks.Add(node);
+                }
+            }
         }
 
-        public override void EnterUpperCaseLine(FountainEditor.FountainParser.UpperCaseLineContext context)
-        {
-            context.RemoveLastChild();
-            string text = context.GetText();
-            Run r = new Run(text);
-            Paragraph p = new Paragraph();
-
-            p.Margin = new System.Windows.Thickness(150, 0, 100, 0);
-            p.Inlines.Add(r);
-            displayDoc.Blocks.Add(p);
-        }
-
-        public override void EnterNote(FountainEditor.FountainParser.NoteContext context)
-        {
-            string text = context.GetText();
-            Run r = new Run(text);
-            Paragraph p = new Paragraph();
-            r.Background = System.Windows.Media.Brushes.LightYellow;
-            p.Background = System.Windows.Media.Brushes.White;
-            p.Foreground = System.Windows.Media.Brushes.Gray;
-
-            p.Inlines.Add(r);
-            displayDoc.Blocks.Add(p);
-            displayOutline.Add(text);
-        }
-
-        public override void EnterSpan(FountainEditor.FountainParser.SpanContext context)
+        public override void EnterAction(FountainEditor.FountainParser.ActionContext context)
         {
             string text = context.GetText();
             Run r = new Run(text);
@@ -125,7 +94,6 @@ namespace FountainEditorGUI
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
             p.Margin = new System.Windows.Thickness(150, 0, 100, 0);
-
         }
 
         public override void EnterCentered(FountainEditor.FountainParser.CenteredContext context)
@@ -147,18 +115,6 @@ namespace FountainEditorGUI
 
             p.Foreground = System.Windows.Media.Brushes.Gray;
             p.TextAlignment = System.Windows.TextAlignment.Center;
-            p.Inlines.Add(r);
-            displayDoc.Blocks.Add(p);
-        }
-
-        public override void EnterTitlePage(FountainEditor.FountainParser.TitlePageContext context)
-        {
-            string text = context.GetText();
-            Run r = new Run(text);
-            Paragraph p = new Paragraph();
-
-            p.Foreground = System.Windows.Media.Brushes.Gray;
-            p.TextAlignment = System.Windows.TextAlignment.Right;
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
         }
