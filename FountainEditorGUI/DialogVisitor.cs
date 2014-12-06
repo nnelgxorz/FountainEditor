@@ -7,62 +7,36 @@ using System.Windows.Documents;
 
 namespace FountainEditorGUI
 {
-    class DialogVisitor : FountainEditor.FountainBaseVisitor<object>
+    class DialogVisitor : FountainEditor.FountainBaseVisitor<Paragraph>
     {
-        private FlowDocument displayDoc;
-
-        public DialogVisitor(FlowDocument displayDoc)
-        {
-            // TODO: Complete member initialization
-            this.displayDoc = displayDoc;
-        }
-
-        public override object VisitCharacter(FountainEditor.FountainParser.CharacterContext context)
+        public override Paragraph VisitCharacter(FountainEditor.FountainParser.CharacterContext context)
         {
             string text = context.GetText();
             Run r = new Run(text);
             Paragraph p = new Paragraph();
             p.Margin = new System.Windows.Thickness(370, 0, 100, 0);
             p.Inlines.Add(r);
-
-            this.displayDoc.Blocks.Add(p);
-            return null;
+            return p;
         }
 
-        public override object VisitSpan(FountainEditor.FountainParser.SpanContext context)
+        public override Paragraph VisitSpan(FountainEditor.FountainParser.SpanContext context)
         {
             string text = context.GetText();
             Run r = new Run(text);
             Paragraph p = new Paragraph();
-            p.Margin = new System.Windows.Thickness(250,0,250,0);
+            p.Margin = new System.Windows.Thickness(250, 0, 250, 0);
             p.Inlines.Add(r);
-
-            this.displayDoc.Blocks.Add(p);
-            return null;
+            return p;
         }
 
-        public override object VisitParenthetical(FountainEditor.FountainParser.ParentheticalContext context)
+        public override Paragraph VisitParenthetical(FountainEditor.FountainParser.ParentheticalContext context)
         {
             string text = context.GetText();
             Run r = new Run(text);
             Paragraph p = new Paragraph();
             p.Margin = new System.Windows.Thickness(310, 0, 290, 0);
             p.Inlines.Add(r);
-
-            this.displayDoc.Blocks.Add(p);
-            return null;
-        }
-
-        public override object VisitBlankLine(FountainEditor.FountainParser.BlankLineContext context)
-        {
-            string text = context.GetText();
-            Run r = new Run(text);
-            Paragraph p = new Paragraph();
-            p.TextAlignment = System.Windows.TextAlignment.Center;
-            p.Inlines.Add(r);
-
-            this.displayDoc.Blocks.Add(p);
-            return null;
+            return p;
         }
     }
 }

@@ -4,116 +4,140 @@ grammar Fountain;
 // Parser Rules
 //
 
-boneyard	:	Boneyard	;
-centered	:	Centered	;
-heading		:	Heading		;
-lyric		:	Lyric		;
-note		:	Note		;
-pageBreak	:	PageBreak	;
-section		:	Section		;
-span		:	Span		;
-synopsis	:	Synopsis	;
-transition	:	Transition	;
-blankLine	:	BlankLine	;
-parenthetical:	Parenthetical	;
-character	:	Character EOL (Parenthetical | Span | EOL)* ~(BlankLine)	;
-upperCaseLine:	Character EOL BlankLine	;
-titlePage	:	TitlePageValue;
+// ======
+// Dialog
+// ======
+
+dialog
+	:	character EOL1 dialogBlock EOL2
+	;
+
+character
+	:	USPAN
+	|	'@' span
+	;
+
+dialogBlock
+	:	dialogLine ( EOL1 dialogLine )*
+	;
+
+dialogLine
+	:	( parenthetical | span )
+	;
+
+parenthetical
+	:	PARENTHETICAL
+	;
+
+// ===========
+// Other Rules
+// ===========
+
+action
+	:	'!' span
+	|	span
+	;
+
+centered
+	:	'>' span '<'
+	;
+
+heading
+	:	'.' span
+	|	HEADING
+	;
+
+lyric
+	:	'~' span
+	;
+
+pageBreak
+	:	'===' '='*
+	;
+
+section
+	:	'#'+ span
+	;
+
+synopsis
+	:	'=' span
+	;
+
+transition
+	:	'>' span
+	|	TO
+	;
+
+span // HACK: I hate '...' and how it breaks the forced heading rule.
+	: ( '..' '.'* )? ( USPAN | SPAN )
+	;
 
 compileUnit
-	:	( boneyard | centered | heading | lyric | note | pageBreak | section | span | synopsis | 
-		titlePage | transition | character | upperCaseLine | blankLine | parenthetical)* EOF
+	:
+	(	centered
+	|	lyric
+	|	pageBreak
+	|	section
+	|	synopsis
+	|	transition
+	|	heading
+	|	dialog
+	|	action
+	|	EOL1
+	|	EOL2
+	)*	EOF
 	;
 
 //
 // Lexer Rules
 //
 
-fragment Ext
-	: [eE] [xX] [tT]
+EOL2
+	:	'\r'? '\n' '\r'? '\n'
 	;
 
-fragment Int
-	: [iI] [nN] [tT]
-	;
-
-Heading
-	:	( Ext  |  Int ) '.'      Span
-	|	  Ext '/' Int   '.'      Span
-	|	  Int '/' Ext   '.'      Span
-	|	 [iI] '/' [eE]  '.'      Span
-	|	                '.' ~'.' Span
-	;
-
-PageBreak
-	:	'===' '='*
-	;
-
-Boneyard
-	:	'/*' .*? '*/'
-	;
-
-// TODO: Check for double return
-Note
-	:	'[[' .*? ']]'
-	;
-
-Centered
-	:	'>' ~[\t\r\n]*? '<'
-	;
-	
-Lyric
-	:	'~' Span
-	;
-
-Section
-	:	'#'+ Span
-	;
-
-Synopsis
-	:	'=' Span
-	;
-
-Transition
-	:	Span [tT] [oO] ':'
-	|	'>' Span
-	|	[fF][aA][dD][eE]' '[oO][uU][tT]'.'
-	|	[fF][aA][dD][eE]' '[tT][oO]' '[bB][lL][aA][cC][kK]'.'
-	|	[cC][uU][tT]' '[tT][oO]' '[bB][lL][aA][cC][kK]'.'
-	;
-
-Character
-	:	~[a-z\t\r\n]+ '^'?
-	|	'@' Span
-	;
-
-Parenthetical
-	: '(' ~[\r\n] ')'
-	;
-TitlePageKey
-	:	[tT][iI][tT][lL][eE]':'
-	|	[aA][uU][tT][hH][oO][rR]':'
-	|	[cC][rR][eE][dD][iI][tT]':'
-	|	[sS][oO][uU][rR][cC][eE]':'
-	|	[dD][rR][aA][fF][tT]' '[dD][aA][tT][eE]':'
-	|	[cC][oO][nN][tT][aA][cC][tT]':'
-	|	[nN][oO][tT][eE][sS]':'
-	;
-
-TitlePageValue
-	:	{Column == 0}? TitlePageKey .*? BlankLine
-	;
-
-BlankLine
-	: {Column == 0}? EOL
-	;
-
-Span
-	:	~[\t\r\n]+
-	;
-
-EOL
+EOL1
 	:	'\r'? '\n'
+	;
+
+BONEYARD
+	:	'/*' .*? '*/' -> skip
+	;
+
+NOTE
+	:	'[[' .*? ']]' -> skip
+	;
+
+HEADING
+	:	'INT'                ( '.' | ' ' ) ( USPAN | SPAN ) // INT. NIGHT      || INT NIGHT
+	|	'EXT'                ( '.' | ' ' ) ( USPAN | SPAN ) // EXT. NIGHT      || EXT NIGHT
+	|	'EST'                ( '.' | ' ' ) ( USPAN | SPAN ) // EST. NIGHT      || EST NIGHT
+	|	'INT' '.'? '/' 'EXT' ( '.' | ' ' ) ( USPAN | SPAN ) // INT./EXT. NIGHT || INT./EXT NIGHT || INT/EXT NIGHT   || INT/EXT. NIGHT
+	|	'I'        '/' 'E'   ( '.' | ' ' ) ( USPAN | SPAN ) // I/E. NIGHT      || I/E NIGHT
+	;
+
+TO
+	:	( USPAN | SPAN ) [tT][oO] ':'
+	;
+
+PARENTHETICAL
+	:	'(' ( USPAN | SPAN ) ')'
+	;
+
+fragment UFIRST
+	:	~[\r\n\t#=~!@><\.a-z]
+	;
+
+USPAN
+	:	UFIRST ~( [\r\n\t\<] | [a-z] )+
+	;
+
+fragment FIRST
+	:	~[\r\n\t#=~!@><\.]
+	;
+
+SPAN
+	:	FIRST ~( [\r\n\t\<] )+
 	;
 
 WS
