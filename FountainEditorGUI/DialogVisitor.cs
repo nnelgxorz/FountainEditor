@@ -38,11 +38,10 @@ namespace FountainEditorGUI
 
         public override Paragraph VisitSpan(FountainEditor.FountainParser.SpanContext context)
         {
-            string text = context.GetText();
-            Span s = ParseMarkdown.Parse(text);
-            Paragraph p = new Paragraph();
+            var text = context.GetText();
+            var p = new Paragraph();
             p.Margin = new System.Windows.Thickness(250, 0, 250, 0);
-            p.Inlines.Add(s);
+            p.Inlines.Add(ParseMarkdown.Parse(text));
             return p;
         }
 

@@ -1,111 +1,97 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FountainEditor;
+using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Media;
+using System.Linq;
 
 namespace FountainEditorGUI
 {
-    class InlineVistitor : FountainEditor.MarkdownBaseListener
+    class InlineVistitor : MarkdownBaseVisitor<Inline>
     {
-        public Span s = new Span();
-
-        public override void EnterItalics(FountainEditor.MarkdownParser.ItalicsContext context)
+        public override Inline VisitCompileUnit(MarkdownParser.CompileUnitContext context)
         {
-            string text = context.GetText();
-            text = text.Substring(1);
-            text = text.Substring(0, text.Length - 1);
-            Run sR = new Run("*");
-            sR.Foreground = System.Windows.Media.Brushes.Gray;
-            Run r = new Run(text);
-            r.FontStyle = System.Windows.FontStyles.Italic;
-            Run eR = new Run("*");
-            eR.Foreground = System.Windows.Media.Brushes.Gray;
-            s.Inlines.Add(sR);
-            s.Inlines.Add(r);
-            s.Inlines.Add(eR);
+            var span = new Span();
+
+            foreach (var child in context.children)
+            {
+                span.Inlines.Add(Visit(child));
+            }
+
+            return span;
         }
 
-        public override void EnterBold(FountainEditor.MarkdownParser.BoldContext context)
+        public override Inline VisitItalics(MarkdownParser.ItalicsContext context)
         {
-            string text = context.GetText();
+            var inline = Visit(context.md());
+            inline.FontStyle = FontStyles.Italic;
 
-            text = text.Substring(2);
-            text = text.Substring(0, text.Length - 2);
-            Run sR = new Run("**");
-            sR.Foreground = System.Windows.Media.Brushes.Gray;
-            Run r = new Run(text);
-            r.FontWeight = System.Windows.FontWeights.Bold;
-            Run eR = new Run("**");
-            eR.Foreground = System.Windows.Media.Brushes.Gray;
-            s.Inlines.Add(sR);
-            s.Inlines.Add(r);
-            s.Inlines.Add(eR);
+            var span = new Span();
+            span.Inlines.Add(new Run("*") { Foreground = Brushes.Gray });
+            span.Inlines.Add(inline);
+            span.Inlines.Add(new Run("*") { Foreground = Brushes.Gray });
+
+            return span;
         }
 
-        public override void EnterBoldItalics(FountainEditor.MarkdownParser.BoldItalicsContext context)
+        public override Inline VisitBold(MarkdownParser.BoldContext context)
         {
-            string text = context.GetText();
+            var inline = Visit(context.md());
+            inline.FontWeight = FontWeights.Bold;
 
-            text = text.Substring(3);
-            text = text.Substring(0, text.Length - 3);
-            Run sR = new Run("***");
-            sR.Foreground = System.Windows.Media.Brushes.Gray;
-            Run r = new Run(text);
-            r.FontStyle = System.Windows.FontStyles.Italic;
-            r.FontWeight = System.Windows.FontWeights.Bold;
-            Run eR = new Run("***");
-            eR.Foreground = System.Windows.Media.Brushes.Gray;
-            s.Inlines.Add(sR);
-            s.Inlines.Add(r);
-            s.Inlines.Add(eR);
+            var span = new Span();
+            span.Inlines.Add(new Run("**") { Foreground = Brushes.Gray });
+            span.Inlines.Add(inline);
+            span.Inlines.Add(new Run("**") { Foreground = Brushes.Gray });
+
+            return span;
         }
 
-        public override void EnterUnderline(FountainEditor.MarkdownParser.UnderlineContext context)
+        public override Inline VisitBoldItalics(MarkdownParser.BoldItalicsContext context)
         {
-            string text = context.GetText();
-            text = text.Substring(1);
-            text = text.Substring(0, text.Length - 1);
-            Run sR = new Run("_");
-            sR.Foreground = System.Windows.Media.Brushes.Gray;
-            Run r = new Run(text);
-            r.TextDecorations = System.Windows.TextDecorations.Underline;
-            Run eR = new Run("_");
-            eR.Foreground = System.Windows.Media.Brushes.Gray;
-            s.Inlines.Add(sR);
-            s.Inlines.Add(r);
-            s.Inlines.Add(eR);
+            var inline = Visit(context.md());
+            inline.FontStyle = FontStyles.Italic;
+            inline.FontWeight = FontWeights.Bold;
+
+            var span = new Span();
+            span.Inlines.Add(new Run("***") { Foreground = Brushes.Gray });
+            span.Inlines.Add(inline);
+            span.Inlines.Add(new Run("***") { Foreground = Brushes.Gray });
+
+            return span;
         }
 
-        public override void EnterBoneyard(FountainEditor.MarkdownParser.BoneyardContext context)
+        public override Inline VisitUnderline(MarkdownParser.UnderlineContext context)
         {
-            string text = context.GetText();
-            Run r = new Run(text);
-            r.Foreground = System.Windows.Media.Brushes.Gray;
-            s.Inlines.Add(r);
+            var inline = Visit(context.md());
+            inline.TextDecorations = TextDecorations.Underline;
+
+            var span = new Span();
+            span.Inlines.Add(new Run("_") { Foreground = Brushes.Gray });
+            span.Inlines.Add(inline);
+            span.Inlines.Add(new Run("_") { Foreground = Brushes.Gray });
+
+            return span;
         }
 
-        public override void EnterNotes(FountainEditor.MarkdownParser.NotesContext context)
+        public override Inline VisitBoneyard(MarkdownParser.BoneyardContext context)
         {
-            string text = context.GetText();
-            Run r = new Run(text);
-            r.Background = System.Windows.Media.Brushes.Yellow;
-            s.Inlines.Add(r);
+            var span = new Span();
+            span.Inlines.Add(new Run(context.GetText()) { Foreground = Brushes.Gray });
+
+            return span;
         }
 
-        public override void EnterWords(FountainEditor.MarkdownParser.WordsContext context)
+        public override Inline VisitNotes(MarkdownParser.NotesContext context)
         {
-            string text = context.GetText();
-            Run r = new Run(text);
-            s.Inlines.Add(r);
+            var span = new Span();
+            span.Inlines.Add(new Run(context.GetText()) { Background = Brushes.Yellow });
+
+            return span;
         }
 
-        public override void EnterBlank(FountainEditor.MarkdownParser.BlankContext context)
+        public override Inline VisitString(MarkdownParser.StringContext context)
         {
-            string text = context.GetText();
-            Run r = new Run(text);
-            s.Inlines.Add(r);
+            return new Run(context.GetText());
         }
     }
 }

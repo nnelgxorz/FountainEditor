@@ -69,12 +69,14 @@
     </Compile>
     <Compile Include="DialogVisitor.cs" />
     <Compile Include="FlowVisitor.cs" />
+    <Compile Include="InlineVistitor.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ParseMarkdown.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

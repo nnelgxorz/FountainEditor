@@ -3,20 +3,13 @@ grammar Markdown;
 /*
  * Parser Rules
  */
-boldItalics
-	:	BoldItalics
-	;
 
-bold
-	:	Bold
-	;
-
-italics
-	:	Italics
-	;
-
-underline
-	:	Underline
+md
+	:	'***' md '***'	# boldItalics
+	|	 '**' md '**'	# bold
+	|	  '*' md '*'	# italics
+	|	  '_' md '_'	# underline
+	|	String			# string
 	;
 
 notes
@@ -27,24 +20,12 @@ boneyard
 	:	Boneyard
 	;
 
-words
-	:	Words
-	;
-
-blank
-	:	BlankLine
-	;
-
 compileUnit
 	:	
-	(	bold 
-	|	boldItalics 
-	|	italics 
-	|	underline 
-	|	notes 
-	|	boneyard 
-	|	words
-	)*	EOF
+	(	md
+	|	notes
+	|	boneyard
+	)*
 	;
 
 /*
@@ -52,35 +33,15 @@ compileUnit
  */
 
 Boneyard
-	:	'/*' (Words | EOL | BlankLine )* '*/'
-	;
-
-BoldItalics
-	:	'***' ~(' ') Words '***'
-	;
-
-Bold
-	:	'**' ~(' ') Words '**'
-	;
-
-Italics
-	:	'*' ~(' ') Words '*'
-	;
-
-Underline
-	:	'_' ~(' ') Words '_'
+	:	'/*' .*? '*/'
 	;
 
 Notes
-	:	'[[' ( Words | EOL )* ']]'
+	:	'[[' .*? ']]'
 	;
 
-Words
-	:	~( '/' | '*' | '_' | '[' | ']' | '\r' | '\n' )+
-	;
-
-BlankLine
-	:	{Column == 0}? EOL
+String
+	:	~[*_\r\n]+
 	;
 
 EOL

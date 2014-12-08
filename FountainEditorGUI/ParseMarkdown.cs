@@ -1,27 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
+﻿using Antlr4.Runtime;
 using FountainEditor;
+using System.Windows.Documents;
 
 namespace FountainEditorGUI
 {
     class ParseMarkdown
     {
-        public static Span Parse(string input)
+        public static Inline Parse(string text)
         {
-            var stream = new Antlr4.Runtime.AntlrInputStream(input);
-            var lexer = new MarkdownLexer(stream);
-            var tokens = new Antlr4.Runtime.CommonTokenStream(lexer);
+            var input = new AntlrInputStream(text);
+            var lexer = new MarkdownLexer(input);
+            var tokens = new CommonTokenStream(lexer);
             var parser = new MarkdownParser(tokens);
-            var tree = parser.compileUnit();
-            var treeWalker = new Antlr4.Runtime.Tree.ParseTreeWalker();
+            var output = parser.compileUnit();
             var visitor = new InlineVistitor();
-            treeWalker.Walk(visitor, tree);
-            Span span = visitor.s;
-            return span;
+
+            return visitor.Visit(output);
         }
     }
 }
