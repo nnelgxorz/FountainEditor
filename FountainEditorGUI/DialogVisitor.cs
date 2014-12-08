@@ -12,11 +12,28 @@ namespace FountainEditorGUI
         public override Paragraph VisitCharacter(FountainEditor.FountainParser.CharacterContext context)
         {
             string text = context.GetText();
-            Run r = new Run(text);
-            Paragraph p = new Paragraph();
-            p.Margin = new System.Windows.Thickness(370, 0, 100, 0);
-            p.Inlines.Add(r);
-            return p;
+
+            if (text.StartsWith("@"))
+            {
+                text = text.Substring(1);
+                Run fR = new Run("@");
+                fR.Foreground = System.Windows.Media.Brushes.LightGray;
+                Run sR = new Run(text);
+                Paragraph p = new Paragraph();
+                p.Margin = new System.Windows.Thickness(370, 0, 100, 0);
+                p.Inlines.Add(fR);
+                p.Inlines.Add(sR);
+                return p;
+            }
+
+            else
+            {
+                Run r = new Run(text);
+                Paragraph p = new Paragraph();
+                p.Margin = new System.Windows.Thickness(370, 0, 100, 0);
+                p.Inlines.Add(r);
+                return p;
+            }
         }
 
         public override Paragraph VisitSpan(FountainEditor.FountainParser.SpanContext context)
