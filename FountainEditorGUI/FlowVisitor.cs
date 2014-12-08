@@ -126,12 +126,11 @@ namespace FountainEditorGUI
         public override void EnterCentered(FountainParser.CenteredContext context)
         {
             var text = context.GetText();
-            text = text.Substring(1, text.Length - 2);
 
             var p = new Paragraph();
             p.TextAlignment = TextAlignment.Center;
             p.Inlines.Add(new Run(">") { Foreground = Brushes.Gray });
-            p.Inlines.Add(text);
+            p.Inlines.Add(ParseMarkdown.Parse(text.Substring(1, text.Length -2)));
             p.Inlines.Add(new Run("<") { Foreground = Brushes.Gray });
             displayDoc.Blocks.Add(p);
         }

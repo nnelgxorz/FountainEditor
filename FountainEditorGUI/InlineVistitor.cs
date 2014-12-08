@@ -22,12 +22,16 @@ namespace FountainEditorGUI
 
         public override Inline VisitItalics(MarkdownParser.ItalicsContext context)
         {
-            var inline = Visit(context.md());
-            inline.FontStyle = FontStyles.Italic;
-
             var span = new Span();
             span.Inlines.Add(new Run("*") { Foreground = Brushes.Gray });
-            span.Inlines.Add(inline);
+
+            foreach (var node in context.md())
+            {
+                var inline = Visit(node);
+                inline.FontStyle = FontStyles.Italic;
+                span.Inlines.Add(inline);
+            }
+
             span.Inlines.Add(new Run("*") { Foreground = Brushes.Gray });
 
             return span;
@@ -35,12 +39,17 @@ namespace FountainEditorGUI
 
         public override Inline VisitBold(MarkdownParser.BoldContext context)
         {
-            var inline = Visit(context.md());
-            inline.FontWeight = FontWeights.Bold;
 
             var span = new Span();
             span.Inlines.Add(new Run("**") { Foreground = Brushes.Gray });
-            span.Inlines.Add(inline);
+
+            foreach (var node in context.md())
+            {
+                var inline = Visit(node);
+                inline.FontWeight = FontWeights.Bold;
+                span.Inlines.Add(inline);
+            }
+
             span.Inlines.Add(new Run("**") { Foreground = Brushes.Gray });
 
             return span;
@@ -48,13 +57,18 @@ namespace FountainEditorGUI
 
         public override Inline VisitBoldItalics(MarkdownParser.BoldItalicsContext context)
         {
-            var inline = Visit(context.md());
-            inline.FontStyle = FontStyles.Italic;
-            inline.FontWeight = FontWeights.Bold;
 
             var span = new Span();
             span.Inlines.Add(new Run("***") { Foreground = Brushes.Gray });
-            span.Inlines.Add(inline);
+
+            foreach (var node in context.md())
+            {
+                var inline = Visit(node);
+                inline.FontStyle = FontStyles.Italic;
+                inline.FontWeight = FontWeights.Bold;
+                span.Inlines.Add(inline);
+            }
+
             span.Inlines.Add(new Run("***") { Foreground = Brushes.Gray });
 
             return span;
@@ -62,12 +76,17 @@ namespace FountainEditorGUI
 
         public override Inline VisitUnderline(MarkdownParser.UnderlineContext context)
         {
-            var inline = Visit(context.md());
-            inline.TextDecorations = TextDecorations.Underline;
 
             var span = new Span();
             span.Inlines.Add(new Run("_") { Foreground = Brushes.Gray });
-            span.Inlines.Add(inline);
+
+            foreach (var node in context.md())
+            {
+                var inline = Visit(node);
+                inline.TextDecorations = TextDecorations.Underline;
+                span.Inlines.Add(inline);
+            }
+
             span.Inlines.Add(new Run("_") { Foreground = Brushes.Gray });
 
             return span;

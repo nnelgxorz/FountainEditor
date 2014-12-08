@@ -5,10 +5,10 @@ grammar Markdown;
  */
 
 md
-	:	'***' md '***'	# boldItalics
-	|	 '**' md '**'	# bold
-	|	  '*' md '*'	# italics
-	|	  '_' md '_'	# underline
+	:	'***' md* '***'	# boldItalics
+	|	 '**' md* '**'	# bold
+	|	  '*' md* '*'	# italics
+	|	  '_' md* '_'	# underline
 	|	String			# string
 	;
 

@@ -17,7 +17,7 @@ namespace FountainEditorGUI
             {
                 text = text.Substring(1);
                 Run fR = new Run("@");
-                fR.Foreground = System.Windows.Media.Brushes.LightGray;
+                fR.Foreground = System.Windows.Media.Brushes.Gray;
                 Run sR = new Run(text);
                 Paragraph p = new Paragraph();
                 p.Margin = new System.Windows.Thickness(370, 0, 100, 0);
