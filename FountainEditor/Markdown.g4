@@ -4,68 +4,87 @@ grammar Markdown;
  * Parser Rules
  */
 boldItalics
-	:	BoldItalics ~(EOL)* BoldItalics
+	:	BoldItalics
 	;
 
 bold
-	:	Bold ~(EOL)* Bold
+	:	Bold
 	;
 
 italics
-	:	Italics ~(EOL)* Italics
+	:	Italics
 	;
 
 underline
-	:	Underline ~(EOL)* Underline
+	:	Underline
 	;
 
 notes
-	:	Notes ~(EOL) Notes
+	:	Notes
 	;
 
 boneyard
-	:	Boneyard .*? Boneyard
+	:	Boneyard
+	;
+
+words
+	:	Words
+	;
+
+blank
+	:	BlankLine
 	;
 
 compileUnit
-	:	EOF
+	:	
+	(	bold 
+	|	boldItalics 
+	|	italics 
+	|	underline 
+	|	notes 
+	|	boneyard 
+	|	words
+	)*	EOF
 	;
 
 /*
  * Lexer Rules
  */
+
+Boneyard
+	:	'/*' (Words | EOL | BlankLine )* '*/'
+	;
+
 BoldItalics
-	:	'***'
+	:	'***' ~(' ') Words '***'
 	;
 
 Bold
-	:	'**'
+	:	'**' ~(' ') Words '**'
 	;
 
 Italics
-	:	'*'
+	:	'*' ~(' ') Words '*'
 	;
 
 Underline
-	:	'_'
+	:	'_' ~(' ') Words '_'
 	;
 
 Notes
-	:	'[[' 
-	|	']]'
+	:	'[[' ( Words | EOL )* ']]'
 	;
 
-Boneyard
-	:	'/*'
-	|	'*/'
-	;
-
-EOL
-	:	'\r'? '\n'
+Words
+	:	~( '/' | '*' | '_' | '[' | ']' | '\r' | '\n' )+
 	;
 
 BlankLine
 	:	{Column == 0}? EOL
+	;
+
+EOL
+	:	'\r'? '\n'
 	;
 
 WS

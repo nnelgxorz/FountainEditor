@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Documents;
 
 namespace FountainEditorGUI
@@ -19,7 +15,7 @@ namespace FountainEditorGUI
             Run r = new Run(text);
             Paragraph p = new Paragraph();
 
-            p.Margin = new System.Windows.Thickness(20, 0, 100, 0);
+            p.Margin = new System.Windows.Thickness(20, 0, 100, 20);
             p.Foreground = System.Windows.Media.Brushes.Gray;
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
@@ -32,7 +28,7 @@ namespace FountainEditorGUI
             Run r = new Run(text);
             Paragraph p = new Paragraph();
 
-            p.Margin = new System.Windows.Thickness(40, 0, 100, 0);
+            p.Margin = new System.Windows.Thickness(40, 0, 100, 20);
             p.Foreground = System.Windows.Media.Brushes.Gray;
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
@@ -45,7 +41,7 @@ namespace FountainEditorGUI
             Run r = new Run(text.ToUpper());
             Paragraph p = new Paragraph();
 
-            p.Margin = new System.Windows.Thickness(150, 0, 100, 0);
+            p.Margin = new System.Windows.Thickness(150, 0, 100, 20);
             p.FontWeight = System.Windows.FontWeights.Bold;
 
             p.Inlines.Add(r);
@@ -67,12 +63,8 @@ namespace FountainEditorGUI
 
         public override void EnterDialog(FountainEditor.FountainParser.DialogContext context)
         {
-            //Character     370,0,100,0
-            //Parenthetical 310,0,290,0
-            //Dialogue      250,0,250,0
-
             var visitor = new DialogVisitor();
-            
+
             displayDoc.Blocks.Add(visitor.VisitCharacter(context.character()));
 
             foreach (var item in context.dialogBlock().children)
@@ -83,17 +75,28 @@ namespace FountainEditorGUI
                     displayDoc.Blocks.Add(node);
                 }
             }
+
+            Paragraph p = new Paragraph();
+            Run r = new Run("");
+            p.Margin = new System.Windows.Thickness(370, 0, 100, 0);
+            p.Inlines.Add(r);
+            displayDoc.Blocks.Add(p);
         }
 
         public override void EnterAction(FountainEditor.FountainParser.ActionContext context)
         {
             string text = context.GetText();
             Run r = new Run(text);
+            Run e = new Run("");
+            Paragraph ep = new Paragraph();
             Paragraph p = new Paragraph();
+            p.Margin = new System.Windows.Thickness(150, 0, 100, 0);
+            ep.Margin = new System.Windows.Thickness(150, 0, 100, 0);
+
 
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
-            p.Margin = new System.Windows.Thickness(150, 0, 100, 0);
+            displayDoc.Blocks.Add(ep);
         }
 
         public override void EnterCentered(FountainEditor.FountainParser.CenteredContext context)
@@ -115,6 +118,20 @@ namespace FountainEditorGUI
 
             p.Foreground = System.Windows.Media.Brushes.Gray;
             p.TextAlignment = System.Windows.TextAlignment.Center;
+            p.Inlines.Add(r);
+            displayDoc.Blocks.Add(p);
+        }
+
+        public override void EnterTitlePage(FountainEditor.FountainParser.TitlePageContext context)
+        {
+            string text = context.GetText();
+            Run r = new Run(text);
+            Paragraph p = new Paragraph();
+
+            p.Foreground = System.Windows.Media.Brushes.Red;
+            p.TextAlignment = System.Windows.TextAlignment.Right;
+
+            p.Margin = new System.Windows.Thickness(150, 0, 100, 0);
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
         }

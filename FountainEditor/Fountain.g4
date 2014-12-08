@@ -7,7 +7,6 @@ grammar Fountain;
 // ======
 // Dialog
 // ======
-
 dialog
 	:	character EOL1 dialogBlock EOL2
 	;
@@ -68,9 +67,14 @@ transition
 	|	TO
 	;
 
+titlePage
+	:	TitlePageValue
+	;
+
 span // HACK: I hate '...' and how it breaks the forced heading rule.
 	: ( '..' '.'* )? ( USPAN | SPAN )
 	;
+
 
 compileUnit
 	:
@@ -83,6 +87,7 @@ compileUnit
 	|	heading
 	|	dialog
 	|	action
+	|	titlePage
 	|	EOL1
 	|	EOL2
 	)*	EOF
@@ -118,6 +123,9 @@ HEADING
 
 TO
 	:	( USPAN | SPAN ) [tT][oO] ':'
+	|	[fF][aA][dD][eE]' '[oO][uU][tT]'.'
+	|	[fF][aA][dD][eE]' '[tT][oO]' '[bB][lL][aA][cC][kK]'.'
+	|	[cC][uU][tT]' '[tT][oO]' '[bB][lL][aA][cC][kK]'.'
 	;
 
 PARENTHETICAL
@@ -130,6 +138,16 @@ fragment UFIRST
 
 USPAN
 	:	UFIRST ~( [\r\n\t\<] | [a-z] )+
+	;
+
+TitlePageValue
+	: TitlePageKey .*? ('\r'?'\n' '\r'?'\n')
+	;
+TitlePageKey
+	:	[tT][iI][tT][lL][eE]':'
+	|	[cC][rR][eE][dD][iI][tT]':'
+	|	[aA][uU][tT][hH][oO][rR]':'
+	|	[sS][oO][uU][rR][cC][eE]':'
 	;
 
 fragment FIRST
