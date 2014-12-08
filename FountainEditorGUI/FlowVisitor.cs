@@ -43,7 +43,7 @@ namespace FountainEditorGUI
             {
                 text = text.Substring(1);
                 Run br = new Run(".");
-                br.Foreground = System.Windows.Media.Brushes.LightGray;
+                br.Foreground = System.Windows.Media.Brushes.Gray;
                 Run sr = new Run(text.ToUpper());
                 Paragraph fp = new Paragraph();
                 fp.Margin = new System.Windows.Thickness(150, 0, 100, 20);
@@ -73,7 +73,7 @@ namespace FountainEditorGUI
             {
                 text = text.Substring(1);
                 Run fr = new Run(">");
-                fr.Foreground = System.Windows.Media.Brushes.LightGray;
+                fr.Foreground = System.Windows.Media.Brushes.Gray;
                 Run sr = new Run(text.ToUpper());
                 Paragraph fp = new Paragraph();
                 fp.TextAlignment = System.Windows.TextAlignment.Right;
@@ -118,16 +118,30 @@ namespace FountainEditorGUI
         public override void EnterAction(FountainEditor.FountainParser.ActionContext context)
         {
             string text = context.GetText();
-            Run r = new Run(text);
-            Run e = new Run("");
+
+            if (text.StartsWith("!"))
+            {
+                text = text.Substring(1);
+                Run fR = new Run("!");
+                fR.Foreground = System.Windows.Media.Brushes.Gray;
+                Span s = ParseMarkdown.Parse(text);
+                Paragraph p = new Paragraph();
+                p.Margin = new System.Windows.Thickness(150, 0, 100, 0);
+                p.Inlines.Add(fR);
+                p.Inlines.Add(s);
+                displayDoc.Blocks.Add(p);
+            }
+
+            else
+            {
+                Span r = ParseMarkdown.Parse(text);
+                Paragraph p = new Paragraph();
+                p.Margin = new System.Windows.Thickness(150, 0, 100, 0);
+                p.Inlines.Add(r);
+                displayDoc.Blocks.Add(p);
+            }
             Paragraph ep = new Paragraph();
-            Paragraph p = new Paragraph();
-            p.Margin = new System.Windows.Thickness(150, 0, 100, 0);
             ep.Margin = new System.Windows.Thickness(150, 0, 100, 0);
-
-
-            p.Inlines.Add(r);
-            displayDoc.Blocks.Add(p);
             displayDoc.Blocks.Add(ep);
         }
 
@@ -137,10 +151,10 @@ namespace FountainEditorGUI
             text = text.Substring(1);
             text = text.Substring(0, text.Length - 1);
             Run fR = new Run(">");
-            fR.Foreground = System.Windows.Media.Brushes.LightGray;
+            fR.Foreground = System.Windows.Media.Brushes.Gray;
             Run r = new Run(text);
             Run eR = new Run("<");
-            eR.Foreground = System.Windows.Media.Brushes.LightGray;
+            eR.Foreground = System.Windows.Media.Brushes.Gray;
             Paragraph p = new Paragraph();
 
             p.TextAlignment = System.Windows.TextAlignment.Center;
@@ -156,7 +170,6 @@ namespace FountainEditorGUI
             Run r = new Run(text);
             Paragraph p = new Paragraph();
 
-            p.Foreground = System.Windows.Media.Brushes.Gray;
             p.TextAlignment = System.Windows.TextAlignment.Center;
             p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);

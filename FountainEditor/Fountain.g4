@@ -114,11 +114,11 @@ NOTE
 	;
 
 HEADING
-	:	'INT'                ( '.' | ' ' ) ( USPAN | SPAN ) // INT. NIGHT      || INT NIGHT
-	|	'EXT'                ( '.' | ' ' ) ( USPAN | SPAN ) // EXT. NIGHT      || EXT NIGHT
-	|	'EST'                ( '.' | ' ' ) ( USPAN | SPAN ) // EST. NIGHT      || EST NIGHT
-	|	'INT' '.'? '/' 'EXT' ( '.' | ' ' ) ( USPAN | SPAN ) // INT./EXT. NIGHT || INT./EXT NIGHT || INT/EXT NIGHT   || INT/EXT. NIGHT
-	|	'I'        '/' 'E'   ( '.' | ' ' ) ( USPAN | SPAN ) // I/E. NIGHT      || I/E NIGHT
+	:	[iI][nN][tT]         ( '.' | ' ' ) ( USPAN | SPAN ) // INT. NIGHT      || INT NIGHT
+	|	[eE][xX][tT]         ( '.' | ' ' ) ( USPAN | SPAN ) // EXT. NIGHT      || EXT NIGHT
+	|	[eE][sS][tT]         ( '.' | ' ' ) ( USPAN | SPAN ) // EST. NIGHT      || EST NIGHT
+	|	[iI][nN][tT] '.'? '/' [eE][xX][tT] ( '.' | ' ' ) ( USPAN | SPAN ) // INT./EXT. NIGHT || INT./EXT NIGHT || INT/EXT NIGHT   || INT/EXT. NIGHT
+	|	[iI]        '/' [eE] ( '.' | ' ' ) ( USPAN | SPAN ) // I/E. NIGHT      || I/E NIGHT
 	;
 
 TO
