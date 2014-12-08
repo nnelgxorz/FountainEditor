@@ -1,6 +1,9 @@
-﻿using System;
+﻿using FountainEditor;
+using System;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace FountainEditorGUI
 {
@@ -9,91 +12,76 @@ namespace FountainEditorGUI
         public FlowDocument displayDoc = new  FlowDocument();
         public ObservableCollection<String> displayOutline = new ObservableCollection<String>();
 
-        public override void EnterSection(FountainEditor.FountainParser.SectionContext context)
+        public override void EnterSection(FountainParser.SectionContext context)
         {
-            string text = context.GetText();
-            Run r = new Run(text);
-            Paragraph p = new Paragraph();
+            var text = context.GetText();
+            var p = new Paragraph();
 
-            p.Margin = new System.Windows.Thickness(20, 0, 100, 20);
-            p.Foreground = System.Windows.Media.Brushes.Gray;
-            p.Inlines.Add(r);
+            p.Margin = new Thickness(20, 0, 100, 20);
+            p.Foreground = Brushes.Gray;
+            p.Inlines.Add(text);
+
             displayDoc.Blocks.Add(p);
             displayOutline.Add(text);
         }
 
-        public override void EnterSynopsis(FountainEditor.FountainParser.SynopsisContext context)
+        public override void EnterSynopsis(FountainParser.SynopsisContext context)
         {
-            string text = context.GetText();
-            Run r = new Run(text);
-            Paragraph p = new Paragraph();
+            var text = context.GetText();
+            var p = new Paragraph();
 
-            p.Margin = new System.Windows.Thickness(40, 0, 100, 20);
-            p.Foreground = System.Windows.Media.Brushes.Gray;
-            p.Inlines.Add(r);
+            p.Margin = new Thickness(40, 0, 100, 20);
+            p.Foreground = Brushes.Gray;
+            p.Inlines.Add(text);
+            
             displayDoc.Blocks.Add(p);
             displayOutline.Add(text);
         }
 
-        public override void EnterHeading(FountainEditor.FountainParser.HeadingContext context)
+        public override void EnterHeading(FountainParser.HeadingContext context)
         {
-            string text = context.GetText();
+            var p = new Paragraph();
+            p.Margin = new Thickness(150, 0, 100, 20);
+            p.FontWeight = FontWeights.Bold;
 
+            var text = context.GetText();
             if (text.StartsWith("."))
             {
                 text = text.Substring(1);
-                Run br = new Run(".");
-                br.Foreground = System.Windows.Media.Brushes.Gray;
-                Run sr = new Run(text.ToUpper());
-                Paragraph fp = new Paragraph();
-                fp.Margin = new System.Windows.Thickness(150, 0, 100, 20);
-                fp.FontWeight = System.Windows.FontWeights.Bold;
-                fp.Inlines.Add(br);
-                fp.Inlines.Add(sr);
-                displayDoc.Blocks.Add(fp);
+                
+                p.Inlines.Add(new Run(".") { Foreground = Brushes.Gray });
+                p.Inlines.Add(new Run(text.ToUpper()));
             }
-
             else
             {
-                Run r = new Run(text.ToUpper());
-                Paragraph p = new Paragraph();
-
-                p.Margin = new System.Windows.Thickness(150, 0, 100, 20);
-                p.FontWeight = System.Windows.FontWeights.Bold;
-
-                p.Inlines.Add(r);
-                displayDoc.Blocks.Add(p);
+                p.Inlines.Add(new Run(text.ToUpper()));
             }
+
+            displayDoc.Blocks.Add(p);
         }
 
-        public override void EnterTransition(FountainEditor.FountainParser.TransitionContext context)
+        public override void EnterTransition(FountainParser.TransitionContext context)
         {
-            string text = context.GetText();
+            var p = new Paragraph();
+            p.TextAlignment = TextAlignment.Right;
+
+            var text = context.GetText();
             if (text.StartsWith(">"))
             {
                 text = text.Substring(1);
-                Run fr = new Run(">");
-                fr.Foreground = System.Windows.Media.Brushes.Gray;
-                Run sr = new Run(text.ToUpper());
-                Paragraph fp = new Paragraph();
-                fp.TextAlignment = System.Windows.TextAlignment.Right;
-                fp.Inlines.Add(fr);
-                fp.Inlines.Add(sr);
-                displayDoc.Blocks.Add(fp);
+                p.Inlines.Add(new Run(">") { Foreground = Brushes.Gray });
+                p.Inlines.Add(text.ToUpper());
             }
             else
             {
-                Run r = new Run(text.ToUpper());
-                Paragraph p = new Paragraph();
-
-                p.Foreground = System.Windows.Media.Brushes.Black;
-                p.TextAlignment = System.Windows.TextAlignment.Right;
-                p.Inlines.Add(r);
-                displayDoc.Blocks.Add(p);
+                p.Foreground = Brushes.Black;
+                p.Inlines.Add(text.ToUpper());
             }
+
+            displayDoc.Blocks.Add(p);
         }
 
-        public override void EnterDialog(FountainEditor.FountainParser.DialogContext context)
+        public override void EnterDialog(FountainParser.DialogContext context)
         {
             var visitor = new DialogVisitor();
 
@@ -108,84 +96,63 @@ namespace FountainEditorGUI
                 }
             }
 
-            Paragraph p = new Paragraph();
-            Run r = new Run("");
-            p.Margin = new System.Windows.Thickness(370, 0, 100, 0);
-            p.Inlines.Add(r);
+            var p = new Paragraph();
+            p.Margin = new Thickness(370, 0, 100, 0);
+            p.Inlines.Add(string.Empty);
+
             displayDoc.Blocks.Add(p);
         }
 
-        public override void EnterAction(FountainEditor.FountainParser.ActionContext context)
+        public override void EnterAction(FountainParser.ActionContext context)
         {
-            string text = context.GetText();
+            var p = new Paragraph();
+            p.Margin = new Thickness(150, 0, 100, 0);
 
+            var text = context.GetText();
             if (text.StartsWith("!"))
             {
-                text = text.Substring(1);
-                Run fR = new Run("!");
-                fR.Foreground = System.Windows.Media.Brushes.Gray;
-                Span s = ParseMarkdown.Parse(text);
-                Paragraph p = new Paragraph();
-                p.Margin = new System.Windows.Thickness(150, 0, 100, 0);
-                p.Inlines.Add(fR);
-                p.Inlines.Add(s);
-                displayDoc.Blocks.Add(p);
+                p.Inlines.Add(new Run("!") { Foreground = Brushes.Gray });
+                p.Inlines.Add(ParseMarkdown.Parse(text.Substring(1)));
             }
-
             else
             {
-                Span r = ParseMarkdown.Parse(text);
-                Paragraph p = new Paragraph();
-                p.Margin = new System.Windows.Thickness(150, 0, 100, 0);
-                p.Inlines.Add(r);
-                displayDoc.Blocks.Add(p);
+                p.Inlines.Add(ParseMarkdown.Parse(text));
             }
-            Paragraph ep = new Paragraph();
-            ep.Margin = new System.Windows.Thickness(150, 0, 100, 0);
-            displayDoc.Blocks.Add(ep);
+
+            displayDoc.Blocks.Add(p);
+            displayDoc.Blocks.Add(new Paragraph { Margin = new Thickness(150, 0, 100, 0) });
         }
 
-        public override void EnterCentered(FountainEditor.FountainParser.CenteredContext context)
+        public override void EnterCentered(FountainParser.CenteredContext context)
         {
-            string text = context.GetText();
-            text = text.Substring(1);
-            text = text.Substring(0, text.Length - 1);
-            Run fR = new Run(">");
-            fR.Foreground = System.Windows.Media.Brushes.Gray;
-            Run r = new Run(text);
-            Run eR = new Run("<");
-            eR.Foreground = System.Windows.Media.Brushes.Gray;
-            Paragraph p = new Paragraph();
+            var text = context.GetText();
+            text = text.Substring(1, text.Length - 2);
 
-            p.TextAlignment = System.Windows.TextAlignment.Center;
-            p.Inlines.Add(fR);
-            p.Inlines.Add(r);
-            p.Inlines.Add(eR);
+            var p = new Paragraph();
+            p.TextAlignment = TextAlignment.Center;
+            p.Inlines.Add(new Run(">") { Foreground = Brushes.Gray });
+            p.Inlines.Add(text);
+            p.Inlines.Add(new Run("<") { Foreground = Brushes.Gray });
             displayDoc.Blocks.Add(p);
         }
 
-        public override void EnterPageBreak(FountainEditor.FountainParser.PageBreakContext context)
+        public override void EnterPageBreak(FountainParser.PageBreakContext context)
         {
-            string text = context.GetText();
-            Run r = new Run(text);
-            Paragraph p = new Paragraph();
+            var p = new Paragraph();
+            p.TextAlignment = TextAlignment.Center;
+            p.Inlines.Add(context.GetText());
 
-            p.TextAlignment = System.Windows.TextAlignment.Center;
-            p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
         }
 
-        public override void EnterTitlePage(FountainEditor.FountainParser.TitlePageContext context)
+        public override void EnterTitlePage(FountainParser.TitlePageContext context)
         {
-            string text = context.GetText();
-            Run r = new Run(text);
-            Paragraph p = new Paragraph();
+            var p = new Paragraph();
+            p.Foreground = Brushes.Red;
+            p.TextAlignment = TextAlignment.Right;
+            p.Margin = new Thickness(150, 0, 100, 0);
+            p.Inlines.Add(context.GetText());
 
-            p.Foreground = System.Windows.Media.Brushes.Red;
-            p.TextAlignment = System.Windows.TextAlignment.Right;
-
-            p.Margin = new System.Windows.Thickness(150, 0, 100, 0);
-            p.Inlines.Add(r);
             displayDoc.Blocks.Add(p);
         }
     }
