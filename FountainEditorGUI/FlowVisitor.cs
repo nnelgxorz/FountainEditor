@@ -138,7 +138,9 @@ namespace FountainEditorGUI
         public override void EnterPageBreak(FountainParser.PageBreakContext context)
         {
             var p = new Paragraph();
+            p.Margin = new Thickness(150, 0, 100, 66);
             p.TextAlignment = TextAlignment.Center;
+            p.Foreground = Brushes.Gray;
             p.Inlines.Add(context.GetText());
 
             displayDoc.Blocks.Add(p);
@@ -146,13 +148,12 @@ namespace FountainEditorGUI
 
         public override void EnterTitlePage(FountainParser.TitlePageContext context)
         {
-            var p = new Paragraph();
-            p.Foreground = Brushes.Red;
-            p.TextAlignment = TextAlignment.Right;
-            p.Margin = new Thickness(150, 0, 100, 0);
-            p.Inlines.Add(context.GetText());
+            //var text = context.GetText();
+            //var p = ParseTitlePage.Parse(text);
+            //p.TextAlignment = TextAlignment.Right;
+            //p.Margin = new Thickness(150, 0, 100, 0);
 
-            displayDoc.Blocks.Add(p);
+            //displayDoc.Blocks.Add(p);
         }
     }
 }

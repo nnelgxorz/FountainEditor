@@ -82,6 +82,12 @@
     <Compile Include="Normalizer.cs" />
     <Compile Include="Optimizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TitlePage.g4.lexer.cs">
+      <DependentUpon>TitlePage.g4</DependentUpon>
+    </Compile>
+    <Compile Include="TitlePage.g4.parser.cs">
+      <DependentUpon>TitlePage.g4</DependentUpon>
+    </Compile>
     <Compile Include="Tokenizer.cs" />
     <Compile Include="TokenReader.cs" />
   </ItemGroup>
@@ -96,6 +102,10 @@
       <CustomToolNamespace>FountainEditor</CustomToolNamespace>
     </Antlr4>
     <None Include="packages.config" />
+    <Antlr4 Include="TitlePage.g4">
+      <Generator>MSBuild:Compile</Generator>
+      <CustomToolNamespace>FountainEditor</CustomToolNamespace>
+    </Antlr4>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
