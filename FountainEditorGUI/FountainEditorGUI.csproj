@@ -61,6 +61,8 @@
     </ApplicationDefinition>
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RelayCommandGeneric.cs" />
+    <Compile Include="DocumentService.cs" />
+    <Compile Include="IDocumentService.cs" />
     <Compile Include="ParseTitlePage.cs" />
     <Compile Include="TitlePageVisitor.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
