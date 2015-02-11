@@ -89,8 +89,8 @@ namespace FountainEditorGUI
                 var visitor = new FlowVisitor();
                 treeWalker.Walk(visitor, tree);
 
-                this.Outliner.ItemsSource = visitor.displayOutline;
-                this.DisplayBox.Document = visitor.displayDoc;
+                this.Outliner.ItemsSource = visitor.DisplayOutline;
+                this.DisplayBox.Document = visitor.DisplayDocument;
                 this.DisplayBox.CaretPosition = this.DisplayBox.CaretPosition.DocumentEnd;
                 count = 0;
                 return;
@@ -115,9 +115,9 @@ namespace FountainEditorGUI
                     var visitor = new FlowVisitor();
                     treeWalker.Walk(visitor, tree);
 
-                    this.Outliner.ItemsSource = visitor.displayOutline;
+                    this.Outliner.ItemsSource = visitor.DisplayOutline;
                     count = 0;
-                    this.DisplayBox.Document = visitor.displayDoc;
+                    this.DisplayBox.Document = visitor.DisplayDocument;
                     this.DisplayBox.CaretPosition = DisplayBox.CaretPosition.DocumentEnd;
                     return;
                 }
