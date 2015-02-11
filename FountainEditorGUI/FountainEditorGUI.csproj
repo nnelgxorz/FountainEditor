@@ -63,6 +63,7 @@
     <Compile Include="Commands\RelayCommandGeneric.cs" />
     <Compile Include="ParseTitlePage.cs" />
     <Compile Include="TitlePageVisitor.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
