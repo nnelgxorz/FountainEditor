@@ -1,9 +1,9 @@
-﻿using FountainEditor;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
+using FountainEditor;
 
 namespace FountainEditorGUI
 {
