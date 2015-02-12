@@ -7,9 +7,9 @@ namespace FountainEditor.Messaging
     {
         private ICollection<Action<TMessage>> subscribers;
 
-        public MessagePublisher(ICollection<Action<TMessage>> subscribers)
+        public MessagePublisher()
         {
-            this.subscribers = subscribers;
+            this.subscribers = new List<Action<TMessage>>();
         }
 
         public void Publish(TMessage message)
