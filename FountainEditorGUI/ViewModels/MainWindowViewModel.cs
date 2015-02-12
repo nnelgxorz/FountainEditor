@@ -14,7 +14,6 @@ namespace FountainEditorGUI.ViewModels
 {
     public sealed class MainWindowViewModel : ViewModelBase
     {
-        private IDocumentService documentService;
         private ObservableCollection<string> outline;
         private string documentName;
 
@@ -57,12 +56,10 @@ namespace FountainEditorGUI.ViewModels
             SaveAsCommand = new RelayCommand(SaveAs);
             ExitCommand = new RelayCommand(Exit);
 
-            this.documentService = documentService;
         }
 
         private void New()
         {
-            this.documentService.SetValue(new FlowDocument());
             this.DocumentName = "<Untitled>";
         }
 
@@ -87,14 +84,12 @@ namespace FountainEditorGUI.ViewModels
                 var visitor = new FlowVisitor();
                 treeWalker.Walk(visitor, tree);
 
-                this.documentService.SetValue(visitor.DisplayDocument);
                 this.Outline = visitor.DisplayOutline;
             }
         }
 
         private void SaveAs()
         {
-            var documentText = this.documentService.GetValue().ToString();
             var saveDialog = new SaveFileDialog();
 
             saveDialog.DefaultExt = "*.txt";

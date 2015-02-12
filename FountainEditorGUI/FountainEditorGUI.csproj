@@ -70,9 +70,7 @@
     </ApplicationDefinition>
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RelayCommandGeneric.cs" />
-    <Compile Include="DocumentService.cs" />
     <Compile Include="Extensions\InjectInstanceExtension.cs" />
-    <Compile Include="IDocumentService.cs" />
     <Compile Include="ParseTitlePage.cs" />
     <Compile Include="ServiceLocator.cs" />
     <Compile Include="SimpleInjectorServiceLocatorAdapter.cs" />

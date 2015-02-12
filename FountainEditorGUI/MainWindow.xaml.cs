@@ -16,10 +16,6 @@ namespace FountainEditorGUI
         public MainWindow()
         {
             InitializeComponent();
-
-            var documentService = new DocumentService(this);
-
-            DataContext = new MainWindowViewModel(documentService);
         }
 
         private void PressEnter(object sender, KeyEventArgs e)
