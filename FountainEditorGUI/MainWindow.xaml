@@ -36,17 +36,8 @@
             <MenuItem Header="Options" />
         </Menu>
 
-        <RichTextBox Name="DisplayBox" FontFamily="Courier Prime" 
-                     FontSize="16" AcceptsReturn="True" AcceptsTab="True"
-                     ScrollViewer.VerticalScrollBarVisibility="Auto" BorderBrush="Black"
-                     Padding="0,50,0,0" KeyUp="PressEnter" Grid.Row="1" Grid.Column="1" Margin="50,10">
-            <RichTextBox.Resources>
-                <Style TargetType="{x:Type Paragraph}">
-                    <Setter Property="Margin" Value="150,0,100,0"/>
-                </Style>
-            </RichTextBox.Resources>
-        </RichTextBox>
         <p:FountainNameBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Background="Transparent" />
         <p:FountainOutline Grid.Row="1" Grid.Column="0" />
+        <p:FountainTextBox Grid.Row="1" Grid.Column="1" Margin="50,10" />
     </Grid>
 </Window>
