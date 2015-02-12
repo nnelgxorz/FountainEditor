@@ -74,15 +74,23 @@
     <Compile Include="FountainNameBox.xaml.cs">
       <DependentUpon>FountainNameBox.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FountainOutline.xaml.cs">
+      <DependentUpon>FountainOutline.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Messages\DocumentMessage.cs" />
     <Compile Include="ParseTitlePage.cs" />
     <Compile Include="ServiceLocator.cs" />
     <Compile Include="SimpleInjectorServiceLocatorAdapter.cs" />
     <Compile Include="TitlePageVisitor.cs" />
     <Compile Include="ViewModels\FountainNameBoxViewModel.cs" />
+    <Compile Include="ViewModels\FountainOutlineViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Page Include="FountainNameBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FountainOutline.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

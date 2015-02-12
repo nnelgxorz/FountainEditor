@@ -36,23 +36,6 @@
             <MenuItem Header="Options" />
         </Menu>
 
-        <Expander Grid.Column="0" Grid.Row="2" ExpandDirection="Right" Margin="10">
-            <ListView Name="Outliner" Background="#515255" Foreground="#d2d2d2" BorderBrush="{x:Null}"
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                      HorizontalContentAlignment="Stretch" Padding="0,25,0,0"
-                      AllowDrop="True" ItemsSource="{Binding Outline}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid Width="{Binding ElementName=Outliner, Path=ActualWidth}" AllowDrop="True">
-                            <TextBlock Text="{Binding}" FontSize="16" HorizontalAlignment="Left"
-                                       FontWeight="Light" Margin="15,5,35,15" TextWrapping="Wrap">
-                            </TextBlock>
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListView>
-        </Expander>
-
         <RichTextBox Name="DisplayBox" FontFamily="Courier Prime" 
                      FontSize="16" AcceptsReturn="True" AcceptsTab="True"
                      ScrollViewer.VerticalScrollBarVisibility="Auto" BorderBrush="Black"
@@ -64,5 +47,6 @@
             </RichTextBox.Resources>
         </RichTextBox>
         <p:FountainNameBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Background="Transparent" />
+        <p:FountainOutline Grid.Row="1" Grid.Column="0" />
     </Grid>
 </Window>
