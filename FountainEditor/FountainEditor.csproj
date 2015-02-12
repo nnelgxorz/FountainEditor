@@ -79,6 +79,8 @@
     <Compile Include="Markdown.g4.parser.cs">
       <DependentUpon>Markdown.g4</DependentUpon>
     </Compile>
+    <Compile Include="Messaging\IMessagePublisher.cs" />
+    <Compile Include="Messaging\MessagePublisher.cs" />
     <Compile Include="Normalizer.cs" />
     <Compile Include="Optimizer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

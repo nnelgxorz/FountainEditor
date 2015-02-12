@@ -10,16 +10,21 @@ using FountainEditor;
 using FountainEditorGUI.Commands;
 using Microsoft.Win32;
 
-namespace FountainEditorGUI.ViewModels {
-    public sealed class MainWindowViewModel : ViewModelBase {
+namespace FountainEditorGUI.ViewModels
+{
+    public sealed class MainWindowViewModel : ViewModelBase
+    {
         private IDocumentService documentService;
         private ObservableCollection<string> outline;
         private string documentName;
 
-        public ObservableCollection<string> Outline {
+        public ObservableCollection<string> Outline
+        {
             get { return outline; }
-            set {
-                if (outline != value) {
+            set
+            {
+                if (outline != value)
+                {
                     outline = value;
 
                     OnPropertyChanged();
@@ -29,8 +34,10 @@ namespace FountainEditorGUI.ViewModels {
 
         public string DocumentName {
             get { return documentName; }
-            set {
-                if (documentName != value) {
+            set
+            {
+                if (documentName != value)
+                {
                     documentName = value;
 
                     OnPropertyChanged();
@@ -43,7 +50,8 @@ namespace FountainEditorGUI.ViewModels {
         public ICommand OpenCommand { get; private set; }
         public ICommand SaveAsCommand { get; private set; }
 
-        public MainWindowViewModel(IDocumentService documentService) {
+        public MainWindowViewModel(IDocumentService documentService)
+        {
             NewCommand = new RelayCommand(New);
             OpenCommand = new RelayCommand(Open);
             SaveAsCommand = new RelayCommand(SaveAs);
@@ -52,18 +60,21 @@ namespace FountainEditorGUI.ViewModels {
             this.documentService = documentService;
         }
 
-        private void New() {
+        private void New()
+        {
             this.documentService.SetValue(new FlowDocument());
             this.DocumentName = "<Untitled>";
         }
 
-        private void Open() {
+        private void Open()
+        {
             var openDialog = new OpenFileDialog();
 
             openDialog.DefaultExt = "*.txt";
             openDialog.Filter = "Text Documents (*.txt)|*.txt|Fountain Documents (*.fountain)|*.fountain";
 
-            if (openDialog.ShowDialog() == true) {
+            if (openDialog.ShowDialog() == true)
+            {
                 var fileName = openDialog.FileName;
                 DocumentName = Path.GetFileNameWithoutExtension(fileName);
 
@@ -81,7 +92,8 @@ namespace FountainEditorGUI.ViewModels {
             }
         }
 
-        private void SaveAs() {
+        private void SaveAs()
+        {
             var documentText = this.documentService.GetValue().ToString();
             var saveDialog = new SaveFileDialog();
 
@@ -90,7 +102,8 @@ namespace FountainEditorGUI.ViewModels {
 
             saveDialog.Filter = "Text Documents (.txt)|*.txt|Fountain Documents(.fountain)|*.fountain";
 
-            if (saveDialog.ShowDialog() == true) {
+            if (saveDialog.ShowDialog() == true)
+            {
                 var stream = new StreamWriter(saveDialog.FileName, false, Encoding.UTF8);
 
                 stream.Write(documentText);
@@ -100,7 +113,8 @@ namespace FountainEditorGUI.ViewModels {
             }
         }
 
-        private void Exit() {
+        private void Exit()
+        {
             Application.Current.MainWindow.Close();
         }
     }
