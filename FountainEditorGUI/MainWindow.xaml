@@ -36,9 +36,6 @@
             <MenuItem Header="Options" />
         </Menu>
 
-        <TextBlock Grid.Row="0" Grid.Column="1" Background="Transparent" Foreground="White"
-                   FontSize="18" HorizontalAlignment="Center" Text="{Binding DocumentName}"/>
-
         <Expander Grid.Column="0" Grid.Row="2" ExpandDirection="Right" Margin="10">
             <ListView Name="Outliner" Background="#515255" Foreground="#d2d2d2" BorderBrush="{x:Null}"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
@@ -66,5 +63,6 @@
                 </Style>
             </RichTextBox.Resources>
         </RichTextBox>
+        <p:FountainNameBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Background="Transparent" />
     </Grid>
 </Window>
