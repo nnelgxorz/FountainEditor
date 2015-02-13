@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FountainEditor.ObjectModel;
 
 namespace FountainEditor.Elements
 {
@@ -13,9 +14,8 @@ namespace FountainEditor.Elements
         {
         }
 
-        public override string Print()
+        public override void Accept(FountainVisitor visitor)
         {
-            return string.Format("{0}", Text);
         }
     }
 }

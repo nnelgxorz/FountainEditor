@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace FountainEditorGUI
+namespace FountainEditorGUI.Views
 {
     /// <summary>
     /// Interaction logic for FountainOutline.xaml

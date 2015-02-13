@@ -1,22 +1,20 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+using System.Linq;
 using FountainEditor.Messaging;
+using FountainEditor.ObjectModel;
 using FountainEditorGUI.Messages;
 
 namespace FountainEditorGUI.ViewModels
 {
     public sealed class FountainOutlineViewModel : ViewModelBase
     {
-        private ICollection<string> elements;
+        private Element[] document = new Element[0];
 
-        public ICollection<string> Elements {
-            get { return elements; }
-            set {
-                if (elements != value) {
-                    elements = value;
-
-                    OnPropertyChanged();
-                }
+        public IEnumerable<string> DocumentOutline {
+            get {
+                return from element in document
+                       where element is SectionElement || element is SynopsisElement
+                       select element.Text;
             }
         }
 
@@ -27,8 +25,9 @@ namespace FountainEditorGUI.ViewModels
 
         private void DocumentChanged(DocumentMessage message)
         {
-            // TODO: Assign to the 'Elements' property
-            // 
+            this.document = message.Document;
+
+            OnPropertyChanged("DocumentOutline");
         }
     }
 }

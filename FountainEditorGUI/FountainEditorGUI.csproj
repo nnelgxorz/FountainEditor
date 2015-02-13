@@ -67,13 +67,13 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RelayCommandGeneric.cs" />
     <Compile Include="Extensions\InjectInstanceExtension.cs" />
-    <Compile Include="FountainNameBox.xaml.cs">
+    <Compile Include="Views\FountainNameBox.xaml.cs">
       <DependentUpon>FountainNameBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FountainOutline.xaml.cs">
+    <Compile Include="Views\FountainOutline.xaml.cs">
       <DependentUpon>FountainOutline.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FountainTextBox.xaml.cs">
+    <Compile Include="Views\FountainTextBox.xaml.cs">
       <DependentUpon>FountainTextBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Messages\DocumentMessage.cs" />
@@ -85,19 +85,19 @@
     <Compile Include="ViewModels\FountainTextBoxViewModel.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
-    <Page Include="FountainNameBox.xaml">
+    <Page Include="Views\FountainNameBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FountainOutline.xaml">
+    <Page Include="Views\FountainOutline.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FountainTextBox.xaml">
+    <Page Include="Views\FountainTextBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -106,9 +106,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DialogVisitor.cs" />
-    <Compile Include="FlowVisitor.cs" />
+    <Compile Include="DocumentVisitor.cs" />
     <Compile Include="InlineVistitor.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>

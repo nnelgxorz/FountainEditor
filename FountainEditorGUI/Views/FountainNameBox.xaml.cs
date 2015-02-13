@@ -13,12 +13,15 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace FountainEditorGUI {
+namespace FountainEditorGUI.Views
+{
     /// <summary>
     /// Interaction logic for FountainNameBox.xaml
     /// </summary>
-    public partial class FountainNameBox : UserControl {
-        public FountainNameBox() {
+    public partial class FountainNameBox : UserControl
+    {
+        public FountainNameBox()
+        {
             InitializeComponent();
         }
     }

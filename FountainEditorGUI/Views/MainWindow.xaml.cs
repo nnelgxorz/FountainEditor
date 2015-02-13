@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace FountainEditorGUI
+namespace FountainEditorGUI.Views
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

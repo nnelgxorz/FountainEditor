@@ -4,7 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using FountainEditorGUI.ViewModels;
 
-namespace FountainEditorGUI
+namespace FountainEditorGUI.Views
 {
     /// <summary>
     /// Interaction logic for FountainTextBox.xaml
