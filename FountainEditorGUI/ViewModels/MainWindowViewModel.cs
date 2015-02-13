@@ -1,12 +1,10 @@
 ﻿using System.IO;
 using System.Text;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Input;
-using Antlr4.Runtime;
-using Antlr4.Runtime.Tree;
-using FountainEditor;
+using FountainEditor.Language;
 using FountainEditor.Messaging;
+using FountainEditor.ObjectModel;
 using FountainEditorGUI.Commands;
 using FountainEditorGUI.Messages;
 using Microsoft.Win32;
@@ -15,11 +13,12 @@ namespace FountainEditorGUI.ViewModels
 {
     public sealed class MainWindowViewModel : ViewModelBase
     {
+        private IFountainService fountainService;
         private IMessagePublisher<DocumentMessage> documentMessagePublisher;
-        private FlowDocument document;
+        private Element[] document;
         private string documentName;
 
-        public FlowDocument Document
+        public Element[] Document
         {
             get { return this.document; }
             set
@@ -27,7 +26,8 @@ namespace FountainEditorGUI.ViewModels
                 if (this.document != value)
                 {
                     this.document = value;
-                    this.documentMessagePublisher.Publish(new DocumentMessage(this.document, this.documentName));
+                    
+                    OnDocumentChanged();
                 }
             }
         }
@@ -37,20 +37,23 @@ namespace FountainEditorGUI.ViewModels
         public ICommand OpenCommand { get; private set; }
         public ICommand SaveAsCommand { get; private set; }
 
-        public MainWindowViewModel(IMessagePublisher<DocumentMessage> documentMessagePublisher)
+        public MainWindowViewModel(IFountainService fountainService, IMessagePublisher<DocumentMessage> documentMessagePublisher)
         {
             NewCommand = new RelayCommand(New);
             OpenCommand = new RelayCommand(Open);
             SaveAsCommand = new RelayCommand(SaveAs);
             ExitCommand = new RelayCommand(Exit);
 
+            this.fountainService = fountainService;
             this.documentMessagePublisher = documentMessagePublisher;
         }
 
         private void New()
         {
+            this.document = new Element[0];
             this.documentName = "<Untitled>";
-            this.Document = new FlowDocument();
+
+            this.OnDocumentChanged();
         }
 
         private void Open()
@@ -62,17 +65,10 @@ namespace FountainEditorGUI.ViewModels
 
             if (openDialog.ShowDialog() == true)
             {
-                var stream = new AntlrFileStream(openDialog.FileName);
-                var lexer = new FountainLexer(stream);
-                var tokens = new CommonTokenStream(lexer);
-                var parser = new FountainParser(tokens);
-                var tree = parser.compileUnit();
-                var treeWalker = new ParseTreeWalker();
-                var visitor = new FlowVisitor();
-                treeWalker.Walk(visitor, tree);
-
+                this.document = fountainService.ParseFile(openDialog.FileName);
                 this.documentName = Path.GetFileNameWithoutExtension(openDialog.FileName);
-                this.Document = visitor.DisplayDocument;
+
+                this.OnDocumentChanged();
             }
         }
 
@@ -84,25 +80,25 @@ namespace FountainEditorGUI.ViewModels
             saveDialog.DefaultExt = "*.txt";
             saveDialog.OverwritePrompt = true;
 
-            saveDialog.Filter = "Text Documents (.txt)|*.txt|Fountain Documents(.fountain)|*.fountain";
+            saveDialog.Filter = "Text Documents (*.txt)|*.txt|Fountain Documents (*.fountain)|*.fountain";
 
             if (saveDialog.ShowDialog() == true)
             {
-                var stream = new StreamWriter(saveDialog.FileName, false, Encoding.UTF8);
-
-                stream.Write(documentText);
-                stream.Close();
-
-                // TODO: Document name is never published to subscribers here.
-                // 
+                File.WriteAllText(saveDialog.FileName, documentText, Encoding.UTF8);
 
                 this.documentName = Path.GetFileNameWithoutExtension(saveDialog.FileName);
+
+                this.OnDocumentChanged();
             }
         }
 
         private void Exit()
         {
             Application.Current.MainWindow.Close();
+        }
+
+        private void OnDocumentChanged() {
+            documentMessagePublisher.Publish(new DocumentMessage(document, documentName));
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.Windows.Documents;
+using FountainEditor;
 using FountainEditor.Messaging;
 using FountainEditorGUI.Messages;
 
@@ -29,7 +30,11 @@ namespace FountainEditorGUI.ViewModels
 
         private void DocumentChanged(DocumentMessage message)
         {
-            this.Document = message.Document;
+            var visitor = new DocumentVisitor();
+
+            visitor.VisitAll(message.Document);
+
+            this.Document = visitor.Document;
         }
     }
 }

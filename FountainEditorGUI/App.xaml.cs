@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Windows;
+﻿using System.Windows;
+using FountainEditor.Language;
 using FountainEditor.Messaging;
+using FountainEditorGUI.Views;
 using SimpleInjector;
 using SimpleInjector.Extensions;
 
@@ -18,6 +19,7 @@ namespace FountainEditorGUI
             // Register services here
             // 
 
+            container.RegisterSingle<IFountainService, FountainService>();
             container.RegisterOpenGeneric(typeof(IMessagePublisher<>), typeof(MessagePublisher<>), Lifestyle.Singleton);
 
             ServiceLocator.Current = new SimpleInjectorServiceLocatorAdapter(container);

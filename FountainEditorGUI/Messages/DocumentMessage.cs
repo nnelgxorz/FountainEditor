@@ -1,13 +1,15 @@
-﻿using System.Windows.Documents;
+﻿using System.Collections.Generic;
+using System.Windows.Documents;
+using FountainEditor.ObjectModel;
 
 namespace FountainEditorGUI.Messages
 {
     public sealed class DocumentMessage
     {
-        public FlowDocument Document { get; private set; }
+        public Element[] Document { get; private set; }
         public string DocumentName { get; private set; }
 
-        public DocumentMessage(FlowDocument document, string documentName)
+        public DocumentMessage(Element[] document, string documentName)
         {
             this.Document = document;
             this.DocumentName = documentName;
