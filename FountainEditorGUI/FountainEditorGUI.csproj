@@ -82,8 +82,8 @@
     </Compile>
     <Compile Include="Messages\DocumentMessage.cs" />
     <Compile Include="ParseTitlePage.cs" />
-    <Compile Include="ServiceLocator.cs" />
-    <Compile Include="SimpleInjectorServiceLocatorAdapter.cs" />
+    <Compile Include="ServiceLocator\ServiceLocator.cs" />
+    <Compile Include="ServiceLocator\SimpleInjectorServiceLocatorAdapter.cs" />
     <Compile Include="TitlePageVisitor.cs" />
     <Compile Include="ViewModels\FountainNameBoxViewModel.cs" />
     <Compile Include="ViewModels\FountainOutlineViewModel.cs" />
