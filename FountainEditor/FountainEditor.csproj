@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Language\FountainService.cs" />
+    <Compile Include="Language\IFountainService.cs" />
     <Compile Include="Elements\rTitlePageKey.cs" />
     <Compile Include="Elements\TitlePageValue.cs" />
     <Compile Include="Elements\cTitlePageKey.cs" />
