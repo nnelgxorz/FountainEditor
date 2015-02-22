@@ -9,15 +9,18 @@
                DataContext="{e:InjectInstance {x:Type vm:FountainOutlineViewModel}}"
              d:DataContext="{d:DesignInstance {x:Type vm:FountainOutlineViewModel}}"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Expander Grid.Column="0" Grid.Row="2" ExpandDirection="Right" Margin="10">
-        <ListView Name="Outliner" Background="#515255" Foreground="#d2d2d2" BorderBrush="{x:Null}"
-                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+    
+    <Expander Grid.Column="0" Grid.Row="2" ExpandDirection="Right" Margin="10" IsExpanded="True">
+        <ListView Name="Outliner" Background="#333333" Foreground="#f2f2f2" BorderBrush="{x:Null}"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" TextElement.FontSize="16"
                   HorizontalContentAlignment="Stretch" Padding="0,25,0,0"
-                  AllowDrop="True" ItemsSource="{Binding DocumentOutline}">
+                  AllowDrop="True" ItemsSource="{Binding DocumentOutline}"
+                  MouseMove="Outliner_MouseMove" DragEnter="Outliner_DragEnter" Drop="Outliner_Drop">
             <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Grid Width="{Binding ElementName=Outliner, Path=ActualWidth}" AllowDrop="True">
-                        <TextBlock Text="{Binding}" FontSize="16" HorizontalAlignment="Left" FontWeight="Light" Margin="15,5,35,15" TextWrapping="Wrap" />
+                <DataTemplate >
+                    <Grid Width="{Binding ElementName=Outliner, Path=ActualWidth}" AllowDrop="True" HorizontalAlignment="Stretch"
+                          DragEnter="Grid_DragEnter" DragLeave="Grid_DragLeave" Drop="Grid_Drop">
+                        <TextBlock Text="{Binding}" HorizontalAlignment="Left" Margin="15,5,35,15" TextWrapping="Wrap"/>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>

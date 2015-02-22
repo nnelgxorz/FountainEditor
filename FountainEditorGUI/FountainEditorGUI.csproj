@@ -67,6 +67,7 @@
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RelayCommandGeneric.cs" />
     <Compile Include="Extensions\InjectInstanceExtension.cs" />
+    <Compile Include="Messages\DragDropMessage.cs" />
     <Compile Include="Views\FountainNameBox.xaml.cs">
       <DependentUpon>FountainNameBox.xaml</DependentUpon>
     </Compile>
