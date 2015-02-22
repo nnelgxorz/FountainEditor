@@ -3,7 +3,6 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using FountainEditor;
 using FountainEditor.ObjectModel;
-using TSection = FountainEditor.ObjectModel.SectionElement;
 
 namespace FountainEditorGUI
 {
@@ -16,11 +15,10 @@ namespace FountainEditorGUI
             Document = new FlowDocument();
         }
 
-        public override void Visit(TSection context)
+        public override void Visit(SectionElement context)
         {
             var text = context.Text;
             var p = new Paragraph();
-
             p.Margin = new Thickness(20, 0, 100, 20);
             p.Foreground = Brushes.Gray;
             p.Inlines.Add(text);
@@ -36,6 +34,7 @@ namespace FountainEditorGUI
             p.Margin = new Thickness(40, 0, 100, 20);
             p.Foreground = Brushes.Gray;
             p.Inlines.Add(text);
+            p.FontStyle = FontStyles.Italic;
 
             Document.Blocks.Add(p);
         }
@@ -43,8 +42,7 @@ namespace FountainEditorGUI
         public override void Visit(SceneHeadingElement context)
         {
             var p = new Paragraph();
-            p.Margin = new Thickness(150, 0, 100, 20);
-            p.FontWeight = FontWeights.Bold;
+            p.Margin = new Thickness(150, 20, 100, 20);
 
             var text = context.Text;
             if (text.StartsWith("."))
@@ -66,6 +64,7 @@ namespace FountainEditorGUI
         {
             var p = new Paragraph();
             p.TextAlignment = TextAlignment.Right;
+            p.Margin = new Thickness(150, 0, 100, 20);
 
             var text = context.Text;
             if (text.StartsWith(">"))
@@ -119,6 +118,7 @@ namespace FountainEditorGUI
             else
             {
                 //p.Inlines.Add(ParseMarkdown.Parse(text));
+                p.Inlines.Add(text);
             }
 
             Document.Blocks.Add(p);
@@ -133,6 +133,7 @@ namespace FountainEditorGUI
             p.TextAlignment = TextAlignment.Center;
             p.Inlines.Add(new Run(">") { Foreground = Brushes.Gray });
             //p.Inlines.Add(ParseMarkdown.Parse(text.Substring(1, text.Length - 2)));
+            p.Inlines.Add(text.Substring(1, text.Length -2));
             p.Inlines.Add(new Run("<") { Foreground = Brushes.Gray });
             Document.Blocks.Add(p);
         }

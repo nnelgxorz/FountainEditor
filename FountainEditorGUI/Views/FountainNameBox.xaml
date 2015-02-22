@@ -10,6 +10,6 @@
              d:DataContext="{d:DesignInstance {x:Type vm:FountainNameBoxViewModel}}"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
-        <TextBlock Foreground="White" FontSize="18" Text="{Binding DocumentName}"/>
+        <TextBlock Foreground="LightGray" FontSize="25" Text="{Binding DocumentName}"/>
     </Grid>
 </UserControl>

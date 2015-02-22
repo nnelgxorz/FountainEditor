@@ -15,5 +15,7 @@
         </Style>
     </UserControl.Resources>
 
-    <RichTextBox Name="DisplayBox" AcceptsReturn="True" AcceptsTab="True" FontFamily="Courier Prime" FontSize="16" ScrollViewer.VerticalScrollBarVisibility="Auto" BorderBrush="Black" />
+    <RichTextBox Name="DisplayBox" AcceptsReturn="True" AcceptsTab="True" 
+                 FontFamily="Courier Prime" FontSize="16" AllowDrop="False"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" BorderBrush="Black" />
 </UserControl>
