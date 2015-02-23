@@ -18,9 +18,102 @@
                   MouseMove="Outliner_MouseMove" DragEnter="Outliner_DragEnter" Drop="Outliner_Drop">
             <ListBox.ItemTemplate>
                 <DataTemplate >
-                    <Grid Width="{Binding ElementName=Outliner, Path=ActualWidth}" AllowDrop="True" HorizontalAlignment="Stretch"
-                          DragEnter="Grid_DragEnter" DragLeave="Grid_DragLeave" Drop="Grid_Drop">
-                        <TextBlock Text="{Binding}" HorizontalAlignment="Left" Margin="15,5,35,15" TextWrapping="Wrap"/>
+                    <Grid Width="{Binding ElementName=Outliner, Path=ActualWidth}" Height="Auto" AllowDrop="True" 
+                          HorizontalAlignment="Stretch" Opacity="0.25" Name="Grid" TextElement.FontSize="16" TextElement.FontWeight="Light">
+                        <Grid.Background>
+                            <SolidColorBrush x:Name="BackgroundBrush" Color="#333333"/>
+                        </Grid.Background>
+                        <TextBlock Text="{Binding}" HorizontalAlignment="Left" Margin="15,5,35,15" TextWrapping="Wrap" Name="Text">
+                            <TextBlock.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1" x:Name="TextScale"/>
+                            </TextBlock.RenderTransform>
+                        </TextBlock>
+                        <Grid.Triggers>
+                            <EventTrigger RoutedEvent="DragEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="TextScale"
+                                                         Storyboard.TargetProperty="(ScaleTransform.ScaleY)"
+                                                         To="1.2" Duration="0:0:0.2"/>
+                                        <DoubleAnimation Storyboard.TargetName="TextScale"
+                                                         Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
+                                                         To="1.2" Duration="0:0:0.2"/>
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"             
+                                                         To="1" Duration="0:0:0.2"/>
+                                        <ColorAnimation Storyboard.TargetName="BackgroundBrush" 
+                                                        Storyboard.TargetProperty="Color" 
+                                                        To="SteelBlue" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="DragLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="TextScale"
+                                                         Storyboard.TargetProperty="(ScaleTransform.ScaleY)"
+                                                         To="1" Duration="0:0:0.32"/>
+                                        <DoubleAnimation Storyboard.TargetName="TextScale"
+                                                         Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
+                                                         To="1" Duration="0:0:0.32"/>
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"             
+                                                         To=".25" Duration="0:0:0.32"/>
+                                        <ColorAnimation Storyboard.TargetName="BackgroundBrush" 
+                                                        Storyboard.TargetProperty="Color" 
+                                                        To="#333333" Duration="0:0:0.32"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseEnter">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <ColorAnimation
+                                            Storyboard.TargetName="BackgroundBrush"
+                                            Storyboard.TargetProperty="Color"
+                                            To="#4d4d4d" Duration="0:0:0.2"/>
+                                        <DoubleAnimation 
+                                            Storyboard.TargetProperty="Opacity"             
+                                            To="1" Duration="0:0:0.2"/>
+                                        <DoubleAnimation Storyboard.TargetName="TextScale"
+                                                         Storyboard.TargetProperty="(ScaleTransform.ScaleY)"
+                                                         To="1.2" Duration="0:0:0.2"/>
+                                        <DoubleAnimation Storyboard.TargetName="TextScale"
+                                                         Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
+                                                         To="1.2" Duration="0:0:0.2"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="MouseLeave">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation 
+                                            Storyboard.TargetProperty="Opacity"             
+                                            To=".25" Duration="0:0:0.32"/>
+                                        <ColorAnimation
+                                            Storyboard.TargetName="BackgroundBrush"
+                                            Storyboard.TargetProperty="Color"
+                                            To="#333333" Duration="0:0:0.32"/>
+                                        <DoubleAnimation Storyboard.TargetName="TextScale"
+                                                         Storyboard.TargetProperty="(ScaleTransform.ScaleY)"
+                                                         To="1" Duration="0:0:0.32"/>
+                                        <DoubleAnimation Storyboard.TargetName="TextScale"
+                                                         Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
+                                                         To="1" Duration="0:0:0.32"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                            <EventTrigger RoutedEvent="Drop">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="TextScale"
+                                                         Storyboard.TargetProperty="(ScaleTransform.ScaleY)"
+                                                         To="1" Duration="0:0:0.12"/>
+                                        <DoubleAnimation Storyboard.TargetName="TextScale"
+                                                         Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
+                                                         To="1" Duration="0:0:0.12"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Grid.Triggers>
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
