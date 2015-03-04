@@ -1,15 +1,26 @@
-﻿namespace FountainEditor.ObjectModel
-{
-    public sealed class SectionElement : Element
-    {
-        public SectionElement(string text)
-            : base(text)
-        {
-        }
+﻿using System.Collections.Generic;
 
-        public override void Accept(FountainVisitor visitor)
+namespace FountainEditor.ObjectModel
+{
+    public partial class SectionElement : Element
+    {
+        public List<Element> Children { get; set; }
+        public int Level { get; set; }
+
+        partial void Initialize(string text)
         {
-            visitor.Visit(this);
+            int level;
+
+            for (level = 0; ; level++)
+            {
+                if (text[level] != '#')
+                {
+                    break;
+                }
+            }
+
+            Children = new List<Element>();
+            Level = level;
         }
     }
 }

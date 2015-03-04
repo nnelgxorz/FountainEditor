@@ -5,6 +5,8 @@ namespace FountainEditor
 {
     public abstract class FountainVisitor
     {
+        public virtual void VisitAny(Element element) { }
+
         public virtual void Visit(ActionElement element) { }
 
         public virtual void Visit(BoneyardElement element) { }
