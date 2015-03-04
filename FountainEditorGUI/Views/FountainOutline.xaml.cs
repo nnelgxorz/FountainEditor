@@ -29,24 +29,16 @@ namespace FountainEditorGUI.Views
 
         private IMessagePublisher<DragDropMessage> dragdropmessagepublisher;
 
-        private void Outliner_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        private void Grid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
-            {
-                dragIndex = GetCurrentIndex(e.GetPosition);
-                if (dragIndex < 0)
-                {
-                    while (e.LeftButton == MouseButtonState.Pressed)
-                    { return; }
-                }
+            dragIndex = GetCurrentIndex(e.GetPosition);
+            dragItem = (string)Outliner.Items[dragIndex];
 
-                dragItem = (string)Outliner.Items[dragIndex];
-                if (dragItem.StartsWith("="))
-                {
-                    { return; }
-                }
-                DragDrop.DoDragDrop(Outliner, dragItem, DragDropEffects.Move);
+            if (dragItem.StartsWith("#"))
+            {
+                DragDrop.DoDragDrop(Outliner, dragItem, DragDropEffects.Move | DragDropEffects.Scroll);
             }
+
         }
 
         private void Outliner_DragEnter(object sender, DragEventArgs e)

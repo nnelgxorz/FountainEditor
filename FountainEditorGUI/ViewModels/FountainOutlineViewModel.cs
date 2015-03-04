@@ -40,18 +40,15 @@ namespace FountainEditorGUI.ViewModels
             this.dragIndex = message.dragIndex;
             this.dropIndex = message.dropIndex;
             this.dragItem = message.dragItem;
+            string dropItem = documentOutline.ElementAt(dropIndex).ToString();
 
-            if (dragIndex > dropIndex)
+            if (dragIndex < 0 | dropIndex < 0)
             {
-                documentOutline.RemoveAt(dragIndex);
-                documentOutline.Insert(dropIndex + 1, dragItem);
+                return;
             }
 
-            if (dragIndex < dropIndex)
-            {
-                documentOutline.Insert(dropIndex + 1, dragItem);
-                documentOutline.RemoveAt(dragIndex);
-            }
+            documentOutline.RemoveAt(dragIndex);
+            documentOutline.Insert(dropIndex, dragItem);
 
         }
     }
