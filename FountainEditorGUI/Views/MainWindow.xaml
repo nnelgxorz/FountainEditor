@@ -33,7 +33,7 @@
                 <MenuItem Foreground="Black" Header="Save As" Command="{Binding SaveAsCommand}" />
                 <MenuItem Foreground="Black" Header="Exit" Command="{Binding ExitCommand}" />
             </MenuItem>
-            <MenuItem Header="Options" />
+            <MenuItem Header="Options"/>
         </Menu>
 
         <p:FountainNameBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" Background="Transparent" />

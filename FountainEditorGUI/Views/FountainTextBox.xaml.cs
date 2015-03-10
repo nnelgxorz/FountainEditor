@@ -3,6 +3,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using FountainEditorGUI.ViewModels;
+using FountainEditor.Language;
+using System.Windows.Documents;
+using FountainEditor.Messaging;
+using FountainEditorGUI.Messages;
 
 namespace FountainEditorGUI.Views
 {
@@ -39,52 +43,10 @@ namespace FountainEditorGUI.Views
         {
             if (e.Key == Key.Enter)
             {
-                // FlowDocument current = DisplayBox.Document;
-                // string input = new TextRange(current.ContentStart, current.ContentEnd).Text;
-
-                // var stream = new Antlr4.Runtime.AntlrInputStream(input);
-                // var lexer = new FountainLexer(stream);
-                // var tokens = new Antlr4.Runtime.CommonTokenStream(lexer);
-                // var parser = new FountainParser(tokens);
-                // var tree = parser.compileUnit();
-                // var treeWalker = new Antlr4.Runtime.Tree.ParseTreeWalker();
-                // var visitor = new FlowVisitor();
-                // treeWalker.Walk(visitor, tree);
-
-                // this.DisplayBox.Document = visitor.DisplayDocument;
-                // this.DisplayBox.CaretPosition = this.DisplayBox.CaretPosition.DocumentEnd;
-                count = 0;
-                return;
-            }
-
-            if (e.Key == Key.Space || e.Key == Key.OemPeriod)
-            {
-                count++;
-
-                if (count >= 2)
-                {
-                    // var cursor = DisplayBox.CaretPosition;
-                    // FlowDocument current = DisplayBox.Document;
-                    // string input = new TextRange(current.ContentStart, current.ContentEnd).Text;
-                    // 
-                    // var stream = new Antlr4.Runtime.AntlrInputStream(input);
-                    // var lexer = new FountainLexer(stream);
-                    // var tokens = new Antlr4.Runtime.CommonTokenStream(lexer);
-                    // var parser = new FountainParser(tokens);
-                    // var tree = parser.compileUnit();
-                    // var treeWalker = new Antlr4.Runtime.Tree.ParseTreeWalker();
-                    // var visitor = new FlowVisitor();
-                    // treeWalker.Walk(visitor, tree);
-                    // 
-                    // count = 0;
-                    // this.DisplayBox.Document = visitor.DisplayDocument;
-                    // this.DisplayBox.CaretPosition = DisplayBox.CaretPosition.DocumentEnd;
-                    // return;
-                }
-            }
-            else
-            {
-                count = 0;
+                var current = this.DisplayBox.Document;
+                var input = new TextRange(current.ContentStart, current.ContentEnd).Text;
+                var textChangedMessagePublisher = ServiceLocator.Current.GetInstance<IMessagePublisher<TextChangedMessage>>();
+                textChangedMessagePublisher.Publish(new TextChangedMessage(input));
             }
         }
     }
