@@ -64,10 +64,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Commands\UnderlineCommand.cs" />
+    <Compile Include="Commands\ItalicsCommand.cs" />
+    <Compile Include="Commands\BoldCommand.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RelayCommandGeneric.cs" />
     <Compile Include="Extensions\InjectInstanceExtension.cs" />
     <Compile Include="Messages\DragDropMessage.cs" />
+    <Compile Include="Messages\TextChangedMessage.cs" />
     <Compile Include="Views\FountainNameBox.xaml.cs">
       <DependentUpon>FountainNameBox.xaml</DependentUpon>
     </Compile>
