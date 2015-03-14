@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using FountainEditorGUI.ViewModels;
 
 namespace FountainEditorGUI.Views
 {
@@ -7,9 +8,11 @@ namespace FountainEditorGUI.Views
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(MainWindowViewModel viewModel)
         {
             InitializeComponent();
+
+            this.DataContext = viewModel;
         }
     }
 }
