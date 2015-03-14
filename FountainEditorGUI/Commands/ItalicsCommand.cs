@@ -21,15 +21,16 @@ namespace FountainEditorGUI.Commands
 
         public void Execute(object parameter)
         {
-            var richTextBox = parameter as RichTextBox;
+            RichTextBox richTextBox = parameter as RichTextBox;
+            TextSelection selection = richTextBox.Selection;
+            TextRange selectionRange = new TextRange(selection.Start, selection.End);
+            Object weight = selectionRange.GetPropertyValue(TextElement.FontWeightProperty);
+            Object style = selectionRange.GetPropertyValue(TextElement.FontStyleProperty);
+
             if (richTextBox == null)
             {
                 return;
             }
-            var selection = richTextBox.Selection;
-            TextRange selectionRange = new TextRange(selection.Start, selection.End);
-            var weight = selectionRange.GetPropertyValue(TextElement.FontWeightProperty);
-            var style = selectionRange.GetPropertyValue(TextElement.FontStyleProperty);
 
             if (style.Equals(FontStyles.Normal))
             {

@@ -23,17 +23,19 @@ namespace FountainEditorGUI.Commands
 
         public void Execute(object parameter)
         {
-            var richTextBox = parameter as RichTextBox;
-            var document = richTextBox.Document;
-            var selection = richTextBox.Selection;
+            RichTextBox richTextBox = parameter as RichTextBox;
+            FlowDocument document = richTextBox.Document;
+            TextSelection selection = richTextBox.Selection;
+            TextRange selectionRange = new TextRange(selection.Start, selection.End);
+
+            Object weight = selectionRange.GetPropertyValue(TextElement.FontWeightProperty);
+            Object style = selectionRange.GetPropertyValue(TextElement.FontStyleProperty);
 
             if (richTextBox == null | selection == null)
             {
                 return;
             }
-            TextRange selectionRange = new TextRange(selection.Start, selection.End);
-            var weight = selectionRange.GetPropertyValue(TextElement.FontWeightProperty);
-            var style = selectionRange.GetPropertyValue(TextElement.FontStyleProperty);
+
             if (weight.Equals(FontWeights.Normal))
             {
                 if (style.Equals(FontStyles.Italic))

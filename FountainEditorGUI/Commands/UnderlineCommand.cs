@@ -22,23 +22,32 @@ namespace FountainEditorGUI.Commands
         public void Execute(object parameter)
         {
             var richTextBox = parameter as RichTextBox;
+            var selection = richTextBox.Selection;
+            TextRange selectionRange = new TextRange(selection.Start, selection.End);
+            Object underline = selectionRange.GetPropertyValue(Inline.TextDecorationsProperty);
+            
             if (richTextBox == null)
             {
                 return;
             }
 
-            var selection = richTextBox.Selection;
-            TextRange selectionRange = new TextRange(selection.Start, selection.End);
-
-            if (selection.Text.StartsWith("_") && selection.Text.EndsWith("_"))
+            if (underline.Equals(TextDecorations.Underline))
             {
-                selection.Text = selection.Text.Substring(1, selection.Text.Length - 2);
+                if (selection.Text.StartsWith("_") && selection.Text.EndsWith("_"))
+                {
+                    selection.Text = selection.Text.Substring(1, selection.Text.Length - 2);
+                }
+                else
+                {
+                    selection.Text = string.Format("_{0}_", selection.Text);
+                }
                 selectionRange.ApplyPropertyValue(Inline.TextDecorationsProperty, null);
             }
             else
             {
                 selection.Text = string.Format("_{0}_", selection.Text);
                 selectionRange.ApplyPropertyValue(Inline.TextDecorationsProperty, TextDecorations.Underline);
+                return;
             }
         }
     }
