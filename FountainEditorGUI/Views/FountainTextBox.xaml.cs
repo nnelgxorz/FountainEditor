@@ -41,12 +41,23 @@ namespace FountainEditorGUI.Views
 
         private void PressEnter(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            TextPointer start = this.DisplayBox.Document.ContentStart;
+            TextPointer caret = this.DisplayBox.CaretPosition;
+            string buffer = this.DisplayBox.CaretPosition.GetTextInRun(LogicalDirection.Backward);
+
+            int offset = start.GetOffsetToPosition(caret);
+
+            if (e.Key == Key.Space)
             {
-                var current = this.DisplayBox.Document;
-                var input = new TextRange(current.ContentStart, current.ContentEnd).Text;
-                var textChangedMessagePublisher = ServiceLocator.Current.GetInstance<IMessagePublisher<TextChangedMessage>>();
-                textChangedMessagePublisher.Publish(new TextChangedMessage(input));
+                if (buffer == null)
+                {
+                    return;
+                }
+                else
+                {
+                    var textChangedMessagePublisher = ServiceLocator.Current.GetInstance<IMessagePublisher<TextChangedMessage>>();
+                    textChangedMessagePublisher.Publish(new TextChangedMessage(buffer));
+                }
             }
         }
     }
