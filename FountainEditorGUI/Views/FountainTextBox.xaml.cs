@@ -1,12 +1,11 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
-using FountainEditorGUI.ViewModels;
-using FountainEditor.Language;
 using System.Windows.Documents;
+using System.Windows.Input;
 using FountainEditor.Messaging;
 using FountainEditorGUI.Messages;
+using FountainEditorGUI.ViewModels;
 
 namespace FountainEditorGUI.Views
 {
@@ -15,11 +14,15 @@ namespace FountainEditorGUI.Views
     /// </summary>
     public partial class FountainTextBox : UserControl
     {
+        private IMessagePublisher<TextChangedMessage> textChangedMessagePublisher;
         private int count = 0;
 
-        public FountainTextBox()
+        public FountainTextBox(FountainTextBoxViewModel viewModel, IMessagePublisher<TextChangedMessage> textChangedMessagePublisher)
         {
             InitializeComponent();
+
+            this.DataContext = viewModel;
+            this.textChangedMessagePublisher = textChangedMessagePublisher;
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -55,7 +58,6 @@ namespace FountainEditorGUI.Views
                 }
                 else
                 {
-                    var textChangedMessagePublisher = ServiceLocator.Current.GetInstance<IMessagePublisher<TextChangedMessage>>();
                     textChangedMessagePublisher.Publish(new TextChangedMessage(buffer));
                 }
             }

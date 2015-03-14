@@ -1,14 +1,11 @@
-﻿using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Data;
+﻿using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-using FountainEditorGUI.ViewModels;
-using System;
+using System.Windows.Media;
 using FountainEditor.Messaging;
 using FountainEditorGUI.Messages;
-using System.Windows.Media.Animation;
+using FountainEditorGUI.ViewModels;
 
 namespace FountainEditorGUI.Views
 {
@@ -17,17 +14,20 @@ namespace FountainEditorGUI.Views
     /// </summary>
     public partial class FountainOutline : UserControl
     {
-        public FountainOutline()
+        private delegate Point GetPositionDelegate(IInputElement element);
+
+        private IMessagePublisher<DragDropMessage> dragDropMessagePublisher;
+        private string dragItem;
+        private int dragIndex;
+        private int dropIndex;
+
+        public FountainOutline(FountainOutlineViewModel viewModel, IMessagePublisher<DragDropMessage> dragDropMessagePublisher)
         {
-            this.dragdropmessagepublisher = ServiceLocator.Current.GetInstance<IMessagePublisher<DragDropMessage>>();
             InitializeComponent();
+
+            this.dragDropMessagePublisher = dragDropMessagePublisher;
+            this.DataContext = viewModel;
         }
-
-        string dragItem;
-        int dragIndex;
-        int dropIndex;
-
-        private IMessagePublisher<DragDropMessage> dragdropmessagepublisher;
 
         private void Grid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -38,7 +38,6 @@ namespace FountainEditorGUI.Views
             {
                 DragDrop.DoDragDrop(Outliner, dragItem, DragDropEffects.Move | DragDropEffects.Scroll);
             }
-
         }
 
         private void Outliner_DragEnter(object sender, DragEventArgs e)
@@ -49,9 +48,11 @@ namespace FountainEditorGUI.Views
         private void Outliner_Drop(object sender, DragEventArgs e)
         {
             if (dragIndex == dropIndex)
-            { return; }
+            {
+                return;
+            }
             
-            dragdropmessagepublisher.Publish(new DragDropMessage
+            dragDropMessagePublisher.Publish(new DragDropMessage
             (
                 this.dragIndex,
                 this.dropIndex,
@@ -59,16 +60,17 @@ namespace FountainEditorGUI.Views
             ));
         }
 
-        delegate Point GetPositionDelegate(IInputElement element);
-
         private int GetCurrentIndex (GetPositionDelegate getPosition)
         {
             int index = -1;
+
             for (int i = 0; i < Outliner.Items.Count; i++)
             {
-                ListViewItem item = GetListViewItem(i);
+                var item = GetListViewItem(i);
                 if (item == null)
-                { continue; }
+                {
+                    continue;
+                }
 
                 if (IsMouseOverTarget(item, getPosition))
                 {
@@ -76,13 +78,17 @@ namespace FountainEditorGUI.Views
                     break;
                 }
             }
+
             return index;
         }
 
         private ListViewItem GetListViewItem (int index)
         {
-            if (Outliner.ItemContainerGenerator.Status != System.Windows.Controls.Primitives.GeneratorStatus.ContainersGenerated)
+            if (Outliner.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated)
+            {
                 return null;
+            }
+
             return Outliner.ItemContainerGenerator.ContainerFromIndex(index) as ListViewItem;
         }
 

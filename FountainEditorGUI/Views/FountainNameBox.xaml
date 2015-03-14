@@ -1,12 +1,10 @@
 ﻿<UserControl x:Class="FountainEditorGUI.Views.FountainNameBox"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:e="clr-namespace:FountainEditorGUI.Extensions"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:vm="clr-namespace:FountainEditorGUI.ViewModels"
-             mc:Ignorable="d" 
-               DataContext="{e:InjectInstance {x:Type vm:FountainNameBoxViewModel}}" 
+             mc:Ignorable="d"
              d:DataContext="{d:DesignInstance {x:Type vm:FountainNameBoxViewModel}}"
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>

@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using FountainEditor.Language;
 using FountainEditor.Messaging;
+using FountainEditorGUI.Controls;
 using FountainEditorGUI.Views;
 using SimpleInjector;
 using SimpleInjector.Extensions;
@@ -21,10 +22,17 @@ namespace FountainEditorGUI
 
             container.RegisterSingle<IFountainService, FountainService>();
             container.RegisterOpenGeneric(typeof(IMessagePublisher<>), typeof(MessagePublisher<>), Lifestyle.Singleton);
+            container.RegisterSingle<IControlManager, ControlManager>();
+            container.RegisterSingle<IControlMapProvider, ControlMapProvider>();
+            container.RegisterSingle<IControlSocketManager, ControlSocketManager>();
 
-            ServiceLocator.Current = new SimpleInjectorServiceLocatorAdapter(container);
+            container.RegisterAll<IControlMapProvider>(
+                typeof(MainControlMapProvider)
+            );
 
-            container.GetInstance<MainWindow>().Show();
+            container.RegisterSingle<Window, MainWindow>();
+
+            container.GetInstance<Bootstrapper>().Run();
         }
     }
 }

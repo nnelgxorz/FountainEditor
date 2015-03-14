@@ -4,12 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:vm="clr-namespace:FountainEditorGUI.ViewModels"
-             xmlns:e="clr-namespace:FountainEditorGUI.Extensions"
              mc:Ignorable="d"
-               DataContext="{e:InjectInstance {x:Type vm:FountainOutlineViewModel}}"
              d:DataContext="{d:DesignInstance {x:Type vm:FountainOutlineViewModel}}"
              d:DesignHeight="300" d:DesignWidth="300">
-    
     <Expander Grid.Column="0" Grid.Row="2" ExpandDirection="Right" Margin="10" IsExpanded="True">
         <ListView Name="Outliner" Background="#333333" Foreground="#f2f2f2" BorderBrush="{x:Null}"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" TextElement.FontSize="16"
