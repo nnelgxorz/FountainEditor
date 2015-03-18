@@ -16,13 +16,16 @@ namespace FountainEditorGUI.Views
     {
         private IMessagePublisher<TextChangedMessage> textChangedMessagePublisher;
         private int count = 0;
+        private ITextScanner textScanner;
 
-        public FountainTextBox(FountainTextBoxViewModel viewModel, IMessagePublisher<TextChangedMessage> textChangedMessagePublisher)
+        public FountainTextBox(FountainTextBoxViewModel viewModel, IMessagePublisher<TextChangedMessage> textChangedMessagePublisher,
+            ITextScanner textScanner)
         {
             InitializeComponent();
 
             this.DataContext = viewModel;
             this.textChangedMessagePublisher = textChangedMessagePublisher;
+            this.textScanner = textScanner;
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -46,20 +49,19 @@ namespace FountainEditorGUI.Views
         {
             TextPointer start = this.DisplayBox.Document.ContentStart;
             TextPointer caret = this.DisplayBox.CaretPosition;
-            string buffer = this.DisplayBox.CaretPosition.GetTextInRun(LogicalDirection.Backward);
-
             int offset = start.GetOffsetToPosition(caret);
 
-            if (e.Key == Key.Space)
+            if (e.Key == Key.Enter)
             {
-                if (buffer == null)
-                {
-                    return;
-                }
-                else
-                {
-                    textChangedMessagePublisher.Publish(new TextChangedMessage(buffer));
-                }
+                return;
+            }
+
+            if (e.Key == Key.Space | e.Key == Key.OemPeriod)
+            {
+                var buffer = textScanner.ScanForText(caret);
+                textChangedMessagePublisher.Publish(new TextChangedMessage(buffer));
+
+                this.DisplayBox.CaretPosition = this.DisplayBox.CaretPosition.GetPositionAtOffset(offset);
             }
         }
     }
