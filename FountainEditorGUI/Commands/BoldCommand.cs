@@ -19,15 +19,17 @@ namespace FountainEditorGUI.Commands
         private CountMarkdownForward countForward;
         private MarkdownFormatter formatter;
         private TextTrimmerService trimmer;
+        private TextScanner textScanner;
 
         public BoldCommand(CountMarkdownBackward countbackward, 
                             CountMarkdownForward countforward, MarkdownFormatter formatter, 
-                            TextTrimmerService trimmer)
+                            TextTrimmerService trimmer, TextScanner textscanner)
         {
             this.countBackward = countbackward;
             this.countForward = countforward;
             this.formatter = formatter;
             this.trimmer = trimmer;
+            this.textScanner = textscanner;
         }
         public bool CanExecute(object parameter)
         {
@@ -59,6 +61,8 @@ namespace FountainEditorGUI.Commands
 
             selection.Text = trimmer.TrimText(selection.Text, start, end);
             selection.Text = formatter.format(new TextRange(selection.Start, selection.End));
+
+            string text = textScanner.ScanForText(selection.Start);
         }
     }
 }

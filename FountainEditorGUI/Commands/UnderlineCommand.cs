@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FountainEditorGUI.Messages;
+using FountainEditor.Messaging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,15 +20,21 @@ namespace FountainEditorGUI.Commands
         private MarkdownFormatter formatter;
         private TextTrimmerService trimmer;
         private MarkdownUnderlineFormat underlineFormat;
+        private TextScanner textScanner;
+        private IMessagePublisher<ParagraphMessage> paragraphMessage;
 
         public UnderlineCommand(CountMarkdownBackward countbackward, CountMarkdownForward countforward, 
-                                MarkdownFormatter formatter, TextTrimmerService trimmer, MarkdownUnderlineFormat underlineFormat)
+                                MarkdownFormatter formatter, TextTrimmerService trimmer, MarkdownUnderlineFormat underlineFormat,
+                                TextScanner textScanner, IMessagePublisher<ParagraphMessage> ParagraphMessage)
         {
             this.countBackward = countbackward;
             this.countForward = countforward;
             this.formatter = formatter;
             this.trimmer = trimmer;
             this.underlineFormat = underlineFormat;
+            this.textScanner = textScanner;
+            this.paragraphMessage = ParagraphMessage;
+
         }
 
         public bool CanExecute(object parameter)
@@ -59,6 +67,8 @@ namespace FountainEditorGUI.Commands
                 selection.Text = underlineFormat.formatMarkdown(selection.Text);
                 selectionRange.ApplyPropertyValue(Inline.TextDecorationsProperty, TextDecorations.Underline);
             }
+
+            string text = textScanner.ScanForText(selection.Start);
         }
     }
 }
