@@ -10,44 +10,54 @@ using System.Windows.Input;
 
 namespace FountainEditorGUI.Commands
 {
-    class UnderlineCommand : ICommand
+    public sealed class UnderlineCommand : ICommand
     {
+        public event EventHandler CanExecuteChanged;
+        private CountMarkdownBackward countBackward;
+        private CountMarkdownForward countForward;
+        private MarkdownFormatter formatter;
+        private TextTrimmerService trimmer;
+        private MarkdownUnderlineFormat underlineFormat;
+
+        public UnderlineCommand(CountMarkdownBackward countbackward, CountMarkdownForward countforward, 
+                                MarkdownFormatter formatter, TextTrimmerService trimmer, MarkdownUnderlineFormat underlineFormat)
+        {
+            this.countBackward = countbackward;
+            this.countForward = countforward;
+            this.formatter = formatter;
+            this.trimmer = trimmer;
+            this.underlineFormat = underlineFormat;
+        }
+
         public bool CanExecute(object parameter)
         {
             return true;
         }
 
-        public event EventHandler CanExecuteChanged;
-
         public void Execute(object parameter)
         {
-            var richTextBox = parameter as RichTextBox;
-            var selection = richTextBox.Selection;
+            RichTextBox richTextBox = parameter as RichTextBox;
+            TextSelection selection = richTextBox.Selection;
             TextRange selectionRange = new TextRange(selection.Start, selection.End);
-            Object underline = selectionRange.GetPropertyValue(Inline.TextDecorationsProperty);
-            
-            if (richTextBox == null)
+
+            if (richTextBox == null || selection == null)
             {
                 return;
             }
 
-            if (underline.Equals(TextDecorations.Underline))
+            if (selectionRange.GetPropertyValue(Inline.TextDecorationsProperty).Equals(TextDecorations.Underline))
             {
-                if (selection.Text.StartsWith("_") && selection.Text.EndsWith("_"))
-                {
-                    selection.Text = selection.Text.Substring(1, selection.Text.Length - 2);
-                }
-                else
-                {
-                    selection.Text = string.Format("_{0}_", selection.Text);
-                }
                 selectionRange.ApplyPropertyValue(Inline.TextDecorationsProperty, null);
+                int start = countForward.Count(selectionRange.Text);
+                int end = countBackward.Count(selectionRange.Text);
+
+                selection.Text = trimmer.TrimText(selection.Text, start, end);
+                selection.Text = formatter.format(new TextRange(selection.Start, selection.End)); 
             }
             else
             {
-                selection.Text = string.Format("_{0}_", selection.Text);
+                selection.Text = underlineFormat.formatMarkdown(selection.Text);
                 selectionRange.ApplyPropertyValue(Inline.TextDecorationsProperty, TextDecorations.Underline);
-                return;
             }
         }
     }

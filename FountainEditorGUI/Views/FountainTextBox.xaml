@@ -9,20 +9,21 @@
              d:DesignHeight="300" d:DesignWidth="300" Loaded="UserControl_Loaded">
     <UserControl.Resources>
         <Style TargetType="{x:Type Paragraph}">
-            <Setter Property="Margin" Value="150,0,100,0"/>
+            <Setter Property="Margin" Value="200,0,150,0"/>
         </Style>
     </UserControl.Resources>
     <UserControl.InputBindings>
     </UserControl.InputBindings>
 
     <RichTextBox Name="DisplayBox" AcceptsReturn="True" AcceptsTab="True" 
-                 FontFamily="Courier Prime" FontSize="16" AllowDrop="False"
+                 FontFamily="Courier New" FontSize="22" AllowDrop="False"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" BorderBrush="Black" 
                  PreviewKeyUp="PressEnter">
         <RichTextBox.InputBindings>
             <KeyBinding Key="B" Modifiers="Control" Command="{Binding BoldCommand}" CommandParameter="{Binding ElementName=DisplayBox}"/>
             <KeyBinding Key="I" Modifiers="Control" Command="{Binding ItalicsCommand}" CommandParameter="{Binding ElementName=DisplayBox}"/>
             <KeyBinding Key="U" Modifiers="Control" Command="{Binding UnderlineCommand}" CommandParameter="{Binding ElementName=DisplayBox}"/>
+            <KeyBinding Key="B" Modifiers="Control + Shift" Command="{Binding BoneYardCommand}" CommandParameter="{Binding ElementName=DisplayBox}"/>
         </RichTextBox.InputBindings>
     </RichTextBox>
 </UserControl>

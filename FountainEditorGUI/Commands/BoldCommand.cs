@@ -12,66 +12,53 @@ using System.Windows.Input;
 
 namespace FountainEditorGUI.Commands
 {
-    class BoldCommand : ICommand
+    public sealed class BoldCommand : ICommand
     {
+        public event EventHandler CanExecuteChanged;
+        private CountMarkdownBackward countBackward;
+        private CountMarkdownForward countForward;
+        private MarkdownFormatter formatter;
+        private TextTrimmerService trimmer;
+
+        public BoldCommand(CountMarkdownBackward countbackward, 
+                            CountMarkdownForward countforward, MarkdownFormatter formatter, 
+                            TextTrimmerService trimmer)
+        {
+            this.countBackward = countbackward;
+            this.countForward = countforward;
+            this.formatter = formatter;
+            this.trimmer = trimmer;
+        }
         public bool CanExecute(object parameter)
         {
             return true;
         }
 
-        public event EventHandler CanExecuteChanged;
-
         public void Execute(object parameter)
         {
             RichTextBox richTextBox = parameter as RichTextBox;
-            FlowDocument document = richTextBox.Document;
             TextSelection selection = richTextBox.Selection;
             TextRange selectionRange = new TextRange(selection.Start, selection.End);
 
-            Object weight = selectionRange.GetPropertyValue(TextElement.FontWeightProperty);
-            Object style = selectionRange.GetPropertyValue(TextElement.FontStyleProperty);
-
-            if (richTextBox == null | selection == null)
+            if (richTextBox == null || selection == null)
             {
                 return;
             }
 
-            if (weight.Equals(FontWeights.Normal))
+            if (selectionRange.GetPropertyValue(TextElement.FontWeightProperty).Equals(FontWeights.Bold))
             {
-                if (style.Equals(FontStyles.Italic))
-                {
-                    if (selection.Text.StartsWith("*") && selection.Text.EndsWith("*"))
-                    {
-                        selection.Text = selection.Text.Substring(1, selection.Text.Length - 2);
-                    }
-                    selection.Text = string.Format("***{0}***", selection.Text);
-                }
-                else
-                {
-                    selection.Text = string.Format("**{0}**", selection.Text);
-                }
+                selectionRange.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Normal);
+            }
+            else
+            {
                 selectionRange.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Bold);
             }
 
-            if (weight.Equals(FontWeights.Bold))
-            {
-                if (selection.Text.StartsWith("**") && selection.Text.EndsWith("**"))
-                {
-                    selection.Text = selection.Text.Substring(2, selection.Text.Length - 4);
-                }
-                else
-                {
-                    if (style.Equals(FontStyles.Italic))
-                    {
-                        selection.Text = string.Format("*{0}*", selection.Text);
-                    }
-                    else
-                    {
-                        selection.Text = string.Format("**{0}**", selection.Text);
-                    }
-                }
-                selectionRange.ApplyPropertyValue(TextElement.FontWeightProperty, FontWeights.Normal);
-            }
+            int start = countForward.Count(selectionRange.Text);
+            int end = countBackward.Count(selectionRange.Text);
+
+            selection.Text = trimmer.TrimText(selection.Text, start, end);
+            selection.Text = formatter.format(new TextRange(selection.Start, selection.End));
         }
     }
 }
