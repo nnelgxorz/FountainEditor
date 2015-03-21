@@ -6,6 +6,7 @@ using System.Windows.Media;
 using FountainEditor.Messaging;
 using FountainEditorGUI.Messages;
 using FountainEditorGUI.ViewModels;
+using System.Windows.Documents;
 
 namespace FountainEditorGUI.Views
 {
@@ -16,17 +17,26 @@ namespace FountainEditorGUI.Views
     {
         private delegate Point GetPositionDelegate(IInputElement element);
 
-        private IMessagePublisher<DragDropMessage> dragDropMessagePublisher;
         private string dragItem;
+        private string dropItem;
         private int dragIndex;
         private int dropIndex;
+        private int dragItemDepth;
+        private int dropItemDepth;
+        private CountHashTags countHashTags;
+        private IMessagePublisher<DragDropMessage> dragDropMessagePublisher;
+        private IMessagePublisher<OutlinerNavigationMessage> outlineNavigationMessage;
+        private AdornerLayer adornerLayer;
 
-        public FountainOutline(FountainOutlineViewModel viewModel, IMessagePublisher<DragDropMessage> dragDropMessagePublisher)
+        public FountainOutline(FountainOutlineViewModel viewModel, IMessagePublisher<DragDropMessage> dragDropMessagePublisher,
+            IMessagePublisher<OutlinerNavigationMessage> outlineNavigationMessage, CountHashTags countHashTags)
         {
             InitializeComponent();
 
             this.dragDropMessagePublisher = dragDropMessagePublisher;
+            this.outlineNavigationMessage = outlineNavigationMessage;
             this.DataContext = viewModel;
+            this.countHashTags = countHashTags;
         }
 
         private void Grid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -36,6 +46,7 @@ namespace FountainEditorGUI.Views
 
             if (dragItem.StartsWith("#"))
             {
+                dragItemDepth = countHashTags.Count(dragItem);
                 DragDrop.DoDragDrop(Outliner, dragItem, DragDropEffects.Move | DragDropEffects.Scroll);
             }
         }
@@ -43,21 +54,31 @@ namespace FountainEditorGUI.Views
         private void Outliner_DragEnter(object sender, DragEventArgs e)
         {
             dropIndex = GetCurrentIndex(e.GetPosition);
+            dropItem = (string)Outliner.Items[dropIndex];
+            dropItemDepth = countHashTags.Count(dropItem);
         }
 
         private void Outliner_Drop(object sender, DragEventArgs e)
         {
-            if (dragIndex == dropIndex)
+            if (dragIndex == dropIndex | !(dragItemDepth >= dropItemDepth))
             {
                 return;
             }
-            
+
             dragDropMessagePublisher.Publish(new DragDropMessage
             (
-                this.dragIndex,
-                this.dropIndex,
-                this.dragItem
+                this.dragIndex, this.dropIndex,
+                this.dragItem, this.dropItem,
+                this.dragItemDepth, this.dropItemDepth
             ));
+        }
+
+        private void Outliner_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var index = GetCurrentIndex(e.GetPosition);
+            string itemText = (string) this.Outliner.Items.GetItemAt(index);
+
+            outlineNavigationMessage.Publish(new OutlinerNavigationMessage(itemText));
         }
 
         private int GetCurrentIndex (GetPositionDelegate getPosition)
@@ -81,7 +102,7 @@ namespace FountainEditorGUI.Views
 
             return index;
         }
-
+            
         private ListViewItem GetListViewItem (int index)
         {
             if (Outliner.ItemContainerGenerator.Status != GeneratorStatus.ContainersGenerated)
@@ -99,4 +120,5 @@ namespace FountainEditorGUI.Views
             return bounds.Contains(mousePosition);
         }
     }
+
 }
