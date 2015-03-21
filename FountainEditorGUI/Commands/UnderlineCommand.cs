@@ -69,6 +69,7 @@ namespace FountainEditorGUI.Commands
             }
 
             string text = textScanner.ScanForText(selection.Start);
+            paragraphMessage.Publish(new ParagraphMessage(text));
         }
     }
 }

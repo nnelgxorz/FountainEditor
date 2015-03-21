@@ -17,11 +17,14 @@ namespace FountainEditorGUI.Commands
         public event EventHandler CanExecuteChanged;
         private MarkdownBoneyardFormat boneyardFormat;
         private TextTrimmerService trimmer;
+        private IMessagePublisher<ParagraphMessage> paragraphMessagePublisher;
 
-        public BoneyardCommand(MarkdownBoneyardFormat boneyardFormat, TextTrimmerService trimmer)
+        public BoneyardCommand(MarkdownBoneyardFormat boneyardFormat, TextTrimmerService trimmer,
+                               IMessagePublisher<ParagraphMessage> paragraphMessagePublisher)
         {
             this.boneyardFormat = boneyardFormat;
             this.trimmer = trimmer;
+            this.paragraphMessagePublisher = paragraphMessagePublisher;
         }
 
         public bool CanExecute(object parameter)
@@ -46,6 +49,8 @@ namespace FountainEditorGUI.Commands
             {
                 selection.Text = boneyardFormat.formatMarkdown(selection.Text);
             }
+
+            paragraphMessagePublisher.Publish(new ParagraphMessage(selection.Text));
         }
     }
 }

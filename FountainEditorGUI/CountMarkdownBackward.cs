@@ -12,11 +12,10 @@ namespace FountainEditorGUI
         {
             int count = 0;
             int length = text.Length;
-            Char[] charArray = text.ToCharArray();
 
             for (int i = length - 1; i >= 0; i--)
             {
-                var c = charArray[i];
+                var c = text[i];
 
                 if (c.Equals('*') | c.Equals('_'))
                 {

@@ -20,16 +20,19 @@ namespace FountainEditorGUI.Commands
         private MarkdownFormatter formatter;
         private TextTrimmerService trimmer;
         private TextScanner textScanner;
+        private IMessagePublisher<ParagraphMessage> paragraphMessagePublisher;
 
         public BoldCommand(CountMarkdownBackward countbackward, 
                             CountMarkdownForward countforward, MarkdownFormatter formatter, 
-                            TextTrimmerService trimmer, TextScanner textscanner)
+                            TextTrimmerService trimmer, TextScanner textscanner, 
+                            IMessagePublisher<ParagraphMessage> paragraphMessagePublisher)
         {
             this.countBackward = countbackward;
             this.countForward = countforward;
             this.formatter = formatter;
             this.trimmer = trimmer;
             this.textScanner = textscanner;
+            this.paragraphMessagePublisher = paragraphMessagePublisher;
         }
         public bool CanExecute(object parameter)
         {
@@ -63,6 +66,7 @@ namespace FountainEditorGUI.Commands
             selection.Text = formatter.format(new TextRange(selection.Start, selection.End));
 
             string text = textScanner.ScanForText(selection.Start);
+            paragraphMessagePublisher.Publish(new ParagraphMessage(text));
         }
     }
 }
