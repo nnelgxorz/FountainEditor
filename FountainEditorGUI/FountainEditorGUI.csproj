@@ -61,14 +61,46 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AddHashtags.cs" />
+    <Compile Include="Commands\BoneyardCommand.cs" />
     <Compile Include="Commands\UnderlineCommand.cs" />
     <Compile Include="Commands\ItalicsCommand.cs" />
     <Compile Include="Commands\BoldCommand.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RelayCommandGeneric.cs" />
+    <Compile Include="CountHashTags.cs" />
+    <Compile Include="CountMarkdownBackward.cs" />
+    <Compile Include="CountMarkdownForward.cs" />
+    <Compile Include="GenerateObservableCollectionFromHierarchy.cs" />
+    <Compile Include="GetEndOfHierachicalElementsIndex.cs" />
+    <Compile Include="GetEndOfHierarchicalTextSection.cs" />
+    <Compile Include="GetTextElementIndex.cs" />
+    <Compile Include="GetTextOffsetService.cs" />
+    <Compile Include="GetTextPointerAtOffsetService.cs" />
+    <Compile Include="GetTextPointerFromBlockIndex.cs" />
+    <Compile Include="IMarkdownFormatter.cs" />
+    <Compile Include="InsertObservableCollectionIntoObservableCollection.cs" />
+    <Compile Include="ITextCounter.cs" />
+    <Compile Include="ITextFormatter.cs" />
+    <Compile Include="ITextScanner.cs" />
+    <Compile Include="ITextTrimmer.cs" />
     <Compile Include="MainControlMapProvider.cs" />
+    <Compile Include="MarkdownBoldFormat.cs" />
+    <Compile Include="MarkdownBoneyardFormat.cs" />
+    <Compile Include="MarkdownFormatter.cs" />
+    <Compile Include="MarkdownItalicFormat.cs" />
+    <Compile Include="MarkdownUnderlineFormat.cs" />
+    <Compile Include="Messages\OutlinerNavigationMessage.cs" />
+    <Compile Include="Messages\ParagraphMessage.cs" />
     <Compile Include="Messages\DragDropMessage.cs" />
+    <Compile Include="Messages\SetCursorMessage.cs" />
     <Compile Include="Messages\TextChangedMessage.cs" />
+    <Compile Include="ParagraphVisitor.cs" />
+    <Compile Include="RemoveHashtags.cs" />
+    <Compile Include="TextPointerFromTextService.cs" />
+    <Compile Include="TextScanner.cs" />
+    <Compile Include="TextTrimmerService.cs" />
+    <Compile Include="ViewModels\RemoveElementsFromObservableCollection.cs" />
     <Compile Include="Views\FountainNameBox.xaml.cs">
       <DependentUpon>FountainNameBox.xaml</DependentUpon>
     </Compile>

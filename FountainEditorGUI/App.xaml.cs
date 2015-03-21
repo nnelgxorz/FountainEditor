@@ -25,6 +25,7 @@ namespace FountainEditorGUI
             container.RegisterSingle<IControlManager, ControlManager>();
             container.RegisterSingle<IControlMapProvider, ControlMapProvider>();
             container.RegisterSingle<IControlSocketManager, ControlSocketManager>();
+            container.RegisterSingle<ITextScanner, TextScanner>();
 
             container.RegisterAll<IControlMapProvider>(
                 typeof(MainControlMapProvider)

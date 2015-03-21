@@ -50,12 +50,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ElementListener.cs" />
-    <Compile Include="FountainVisitor.cs" />
     <Compile Include="Language\FountainService.cs" />
     <Compile Include="Language\IFountainService.cs" />
     <Compile Include="Elements\rTitlePageKey.cs" />
     <Compile Include="Elements\TitlePageValue.cs" />
     <Compile Include="Elements\cTitlePageKey.cs" />
+    <Compile Include="Language\IMarkdownService.cs" />
+    <Compile Include="Language\MarkdownService.cs" />
+    <Compile Include="MarkdownListener.cs" />
     <Compile Include="ObjectModel\Element.cs" />
     <Compile Include="Markdown.g4.lexer.cs">
       <DependentUpon>Markdown.g4</DependentUpon>
@@ -65,10 +67,15 @@
     </Compile>
     <Compile Include="Messaging\IMessagePublisher.cs" />
     <Compile Include="Messaging\MessagePublisher.cs" />
-    <Compile Include="ObjectModel\Elements.cs">
+    <Compile Include="ObjectModel\FountainElements.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Elements.tt</DependentUpon>
+      <DependentUpon>FountainElements.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ObjectModel\MarkdownElements.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MarkdownElements.tt</DependentUpon>
     </Compile>
     <Compile Include="ObjectModel\SectionElement.cs" />
     <Compile Include="SectionVisitor.cs" />
@@ -90,6 +97,10 @@
       <Generator>MSBuild:Compile</Generator>
       <CustomToolNamespace>FountainEditor</CustomToolNamespace>
     </Antlr4>
+    <None Include="ObjectModel\MarkdownElements.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>MarkdownElements.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
     <Antlr4 Include="TitlePage.g4">
       <Generator>MSBuild:Compile</Generator>
@@ -97,9 +108,9 @@
     </Antlr4>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ObjectModel\Elements.tt">
+    <Content Include="ObjectModel\FountainElements.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Elements.cs</LastGenOutput>
+      <LastGenOutput>FountainElements.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>
