@@ -12,11 +12,6 @@ namespace FountainEditor
             Elements = new List<Element>();
         }
 
-        public override void EnterEveryRule(Antlr4.Runtime.ParserRuleContext context)
-        {
-            base.EnterEveryRule(context);
-        }
-
         public override void EnterAction(FountainParser.ActionContext context)
         {
             Elements.Add(new ActionElement(context.GetText()));

@@ -3,16 +3,19 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using FountainEditor;
 using FountainEditor.ObjectModel;
+using FountainEditor.Language;
 
 namespace FountainEditorGUI
 {
     public sealed class DocumentVisitor : FountainVisitor
     {
+        private IMarkdownService markdownservice;
         public FlowDocument Document { get; private set; }
 
-        public DocumentVisitor()
+        public DocumentVisitor(IMarkdownService markdownService)
         {
             Document = new FlowDocument();
+            this.markdownservice = markdownService;
         }
 
         public override void Visit(SectionElement context)
@@ -113,11 +116,11 @@ namespace FountainEditorGUI
             if (text.StartsWith("!"))
             {
                 p.Inlines.Add(new Run("!") { Foreground = Brushes.Gray });
-                //p.Inlines.Add(ParseMarkdown.Parse(text.Substring(1)));
+                //p.Inlines.Add(this.markdownservice.Parse(text.Substring(1)));
             }
             else
             {
-                //p.Inlines.Add(ParseMarkdown.Parse(text));
+                //p.Inlines.Add(this.markdownservice.Parse(text));
                 p.Inlines.Add(text);
             }
 
@@ -132,7 +135,7 @@ namespace FountainEditorGUI
             var p = new Paragraph();
             p.TextAlignment = TextAlignment.Center;
             p.Inlines.Add(new Run(">") { Foreground = Brushes.Gray });
-            //p.Inlines.Add(ParseMarkdown.Parse(text.Substring(1, text.Length - 2)));
+            //p.Inlines.Add(this.markdownservice.Parse(text.Substring(1, text.Length - 2)));
             p.Inlines.Add(text.Substring(1, text.Length -2));
             p.Inlines.Add(new Run("<") { Foreground = Brushes.Gray });
             Document.Blocks.Add(p);

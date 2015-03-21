@@ -9,6 +9,8 @@
             this.Text = text;
         }
 
-        public abstract void Accept(FountainVisitor visitor);
+        public virtual void Accept(FountainVisitor visitor) { }
+
+        public virtual void Accept(MarkdownVisitor visitor) { }
     }
 }
