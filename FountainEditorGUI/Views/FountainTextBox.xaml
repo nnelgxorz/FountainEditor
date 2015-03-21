@@ -16,7 +16,7 @@
     </UserControl.InputBindings>
 
     <RichTextBox Name="DisplayBox" AcceptsReturn="True" AcceptsTab="True" 
-                 FontFamily="Courier New" FontSize="22" AllowDrop="False"
+                 FontFamily="Courier New" FontSize="22" AllowDrop="False" ScrollViewer.CanContentScroll="False"
                  ScrollViewer.VerticalScrollBarVisibility="Auto" BorderBrush="Black" 
                  PreviewKeyUp="PressEnter">
         <RichTextBox.InputBindings>
