@@ -10,23 +10,24 @@
     <Expander Grid.Column="0" Grid.Row="2" ExpandDirection="Right" Margin="10" IsExpanded="True">
         <ListView Name="Outliner" Background="#333333" Foreground="#f2f2f2" BorderBrush="{x:Null}"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" TextElement.FontSize="16"
-                  HorizontalContentAlignment="Stretch" Padding="0,25,0,0" 
+                  HorizontalContentAlignment="Stretch" Padding="0,25,0,0"
                   AllowDrop="True" ItemsSource="{Binding DocumentOutline}"
-                  DragEnter="Outliner_DragEnter" Drop="Outliner_Drop">
+                  DragEnter="Outliner_DragEnter" Drop="Outliner_Drop" MouseDoubleClick="Outliner_MouseDoubleClick">
             <ListBox.ItemTemplate>
                 <DataTemplate >
                     <Grid Width="{Binding ElementName=Outliner, Path=ActualWidth}" Height="Auto" AllowDrop="True" 
                           PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown" HorizontalAlignment="Stretch" 
-                          Opacity="0.25" Name="Grid" TextElement.FontSize="16" TextElement.FontWeight="Light">
+                          Opacity="0.25" Name="Grid" TextElement.FontWeight="Light">
                         <Grid.Background>
                             <SolidColorBrush x:Name="BackgroundBrush" Color="#333333"/>
                         </Grid.Background>
-                        <TextBlock Text="{Binding}" HorizontalAlignment="Left" Margin="15,5,35,15" TextWrapping="Wrap" Name="Text">
+                        <TextBlock Text="{Binding}" HorizontalAlignment="Left" Margin="15,5,35,15" TextWrapping="Wrap" 
+                                   Name="textBlock" FontSize="18" TextTrimming="CharacterEllipsis">
                             <TextBlock.RenderTransform>
                                 <ScaleTransform ScaleX="1" ScaleY="1" x:Name="TextScale"/>
                             </TextBlock.RenderTransform>
                         </TextBlock>
-                        <Grid.Triggers>
+                    <Grid.Triggers>
                             <EventTrigger RoutedEvent="DragEnter">
                                 <BeginStoryboard>
                                     <Storyboard>
@@ -64,6 +65,8 @@
                             <EventTrigger RoutedEvent="MouseEnter">
                                 <BeginStoryboard>
                                     <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="textBlock" Storyboard.TargetProperty="FontSize"
+                                                         To="22" Duration="0:0:0.1"/>
                                         <ColorAnimation
                                             Storyboard.TargetName="BackgroundBrush"
                                             Storyboard.TargetProperty="Color"
@@ -71,18 +74,20 @@
                                         <DoubleAnimation 
                                             Storyboard.TargetProperty="Opacity"             
                                             To="1" Duration="0:0:0.2"/>
-                                        <DoubleAnimation Storyboard.TargetName="TextScale"
+                                        <!--<DoubleAnimation Storyboard.TargetName="TextScale"
                                                          Storyboard.TargetProperty="(ScaleTransform.ScaleY)"
                                                          To="1.2" Duration="0:0:0.2"/>
                                         <DoubleAnimation Storyboard.TargetName="TextScale"
                                                          Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
-                                                         To="1.2" Duration="0:0:0.2"/>
+                                                         To="1.2" Duration="0:0:0.2"/>-->
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger>
                             <EventTrigger RoutedEvent="MouseLeave">
                                 <BeginStoryboard>
                                     <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="textBlock" Storyboard.TargetProperty="FontSize"
+                                                         To="20" Duration="0:0:0.2"/>
                                         <DoubleAnimation 
                                             Storyboard.TargetProperty="Opacity"             
                                             To=".25" Duration="0:0:0.32"/>
@@ -90,12 +95,12 @@
                                             Storyboard.TargetName="BackgroundBrush"
                                             Storyboard.TargetProperty="Color"
                                             To="#333333" Duration="0:0:0.32"/>
-                                        <DoubleAnimation Storyboard.TargetName="TextScale"
+                                        <!--<DoubleAnimation Storyboard.TargetName="TextScale"
                                                          Storyboard.TargetProperty="(ScaleTransform.ScaleY)"
                                                          To="1" Duration="0:0:0.32"/>
                                         <DoubleAnimation Storyboard.TargetName="TextScale"
                                                          Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
-                                                         To="1" Duration="0:0:0.32"/>
+                                                         To="1" Duration="0:0:0.32"/>-->
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger>
