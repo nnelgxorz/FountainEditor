@@ -12,7 +12,7 @@ namespace FountainEditorGUI
         {
             for (int i = 0; i < amount; i++)
             {
-                text.Substring(1, text.Length);
+                text = text.Substring(1);
             }
 
             return text;

@@ -7,7 +7,7 @@ using System.Windows.Documents;
 
 namespace FountainEditorGUI
 {
-    public sealed class GetTextElementIndex
+    public sealed class GetParagraphIndexFromText
     {
         private int index;
         public int getIndex (FlowDocument Document, string text)

@@ -7,15 +7,9 @@ using System.Windows.Documents;
 
 namespace FountainEditorGUI
 {
-    public sealed class GetEndOfHierarchicalTextSection
+    public sealed class GetPointerAtEndOfSection
     {
-        private CountHashTags countHashTags;
-        public GetEndOfHierarchicalTextSection(CountHashTags countHashTags)
-        {
-            this.countHashTags = countHashTags;
-
-        }
-        public TextPointer getPointer(FlowDocument Document, int hashes, int index)
+        public TextPointer getPointer(FlowDocument Document, int index)
         {
             TextPointer endSelection = Document.ContentEnd;
 
@@ -26,13 +20,8 @@ namespace FountainEditorGUI
 
                 if (currentText.StartsWith("#"))
                 {
-                    int curHashes = countHashTags.Count(currentText);
-
-                    if (curHashes <= hashes)
-                    {
-                        endSelection = block.ContentStart;
-                        break;
-                    }
+                    endSelection = block.ContentStart;
+                    break;
                 }
             }
 
@@ -40,4 +29,3 @@ namespace FountainEditorGUI
         }
     }
 }
-
