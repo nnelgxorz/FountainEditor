@@ -26,17 +26,21 @@ namespace FountainEditorGUI.Views
         private CountHashTags countHashTags;
         private IMessagePublisher<DragDropMessage> dragDropMessagePublisher;
         private IMessagePublisher<OutlinerNavigationMessage> outlineNavigationMessage;
-        private AdornerLayer adornerLayer;
+        private IMessagePublisher<OutlinerSelectionMessage> outlinerSelectionMessage;
 
         public FountainOutline(FountainOutlineViewModel viewModel, IMessagePublisher<DragDropMessage> dragDropMessagePublisher,
-            IMessagePublisher<OutlinerNavigationMessage> outlineNavigationMessage, CountHashTags countHashTags)
+            IMessagePublisher<OutlinerNavigationMessage> outlineNavigationMessage, CountHashTags countHashTags, 
+            IMessagePublisher<OutlinerSelectionMessage> outlinerSelectionMessage)
         {
             InitializeComponent();
 
             this.dragDropMessagePublisher = dragDropMessagePublisher;
             this.outlineNavigationMessage = outlineNavigationMessage;
+            this.outlinerSelectionMessage = outlinerSelectionMessage;
             this.DataContext = viewModel;
             this.countHashTags = countHashTags;
+
+            outlinerSelectionMessage.Subscribe(OnOutlinerSelectionChanged);
         }
 
         private void Grid_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -54,13 +58,17 @@ namespace FountainEditorGUI.Views
         private void Outliner_DragEnter(object sender, DragEventArgs e)
         {
             dropIndex = GetCurrentIndex(e.GetPosition);
+            if (dropIndex < 0)
+            {
+                return;
+            }
             dropItem = (string)Outliner.Items[dropIndex];
             dropItemDepth = countHashTags.Count(dropItem);
         }
 
         private void Outliner_Drop(object sender, DragEventArgs e)
         {
-            if (dragIndex == dropIndex | !(dragItemDepth >= dropItemDepth))
+            if (dragIndex == dropIndex)
             {
                 return;
             }
@@ -71,6 +79,8 @@ namespace FountainEditorGUI.Views
                 this.dragItem, this.dropItem,
                 this.dragItemDepth, this.dropItemDepth
             ));
+
+            MessageBox.Show(dragItemDepth.CompareTo(dropItemDepth).ToString());
         }
 
         private void Outliner_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -118,6 +128,12 @@ namespace FountainEditorGUI.Views
             Rect bounds = VisualTreeHelper.GetDescendantBounds(target);
             Point mousePosition = getPosition((IInputElement)target);
             return bounds.Contains(mousePosition);
+        }
+
+        private void OnOutlinerSelectionChanged(OutlinerSelectionMessage message)
+        {
+            this.Outliner.SelectedItems.Clear();
+            this.Outliner.SelectedItems.Add(message.text);
         }
     }
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FountainEditorGUI.ViewModels
+namespace FountainEditorGUI
 {
     public sealed class RemoveElementsFromObservableCollection
     {

@@ -18,12 +18,13 @@ namespace FountainEditorGUI
         {
             ObservableCollection<string> subCollection = new ObservableCollection<string>();
             subCollection.Add(collection.ElementAt(index));
+            string[] array;
 
-            for (int i = index + 1; i < collection.Count; i++)
+            for (int i = index+1; i < collection.Count; i++)
             {
                 string currentItem = collection.ElementAt(i);
-                int currentDepth = countHashTags.Count(currentItem);
 
+                int currentDepth = countHashTags.Count(currentItem);
                 if (currentItem.StartsWith("=") | currentDepth > depth)
                 {
                     subCollection.Add(currentItem);
