@@ -17,38 +17,38 @@ namespace FountainEditorGUI.Views
     {
         private ITextScanner textScanner;
         private GetTextOffsetService getOffset;
-        private GetTextPointerAtOffsetService pointerAtOffset;
+        private TextBoxDropAfterLogic dropAfterLogic;
+        private TextBoxDropNestedLogic dropNestedLogic;
+        private TextBoxDropUnNestedLogic dropUnNestedLogic;
+        private GetParagraphIndexFromText getTextIndex;
+        private TextPointerFromTextService pointerFromText;
+        private GetTextPointerFromBlockIndex getPointerFromIndex;
         private IMessagePublisher<TextChangedMessage> textChangedMessagePublisher;
         private IMessagePublisher<OutlinerNavigationMessage> navigationMessagePublisher;
         private IMessagePublisher<DragDropMessage> dragDropMessagePublisher;
-        private TextPointerFromTextService pointerFromText;
-        private GetEndOfHierarchicalTextSection getEndOfHierarchy;
-        private CountHashTags countHashTags;
-        private GetTextElementIndex getTextIndex;
         private IMessagePublisher<SetCursorMessage> setCursorMessagePublisher;
-        private GetTextPointerFromBlockIndex getPointerFromIndex;
 
         public FountainTextBox(FountainTextBoxViewModel viewModel, IMessagePublisher<TextChangedMessage> textChangedMessagePublisher,
             ITextScanner textScanner, GetTextOffsetService getOffset, IMessagePublisher<OutlinerNavigationMessage> navigationMessagePublisher,
-            GetTextPointerAtOffsetService pointerAtOffset, IMessagePublisher<DragDropMessage> dragDropMessagePublisher, 
-            TextPointerFromTextService pointerFromText, GetEndOfHierarchicalTextSection getEndOfHierarchy, CountHashTags countHashTags,
-            GetTextElementIndex getTextIndex, IMessagePublisher<SetCursorMessage> setCursorMessagePublisher, GetTextPointerFromBlockIndex getPointerFromIndex)
+            IMessagePublisher<DragDropMessage> dragDropMessagePublisher, IMessagePublisher<SetCursorMessage> setCursorMessagePublisher,
+            GetParagraphIndexFromText getTextIndex, TextPointerFromTextService pointerFromText, GetTextPointerFromBlockIndex getPointerFromIndex,
+            TextBoxDropAfterLogic dropAfterLogic, TextBoxDropNestedLogic dropNestedLogic, TextBoxDropUnNestedLogic dropUnNestedLogic)
         {
             InitializeComponent();
 
             this.DataContext = viewModel;
             this.textScanner = textScanner;
             this.getOffset = getOffset;
-            this.pointerAtOffset = pointerAtOffset;
-            this.pointerFromText = pointerFromText;
-            this.getEndOfHierarchy = getEndOfHierarchy;
-            this.countHashTags = countHashTags;
+            this.dropAfterLogic = dropAfterLogic;
+            this.dropNestedLogic = dropNestedLogic;
+            this.dropUnNestedLogic = dropUnNestedLogic;
             this.getTextIndex = getTextIndex;
+            this.pointerFromText = pointerFromText;
+            this.getPointerFromIndex = getPointerFromIndex;
             this.textChangedMessagePublisher = textChangedMessagePublisher;
             this.navigationMessagePublisher = navigationMessagePublisher;
             this.dragDropMessagePublisher = dragDropMessagePublisher;
             this.setCursorMessagePublisher = setCursorMessagePublisher;
-            this.getPointerFromIndex = getPointerFromIndex;
 
             dragDropMessagePublisher.Subscribe(onOutlineDragDrop);
             navigationMessagePublisher.Subscribe(onNavigationChange);
@@ -96,31 +96,18 @@ namespace FountainEditorGUI.Views
 
         private void onOutlineDragDrop(DragDropMessage message)
         {
-            int dragIndex = getTextIndex.getIndex(this.DisplayBox.Document, message.dragItem);
-
-            TextPointer startSelection = pointerFromText.getPointer(this.DisplayBox.Document, message.dragItem, false);
-            TextPointer endSelection = getEndOfHierarchy.getPointer(this.DisplayBox.Document, message.dragItemDepth, dragIndex);
-
-            if (DisplayBox.Focus() == false)
+            if (message.dragItemDepth < message.dropItemDepth)
             {
-                FocusManager.SetFocusedElement(this.DisplayBox.Parent, this.DisplayBox);
+                this.DisplayBox.Document = dropNestedLogic.Drop(this.DisplayBox, message);
             }
-
-            this.DisplayBox.Selection.Select(startSelection, endSelection);
-            this.DisplayBox.Cut();
-
-            int dropIndex = getTextIndex.getIndex(this.DisplayBox.Document, message.dropItem);
-            TextPointer drop = getEndOfHierarchy.getPointer(this.DisplayBox.Document, message.dropItemDepth, dropIndex);
-            
-            if (drop.CompareTo(this.DisplayBox.Document.ContentEnd) == 0)
+            if (message.dragItemDepth > message.dropItemDepth)
             {
-                this.DisplayBox.Document.Blocks.Add(new Paragraph());
+                this.DisplayBox.Document = dropUnNestedLogic.Drop(this.DisplayBox, message);
             }
-            
-            this.DisplayBox.Selection.Select(drop, drop);
-            this.DisplayBox.Paste();
-
-            navigationMessagePublisher.Publish(new OutlinerNavigationMessage(message.dragItem));
+            else
+            {
+                this.DisplayBox.Document = dropAfterLogic.Drop(this.DisplayBox, message);
+            }
         }
 
         private void onNavigationChange(OutlinerNavigationMessage message)
@@ -144,6 +131,7 @@ namespace FountainEditorGUI.Views
             pointer = pointer.GetPositionAtOffset(message.offset);
 
             this.DisplayBox.Selection.Select(pointer, pointer);
+            int offset = getOffset.GetOffset(this.DisplayBox.Document.ContentStart, pointer);
         }
     }
 }

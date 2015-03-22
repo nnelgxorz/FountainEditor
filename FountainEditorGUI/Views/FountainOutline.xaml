@@ -14,7 +14,7 @@
                   AllowDrop="True" ItemsSource="{Binding DocumentOutline}"
                   DragEnter="Outliner_DragEnter" Drop="Outliner_Drop" MouseDoubleClick="Outliner_MouseDoubleClick">
             <ListBox.ItemTemplate>
-                <DataTemplate >
+                <DataTemplate>
                     <Grid Width="{Binding ElementName=Outliner, Path=ActualWidth}" Height="Auto" AllowDrop="True" 
                           PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown" HorizontalAlignment="Stretch" 
                           Opacity="0.25" Name="Grid" TextElement.FontWeight="Light">
@@ -27,7 +27,7 @@
                                 <ScaleTransform ScaleX="1" ScaleY="1" x:Name="TextScale"/>
                             </TextBlock.RenderTransform>
                         </TextBlock>
-                    <Grid.Triggers>
+                        <Grid.Triggers>
                             <EventTrigger RoutedEvent="DragEnter">
                                 <BeginStoryboard>
                                     <Storyboard>
@@ -62,11 +62,28 @@
                                     </Storyboard>
                                 </BeginStoryboard>
                             </EventTrigger>
+                            <EventTrigger RoutedEvent="Drop">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="TextScale"
+                                                         Storyboard.TargetProperty="(ScaleTransform.ScaleY)"
+                                                         To="1" Duration="0:0:0.32"/>
+                                        <DoubleAnimation Storyboard.TargetName="TextScale"
+                                                         Storyboard.TargetProperty="(ScaleTransform.ScaleX)"
+                                                         To="1" Duration="0:0:0.32"/>
+                                        <DoubleAnimation Storyboard.TargetProperty="Opacity"             
+                                                         To=".25" Duration="0:0:0.32"/>
+                                        <ColorAnimation Storyboard.TargetName="BackgroundBrush" 
+                                                        Storyboard.TargetProperty="Color" 
+                                                        To="#333333" Duration="0:0:0.32"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
                             <EventTrigger RoutedEvent="MouseEnter">
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="textBlock" Storyboard.TargetProperty="FontSize"
-                                                         To="22" Duration="0:0:0.1"/>
+                                        <!--<DoubleAnimation Storyboard.TargetName="textBlock" Storyboard.TargetProperty="FontSize"
+                                                         To="22" Duration="0:0:0.1"/>-->
                                         <ColorAnimation
                                             Storyboard.TargetName="BackgroundBrush"
                                             Storyboard.TargetProperty="Color"
@@ -86,8 +103,8 @@
                             <EventTrigger RoutedEvent="MouseLeave">
                                 <BeginStoryboard>
                                     <Storyboard>
-                                        <DoubleAnimation Storyboard.TargetName="textBlock" Storyboard.TargetProperty="FontSize"
-                                                         To="20" Duration="0:0:0.2"/>
+                                        <!--<DoubleAnimation Storyboard.TargetName="textBlock" Storyboard.TargetProperty="FontSize"
+                                                         To="20" Duration="0:0:0.2"/>-->
                                         <DoubleAnimation 
                                             Storyboard.TargetProperty="Opacity"             
                                             To=".25" Duration="0:0:0.32"/>
