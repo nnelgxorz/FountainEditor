@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Windows.Controls;
 using System.Windows.Documents;
 
 namespace FountainEditorGUI
 {
     public sealed class TextScanner : ITextScanner
     {
-        public string ScanForText(System.Windows.Documents.TextPointer textPointer)
+        public string ScanForText(TextPointer textPointer)
         {
             if (textPointer.GetPointerContext(LogicalDirection.Backward) == TextPointerContext.Text &&
                 textPointer.GetPointerContext(LogicalDirection.Forward) == TextPointerContext.Text)
