@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Documents;
 
 namespace FountainEditorGUI
@@ -13,7 +8,6 @@ namespace FountainEditorGUI
         public TextPointer GetTextPointer (RichTextBox TextBox, int offset )
         {
             var navigator = TextBox.Document.ContentStart;
-            int count = 0;
 
             while (navigator.CompareTo(TextBox.Document.ContentEnd) < 0)
             {
