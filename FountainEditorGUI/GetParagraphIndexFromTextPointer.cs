@@ -17,6 +17,11 @@ namespace FountainEditorGUI
         }
         public int getIndex(RichTextBox textBox, TextPointer pointer)
         {
+            if (pointer.Paragraph == null)
+            {
+                pointer = textBox.Document.Blocks.LastBlock.ContentStart;
+            }
+
             TextPointer start = pointer.Paragraph.ContentStart;
             TextPointer end = pointer.Paragraph.ContentEnd;
 
