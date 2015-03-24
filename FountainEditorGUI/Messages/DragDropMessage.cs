@@ -8,6 +8,7 @@ namespace FountainEditorGUI.Messages
 {
     public sealed class DragDropMessage
     {
+        public string dropAction { get; private set; }
         public int dragItemDepth { get; private set; }
         public int dropItemDepth { get; private set; }
         public int dragIndex { get; private set; }
@@ -15,7 +16,14 @@ namespace FountainEditorGUI.Messages
         public string dragItem { get; private set; }
         public string dropItem { get; private set; }
 
-        public DragDropMessage (int dragIndex, int dropIndex, string dragItem, string dropItem, int dragItemDepth, int dropItemDepth)
+        public DragDropMessage (
+            int dragIndex, 
+            int dropIndex, 
+            string dragItem, 
+            string dropItem, 
+            int dragItemDepth, 
+            int dropItemDepth,
+            string dropAction)
         {
             this.dragIndex = dragIndex;
             this.dropIndex = dropIndex;
@@ -23,6 +31,7 @@ namespace FountainEditorGUI.Messages
             this.dropItem = dropItem;
             this.dragItemDepth = dragItemDepth;
             this.dropItemDepth = dropItemDepth;
+            this.dropAction = dropAction;
         }
     }
 

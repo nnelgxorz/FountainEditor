@@ -11,9 +11,7 @@ namespace FountainEditorGUI.ViewModels
     public sealed class FountainOutlineViewModel : ViewModelBase
     {
         public ObservableCollection<string> documentOutline;
-        private OutlinerDropAfterLogic dropAfter;
-        private OutlinerDropNestedLogic dropNested;
-        private OutlinerDropUnNestedLogic dropUnNested;
+        private OutlinerDragDropLogic dragDropLogic;
 
         public ObservableCollection<string> DocumentOutline {
             get {
@@ -22,12 +20,10 @@ namespace FountainEditorGUI.ViewModels
         }
 
         public FountainOutlineViewModel(IMessagePublisher<DocumentMessage> documentMessagePublisher, 
-            IMessagePublisher<DragDropMessage> dragDropMessagePublisher, OutlinerDropAfterLogic dropAfter, 
-            OutlinerDropNestedLogic dropNested, OutlinerDropUnNestedLogic dropUnNested)
+            IMessagePublisher<DragDropMessage> dragDropMessagePublisher, 
+            OutlinerDragDropLogic dragDropLogic)
         {
-            this.dropAfter = dropAfter;
-            this.dropNested = dropNested;
-            this.dropUnNested = dropUnNested;
+            this.dragDropLogic = dragDropLogic;
             documentMessagePublisher.Subscribe(DocumentChanged);
             dragDropMessagePublisher.Subscribe(DragAndDrop);
         }
@@ -42,18 +38,7 @@ namespace FountainEditorGUI.ViewModels
 
         private void DragAndDrop(DragDropMessage message)
         {
-            if (message.dragItemDepth < message.dropItemDepth)
-            {
-                documentOutline = dropNested.Drop(documentOutline, message);
-            }
-            if (message.dragItemDepth > message.dropItemDepth)
-            {
-                documentOutline = dropUnNested.Drop(documentOutline, message);
-            }
-            else
-            {
-                documentOutline = dropAfter.Drop(documentOutline, message);
-            }
+            documentOutline = dragDropLogic.DoDrop(documentOutline, message);
         }
     }
 }
