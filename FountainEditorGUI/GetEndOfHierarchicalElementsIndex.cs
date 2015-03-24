@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FountainEditorGUI
 {
     public sealed class GetEndOfHierarchicalElementsIndex
     {
-        private CountHashTags countHashTags;
-        public GetEndOfHierarchicalElementsIndex(CountHashTags countHashtags)
+        private ITextCounter counter;
+
+        public GetEndOfHierarchicalElementsIndex(ITextCounter counter)
         {
-            this.countHashTags = countHashtags;
+            this.counter = counter;
         }
+
         public int GetIndex(ObservableCollection<string> collection, int depth, int index)
         {
             int endSelection = collection.Count;
@@ -24,8 +22,7 @@ namespace FountainEditorGUI
                 
                 if (currentText.StartsWith("#"))
                 {
-                    int curHashes = countHashTags.Count(currentText);
-
+                    int curHashes = counter.CountHashTags(currentText);
                     if (curHashes <= depth)
                     {
                         endSelection = i - 1;
@@ -33,6 +30,7 @@ namespace FountainEditorGUI
                     }
                 }
             }
+
             return endSelection;
         }
     }

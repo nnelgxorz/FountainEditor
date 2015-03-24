@@ -6,7 +6,6 @@ using System.Windows.Media;
 using FountainEditor.Messaging;
 using FountainEditorGUI.Messages;
 using FountainEditorGUI.ViewModels;
-using System.Windows.Documents;
 
 namespace FountainEditorGUI.Views
 {
@@ -23,13 +22,13 @@ namespace FountainEditorGUI.Views
         private int dropIndex;
         private int dragItemDepth;
         private int dropItemDepth;
-        private CountHashTags countHashTags;
+        private ITextCounter counter;
         private IMessagePublisher<DragDropMessage> dragDropMessagePublisher;
         private IMessagePublisher<OutlinerNavigationMessage> outlineNavigationMessage;
         private IMessagePublisher<OutlinerSelectionMessage> outlinerSelectionMessage;
 
         public FountainOutline(FountainOutlineViewModel viewModel, IMessagePublisher<DragDropMessage> dragDropMessagePublisher,
-            IMessagePublisher<OutlinerNavigationMessage> outlineNavigationMessage, CountHashTags countHashTags, 
+            IMessagePublisher<OutlinerNavigationMessage> outlineNavigationMessage, ITextCounter counter, 
             IMessagePublisher<OutlinerSelectionMessage> outlinerSelectionMessage)
         {
             InitializeComponent();
@@ -38,7 +37,7 @@ namespace FountainEditorGUI.Views
             this.outlineNavigationMessage = outlineNavigationMessage;
             this.outlinerSelectionMessage = outlinerSelectionMessage;
             this.DataContext = viewModel;
-            this.countHashTags = countHashTags;
+            this.counter = counter;
 
             outlinerSelectionMessage.Subscribe(OnOutlinerSelectionChanged);
         }
@@ -50,7 +49,7 @@ namespace FountainEditorGUI.Views
 
             if (dragItem.StartsWith("#"))
             {
-                dragItemDepth = countHashTags.Count(dragItem);
+                dragItemDepth = counter.CountHashTags(dragItem);
                 DragDrop.DoDragDrop(Outliner, dragItem, DragDropEffects.Move | DragDropEffects.Scroll);
             }
         }
@@ -63,7 +62,7 @@ namespace FountainEditorGUI.Views
                 return;
             }
             dropItem = (string)Outliner.Items[dropIndex];
-            dropItemDepth = countHashTags.Count(dropItem);
+            dropItemDepth = counter.CountHashTags(dropItem);
         }
 
         private void Outliner_Drop(object sender, DragEventArgs e)

@@ -63,14 +63,15 @@
     </ApplicationDefinition>
     <Compile Include="AddHashtags.cs" />
     <Compile Include="Commands\BoneyardCommand.cs" />
+    <Compile Include="Commands\CommandBase.cs" />
+    <Compile Include="Commands\CommandBaseGeneric.cs" />
     <Compile Include="Commands\UnderlineCommand.cs" />
     <Compile Include="Commands\ItalicsCommand.cs" />
     <Compile Include="Commands\BoldCommand.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RelayCommandGeneric.cs" />
-    <Compile Include="CountHashTags.cs" />
-    <Compile Include="CountMarkdownBackward.cs" />
-    <Compile Include="CountMarkdownForward.cs" />
+    <Compile Include="Range.cs" />
+    <Compile Include="TextCounter.cs" />
     <Compile Include="CountParagraphsInTextSelection.cs" />
     <Compile Include="GenerateObservableCollectionFromHierarchy.cs" />
     <Compile Include="GetParagraphIndexFromTextPointer.cs" />

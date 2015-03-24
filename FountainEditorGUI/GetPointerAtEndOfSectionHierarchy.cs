@@ -9,12 +9,13 @@ namespace FountainEditorGUI
 {
     public sealed class GetPointerAtEndOfSectionHierarchy
     {
-        private CountHashTags countHashTags;
-        public GetPointerAtEndOfSectionHierarchy(CountHashTags countHashTags)
-        {
-            this.countHashTags = countHashTags;
+        private readonly ITextCounter counter;
 
+        public GetPointerAtEndOfSectionHierarchy(ITextCounter count)
+        {
+            this.counter = count;
         }
+
         public TextPointer getPointer(FlowDocument Document, int hashes, int index)
         {
             TextPointer endSelection = Document.ContentEnd;
@@ -26,8 +27,7 @@ namespace FountainEditorGUI
 
                 if (currentText.StartsWith("#"))
                 {
-                    int curHashes = countHashTags.Count(currentText);
-
+                    int curHashes = counter.CountHashTags(currentText);
                     if (curHashes <= hashes)
                     {
                         endSelection = block.ContentStart;

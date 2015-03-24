@@ -1,54 +1,49 @@
-﻿using FountainEditor.Messaging;
-using FountainEditorGUI.Messages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Input;
+using FountainEditor.Messaging;
+using FountainEditorGUI.Messages;
 
 namespace FountainEditorGUI.Commands
 {
-    public sealed class ItalicsCommand : ICommand
+    public sealed class ItalicsCommand : CommandBase<RichTextBox>
     {
-        public event EventHandler CanExecuteChanged;
-        private CountMarkdownBackward countBackward;
-        private CountMarkdownForward countForward;
-        private MarkdownFormatter formatter;
-        private TextTrimmerService trimmer;
-        private TextScanner textScanner;
-        private IMessagePublisher<ParagraphMessage> paragraphMessagePublisher;
+        private readonly ITextCounter counter;
+        private readonly MarkdownFormatter formatter;
+        private readonly TextTrimmerService trimmer;
+        private readonly TextScanner textScanner;
+        private readonly IMessagePublisher<ParagraphMessage> paragraphMessagePublisher;
 
-        public ItalicsCommand(CountMarkdownBackward countbackward,
-                            CountMarkdownForward countforward, MarkdownFormatter formatter,
-                            TextTrimmerService trimmer, TextScanner textScanner,
-                            IMessagePublisher<ParagraphMessage> paragraphMessagePublisher)
+        public ItalicsCommand(
+            ITextCounter counter,
+            MarkdownFormatter formatter,
+            TextTrimmerService trimmer,
+            TextScanner textScanner,
+            IMessagePublisher<ParagraphMessage> paragraphMessagePublisher)
         {
-            this.countBackward = countbackward;
-            this.countForward = countforward;
+            this.counter = counter;
             this.formatter = formatter;
             this.trimmer = trimmer;
             this.textScanner = textScanner;
             this.paragraphMessagePublisher = paragraphMessagePublisher;
         }
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
 
-        public void Execute(object parameter)
+        public override void Execute(RichTextBox parameter)
         {
-            RichTextBox richTextBox = parameter as RichTextBox;
-            TextSelection selection = richTextBox.Selection;
-            TextRange selectionRange = new TextRange(selection.Start, selection.End);
+            if (parameter == null)
+            {
+                throw new ArgumentNullException("parameter");
+            }
+
+            TextSelection selection = parameter.Selection;
             
-            if (richTextBox == null || selection == null)
+            if (selection == null)
             {
                 return;
             }
+
+            TextRange selectionRange = new TextRange(selection.Start, selection.End);
 
             if (selection.GetPropertyValue(TextElement.FontStyleProperty).Equals(FontStyles.Italic))
             {
@@ -59,10 +54,9 @@ namespace FountainEditorGUI.Commands
                 selection.ApplyPropertyValue(TextElement.FontStyleProperty, FontStyles.Italic);
             }
 
-            int start = countForward.Count(selectionRange.Text);
-            int end = countBackward.Count(selectionRange.Text);
+            var range = counter.CountMarkdownSymbols(selection.Text);
 
-            selection.Text = trimmer.TrimText(selection.Text, start, end);
+            selection.Text = trimmer.TrimText(selection.Text, range.Start, range.End);
             selection.Text = formatter.format(new TextRange(selection.Start, selection.End));
 
             string text = textScanner.ScanForText(selection.Start);

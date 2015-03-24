@@ -1,65 +1,59 @@
-﻿using FountainEditorGUI.Messages;
-using FountainEditor.Messaging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Input;
+using FountainEditor.Messaging;
+using FountainEditorGUI.Messages;
 
 namespace FountainEditorGUI.Commands
 {
-    public sealed class UnderlineCommand : ICommand
+    public sealed class UnderlineCommand : CommandBase<RichTextBox>
     {
-        public event EventHandler CanExecuteChanged;
-        private CountMarkdownBackward countBackward;
-        private CountMarkdownForward countForward;
+        private ITextCounter counter;
         private MarkdownFormatter formatter;
         private TextTrimmerService trimmer;
         private MarkdownUnderlineFormat underlineFormat;
         private TextScanner textScanner;
         private IMessagePublisher<ParagraphMessage> paragraphMessage;
 
-        public UnderlineCommand(CountMarkdownBackward countbackward, CountMarkdownForward countforward, 
-                                MarkdownFormatter formatter, TextTrimmerService trimmer, MarkdownUnderlineFormat underlineFormat,
-                                TextScanner textScanner, IMessagePublisher<ParagraphMessage> ParagraphMessage)
+        public UnderlineCommand(
+            ITextCounter counter, 
+            MarkdownFormatter formatter,
+            TextTrimmerService trimmer,
+            MarkdownUnderlineFormat underlineFormat,
+            TextScanner textScanner,
+            IMessagePublisher<ParagraphMessage> ParagraphMessage)
         {
-            this.countBackward = countbackward;
-            this.countForward = countforward;
+            this.counter = counter;
             this.formatter = formatter;
             this.trimmer = trimmer;
             this.underlineFormat = underlineFormat;
             this.textScanner = textScanner;
             this.paragraphMessage = ParagraphMessage;
-
         }
 
-        public bool CanExecute(object parameter)
+        public override void Execute(RichTextBox parameter)
         {
-            return true;
-        }
+            if (parameter == null)
+            {
+                throw new ArgumentNullException("parameter");
+            }
 
-        public void Execute(object parameter)
-        {
-            RichTextBox richTextBox = parameter as RichTextBox;
-            TextSelection selection = richTextBox.Selection;
-            TextRange selectionRange = new TextRange(selection.Start, selection.End);
+            TextSelection selection = parameter.Selection;
 
-            if (richTextBox == null || selection == null)
+            if (selection == null)
             {
                 return;
             }
 
+            TextRange selectionRange = new TextRange(selection.Start, selection.End);
+
             if (selectionRange.GetPropertyValue(Inline.TextDecorationsProperty).Equals(TextDecorations.Underline))
             {
                 selectionRange.ApplyPropertyValue(Inline.TextDecorationsProperty, null);
-                int start = countForward.Count(selectionRange.Text);
-                int end = countBackward.Count(selectionRange.Text);
+                var range = counter.CountMarkdownSymbols(selectionRange.Text);
 
-                selection.Text = trimmer.TrimText(selection.Text, start, end);
+                selection.Text = trimmer.TrimText(selection.Text, range.Start, range.End);
                 selection.Text = formatter.format(new TextRange(selection.Start, selection.End)); 
             }
             else

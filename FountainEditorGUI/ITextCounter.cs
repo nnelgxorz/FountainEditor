@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace FountainEditorGUI
 {
-    interface ITextCounter
+    public interface ITextCounter
     {
-        int Count (string text);
+        Range<int> CountMarkdownSymbols(string text);
+
+        int CountHashTags(string text);
     }
 }

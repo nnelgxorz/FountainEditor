@@ -1,31 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FountainEditorGUI
 {
     public sealed class GenerateObservableCollectionFromHierarchy
     {
-        private CountHashTags countHashTags;
-        public GenerateObservableCollectionFromHierarchy(CountHashTags countHashTags)
+        private readonly ITextCounter counter;
+
+        public GenerateObservableCollectionFromHierarchy(ITextCounter counter)
         {
-            this.countHashTags = countHashTags;
+            this.counter = counter;
         }
+
         public ObservableCollection<string> Generate(ObservableCollection<string> collection, int index, int depth)
         {
             ObservableCollection<string> subCollection = new ObservableCollection<string>();
             subCollection.Add(collection.ElementAt(index));
-            string[] array;
-
+            
             for (int i = index+1; i < collection.Count; i++)
             {
                 string currentItem = collection.ElementAt(i);
 
-                int currentDepth = countHashTags.Count(currentItem);
-                if (currentItem.StartsWith("=") | currentDepth > depth)
+                int currentDepth = counter.CountHashTags(currentItem);
+                if (currentItem.StartsWith("=") || currentDepth > depth)
                 {
                     subCollection.Add(currentItem);
                 }
@@ -35,6 +32,7 @@ namespace FountainEditorGUI
                     break;
                 }
             }
+
             return subCollection;
         }
     }

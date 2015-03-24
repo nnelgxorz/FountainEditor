@@ -1,46 +1,41 @@
-﻿using FountainEditor.Messaging;
-using FountainEditorGUI.Messages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Input;
+using FountainEditor.Messaging;
+using FountainEditorGUI.Messages;
 
 namespace FountainEditorGUI.Commands
 {
-    public sealed class BoneyardCommand : ICommand
+    public sealed class BoneyardCommand : CommandBase<RichTextBox>
     {
-        public event EventHandler CanExecuteChanged;
         private MarkdownBoneyardFormat boneyardFormat;
         private TextTrimmerService trimmer;
         private IMessagePublisher<ParagraphMessage> paragraphMessagePublisher;
 
-        public BoneyardCommand(MarkdownBoneyardFormat boneyardFormat, TextTrimmerService trimmer,
-                               IMessagePublisher<ParagraphMessage> paragraphMessagePublisher)
+        public BoneyardCommand(
+            MarkdownBoneyardFormat boneyardFormat,
+            TextTrimmerService trimmer,
+            IMessagePublisher<ParagraphMessage> paragraphMessagePublisher)
         {
             this.boneyardFormat = boneyardFormat;
             this.trimmer = trimmer;
             this.paragraphMessagePublisher = paragraphMessagePublisher;
         }
 
-        public bool CanExecute(object parameter)
+        public override void Execute(RichTextBox parameter)
         {
-            return true;
-        }
+            if (parameter == null)
+            {
+                throw new ArgumentNullException("parameter");
+            }
 
-        public void Execute(object parameter)
-        {
-            RichTextBox richTextBox = parameter as RichTextBox;
-            TextSelection selection = richTextBox.Selection;
+            TextSelection selection = parameter.Selection;
 
-            if (richTextBox == null | selection == null)
+            if (selection == null)
             {
                 return;
             }
+
             if (selection.Text.StartsWith("/*"))
             {
                 selection.Text = trimmer.TrimText(selection.Text, 2, 2);
