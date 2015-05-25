@@ -55,7 +55,7 @@ namespace FountainEditorGUI
             int start = indexFromPointer.getIndex(textBox, selection.Start);
             int end = indexFromPointer.getIndex(textBox, selection.End);
 
-            textBox.Document = NestParagraphs.DoNesting(textBox, start, end, amount, message.dropAction);
+            //textBox.Document = NestParagraphs.DoNesting(textBox, start, end, amount, message.dropAction);
 
             outlinerNavigationMessage.Publish(new OutlinerNavigationMessage(textScanner.ScanForText(selection.Start)));
             return textBox.Document;

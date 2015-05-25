@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Collections.Generic;
 
 namespace FountainEditorGUI.Views
 {
@@ -16,14 +17,16 @@ namespace FountainEditorGUI.Views
     {
         private ITextScanner textScanner;
         private IMessagePublisher<TextChangedMessage> textChangedMessagePublisher;
-        private IMessagePublisher<OutlinerNavigationMessage> navigationMessagePublisher;
-        private IMessagePublisher<DragDropMessage> dragDropMessagePublisher;
-        private IMessagePublisher<SetCursorMessage> setCursorMessagePublisher;
         private GetTextOffsetService getOffset;
         private GetParagraphIndexFromText getTextIndex;
         private TextPointerFromTextService pointerFromText;
         private GetTextPointerFromBlockIndex getPointerFromIndex;
-        private TextBoxDragDropLogicSerivce dragDrogLogic;
+        private GenerateIndexListOfSectionElementsInDocument generateSectionIndexList;
+        private List<SectionIndexClass> indices;
+        private GetPointersAtStartAndEndOfSectionTextHierarchy getStartAndEndofSection;
+        private DisplayBoxDragAndDropService DisplayBoxDragDrop;
+        private IMessagePublisher<SetCursorMessage> setCursorMessagePublisher;
+
 
         public FountainTextBox(FountainTextBoxViewModel viewModel, 
             ITextScanner textScanner, 
@@ -31,29 +34,33 @@ namespace FountainEditorGUI.Views
             IMessagePublisher<OutlinerNavigationMessage> navigationMessagePublisher,
             IMessagePublisher<DragDropMessage> dragDropMessagePublisher, 
             IMessagePublisher<SetCursorMessage> setCursorMessagePublisher,
+            IMessagePublisher<SectionIndicesChangedMessage> sectionIndicesChanged,
             GetTextOffsetService getOffset, 
             GetParagraphIndexFromText getTextIndex, 
             TextPointerFromTextService pointerFromText, 
             GetTextPointerFromBlockIndex getPointerFromIndex,
-            TextBoxDragDropLogicSerivce dragDrogLogic)
+            GenerateIndexListOfSectionElementsInDocument generateSectionIndexList,
+            GetPointersAtStartAndEndOfSectionTextHierarchy getStartAndEndofSection,
+            DisplayBoxDragAndDropService DisplayBoxDragDrop)
         {
             InitializeComponent();
 
             this.DataContext = viewModel;
             this.textScanner = textScanner;
             this.textChangedMessagePublisher = textChangedMessagePublisher;
-            this.navigationMessagePublisher = navigationMessagePublisher;
-            this.dragDropMessagePublisher = dragDropMessagePublisher;
-            this.setCursorMessagePublisher = setCursorMessagePublisher;
-            this.dragDrogLogic = dragDrogLogic;
             this.getOffset = getOffset;
             this.getTextIndex = getTextIndex;
             this.pointerFromText = pointerFromText;
             this.getPointerFromIndex = getPointerFromIndex;
+            this.generateSectionIndexList = generateSectionIndexList;
+            this.getStartAndEndofSection = getStartAndEndofSection;
+            this.DisplayBoxDragDrop = DisplayBoxDragDrop;
+            this.setCursorMessagePublisher = setCursorMessagePublisher;
 
             dragDropMessagePublisher.Subscribe(onOutlineDragDrop);
             navigationMessagePublisher.Subscribe(onNavigationChange);
             setCursorMessagePublisher.Subscribe(onSetCursorChanged);
+            sectionIndicesChanged.Subscribe(onSectionIndicesChanged);
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -70,6 +77,7 @@ namespace FountainEditorGUI.Views
             if (e.PropertyName == "Document")
             {
                 this.DisplayBox.Document = ((FountainTextBoxViewModel)this.DataContext).Document;
+                indices = generateSectionIndexList.Generate(this.DisplayBox.Document);
             }
         }
 
@@ -92,18 +100,28 @@ namespace FountainEditorGUI.Views
 
                 int index = getTextIndex.getIndex(this.DisplayBox.Document, currentText);
                 setCursorMessagePublisher.Publish(new SetCursorMessage(index, offset));
-            }  
+            }
+
+            if (e.Key == Key.RightShift)
+            {
+                string message = null;
+                foreach (var index in indices)
+                {
+                    message = string.Format("{0}{1}, {2}, {3}\t{4}\r\n", message, index.index, index.blockAmount, index.hashCount, index.text);
+                }
+                MessageBox.Show(string.Format("Of {0} paragraphs, {1} are section headings.\r\n\r\n{2}", 
+                    this.DisplayBox.Document.Blocks.Count, indices.Count, message));
+            }
         }
 
         private void onOutlineDragDrop(DragDropMessage message)
         {
-            this.DisplayBox.Document = dragDrogLogic.DoDrop(this.DisplayBox, message);
+            this.DisplayBox.Document = DisplayBoxDragDrop.Drop(this.DisplayBox, indices, message);
         }
 
         private void onNavigationChange(OutlinerNavigationMessage message)
         {
             TextPointer start = pointerFromText.getPointer(this.DisplayBox.Document, message.text, false);
-
             if (DisplayBox.Focus() == false)
             {
                 FocusManager.SetFocusedElement(this.DisplayBox.Parent, this.DisplayBox);
@@ -122,6 +140,10 @@ namespace FountainEditorGUI.Views
 
             this.DisplayBox.Selection.Select(pointer, pointer);
             int offset = getOffset.GetOffset(this.DisplayBox.Document.ContentStart, pointer);
+        }
+        private void onSectionIndicesChanged(SectionIndicesChangedMessage message)
+        {
+            this.indices = message.indices;
         }
     }
 }

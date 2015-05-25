@@ -27,6 +27,7 @@ namespace FountainEditorGUI
             p.Inlines.Add(text);
 
             Document.Blocks.Add(p);
+            TextPointer sectionStart = p.ContentStart;
         }
 
         public override void Visit(SynopsisElement context)

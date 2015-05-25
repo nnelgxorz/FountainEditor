@@ -7,17 +7,18 @@
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance {x:Type vm:FountainOutlineViewModel}}"
              d:DesignHeight="300" d:DesignWidth="300">
-    <Expander Grid.Column="0" Grid.Row="2" ExpandDirection="Right" Margin="10" IsExpanded="True">
+    <Expander Grid.Column="0" Grid.Row="2" ExpandDirection="Right" Margin="10" IsExpanded="True" >
         <ListView Name="Outliner" Background="#333333" Foreground="#f2f2f2" BorderBrush="{x:Null}"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled" TextElement.FontSize="16"
                   HorizontalContentAlignment="Stretch" Padding="0,25,0,0"
                   AllowDrop="True" ItemsSource="{Binding DocumentOutline}"
                   DragEnter="Outliner_DragEnter" Drop="Outliner_Drop" MouseDoubleClick="Outliner_MouseDoubleClick">
+
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Width="{Binding ElementName=Outliner, Path=ActualWidth}" Height="Auto" AllowDrop="True" 
                           PreviewMouseLeftButtonDown="Grid_PreviewMouseLeftButtonDown" HorizontalAlignment="Stretch" 
-                          Opacity="0.25" Name="Grid" TextElement.FontWeight="Light">
+                          Opacity="0.25" Name="Grid" TextElement.FontWeight="Light" DragOver="Outliner_DragEnter">
                         <Grid.Background>
                             <SolidColorBrush x:Name="BackgroundBrush" Color="#333333"/>
                         </Grid.Background>

@@ -21,7 +21,6 @@ namespace FountainEditorGUI
             {
                 pointer = textBox.Document.Blocks.LastBlock.ContentStart;
             }
-
             TextPointer start = pointer.Paragraph.ContentStart;
             TextPointer end = pointer.Paragraph.ContentEnd;
 

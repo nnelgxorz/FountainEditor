@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FountainEditorGUI
 {
-    public sealed class RemoveHashtags
+    public sealed class RemoveHashtags : FountainEditorGUI.IRemoveHashtags
     {
         public string Remove(string text, int amount)
         {

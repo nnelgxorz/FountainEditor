@@ -10,7 +10,7 @@ namespace FountainEditorGUI
     public sealed class GetParagraphIndexFromText
     {
         private int index;
-        public int getIndex (FlowDocument Document, string text)
+        public int getIndex(FlowDocument Document, string text)
         {
             for (int i = 0; i < Document.Blocks.Count; i++)
             {

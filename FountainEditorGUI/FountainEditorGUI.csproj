@@ -62,6 +62,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AddHashtags.cs" />
+    <Compile Include="AddRemoveItemsToList.cs" />
+    <Compile Include="CollectionItemsNestingService.cs" />
     <Compile Include="Commands\BoneyardCommand.cs" />
     <Compile Include="Commands\CommandBase.cs" />
     <Compile Include="Commands\CommandBaseGeneric.cs" />
@@ -70,16 +72,30 @@
     <Compile Include="Commands\BoldCommand.cs" />
     <Compile Include="Commands\RelayCommand.cs" />
     <Compile Include="Commands\RelayCommandGeneric.cs" />
+    <Compile Include="DisplayBoxDragAndDropService.cs" />
+    <Compile Include="FindEndOfSectionHierarchyIndex.cs" />
+    <Compile Include="FindSectionElementIndexFromText.cs" />
+    <Compile Include="GenerateIndexListOfSectionElementsInDocument.cs" />
+    <Compile Include="GenerateSubListOfSectionIndices.cs" />
+    <Compile Include="GetDropActionFromMousePosition.cs" />
+    <Compile Include="GetParagraphIndexFromText.cs" />
+    <Compile Include="GetPointersAtStartAndEndOfSectionTextHierarchy.cs" />
+    <Compile Include="IAddHashtags.cs" />
+    <Compile Include="IRemoveHashtags.cs" />
+    <Compile Include="Messages\SectionIndicesChangedMessage.cs" />
+    <Compile Include="OutlinerDragDropLogic.cs" />
     <Compile Include="Range.cs" />
+    <Compile Include="ReOrderSectionIndicesService.cs" />
+    <Compile Include="SectionIndexClass.cs" />
+    <Compile Include="SectionParagraphsNestingService.cs" />
+    <Compile Include="TextBoxDragDropLogicSerivce.cs" />
     <Compile Include="TextCounter.cs" />
-    <Compile Include="CountParagraphsInTextSelection.cs" />
     <Compile Include="GenerateObservableCollectionFromHierarchy.cs" />
+    <Compile Include="GetListViewItemHeight.cs" />
     <Compile Include="GetParagraphIndexFromTextPointer.cs" />
     <Compile Include="GetEndOfHierarchicalElementsIndex.cs" />
     <Compile Include="GetEndOfOutlineSectionIndex.cs" />
-    <Compile Include="GetPointerAtEndOfSection.cs" />
     <Compile Include="GetPointerAtEndOfSectionHierarchy.cs" />
-    <Compile Include="GetParagraphIndexFromText.cs" />
     <Compile Include="GetTextOffsetService.cs" />
     <Compile Include="GetTextPointerAtOffsetService.cs" />
     <Compile Include="GetTextPointerFromBlockIndex.cs" />
@@ -102,24 +118,13 @@
     <Compile Include="Messages\SetCursorMessage.cs" />
     <Compile Include="Messages\TextChangedMessage.cs" />
     <Compile Include="MoveTextPointerToNextContext.cs" />
-    <Compile Include="NestOutlineParagraphsInIndexRange.cs" />
-    <Compile Include="NestOutlinerCollectionItems.cs" />
-    <Compile Include="OutlinerDropAfterLogic.cs" />
-    <Compile Include="OutlinerDropNestedLogic.cs" />
-    <Compile Include="OutlinerDropUnNestedLogic.cs" />
     <Compile Include="ParagraphVisitor.cs" />
     <Compile Include="RemoveHashtags.cs" />
     <Compile Include="SelectHierachicalTextFromSectionParagraph.cs" />
-    <Compile Include="TextBoxDropAfterLogic.cs" />
-    <Compile Include="TextBoxDropBeforeLogic.cs" />
-    <Compile Include="TextBoxDropNestedLogic.cs" />
-    <Compile Include="TextBoxDropUnNestedLogic.cs" />
     <Compile Include="TextPointerFromTextService.cs" />
     <Compile Include="TextScanner.cs" />
     <Compile Include="TextTrimmerService.cs" />
     <Compile Include="RemoveElementsFromObservableCollection.cs" />
-    <Compile Include="UnNestOutlineParagraphsInIndexRange.cs" />
-    <Compile Include="UnNestOutlinerCollectionItems.cs" />
     <Compile Include="Views\FountainNameBox.xaml.cs">
       <DependentUpon>FountainNameBox.xaml</DependentUpon>
     </Compile>

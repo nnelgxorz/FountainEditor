@@ -15,7 +15,7 @@ namespace FountainEditorGUI
             this.getOffset = getOffset;
         }
 
-        public TextPointer getPointer (FlowDocument Document, string text, bool contentEnd)
+        public TextPointer getPointer(FlowDocument Document, string text, bool contentEnd)
         {
             TextPointer pointer = Document.ContentStart;
             foreach (var block in Document.Blocks)

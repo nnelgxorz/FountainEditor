@@ -36,6 +36,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FountainEditorGUI.Fakes">
+      <HintPath>FakesAssemblies\FountainEditorGUI.Fakes.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.QualityTools.Testing.Fakes, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -51,14 +55,25 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AddHashtagsFixture.cs" />
+    <Compile Include="AddRemoveItemsToListFixture.cs" />
+    <Compile Include="CollectionItemsNestingServiceFixture.cs" />
+    <Compile Include="FindEndOfSectionHierarchyIndexFixture.cs" />
     <Compile Include="TokenizerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FountainEditorGUI\FountainEditorGUI.csproj">
+      <Project>{3aac2428-d137-4b01-8a72-3495b7bd267d}</Project>
+      <Name>FountainEditorGUI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FountainEditor\FountainEditor.csproj">
       <Project>{7f2b2ace-dc4f-461b-9265-a9c7704b41a0}</Project>
       <Name>FountainEditor</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Fakes Include="Fakes\FountainEditorGUI.fakes" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
